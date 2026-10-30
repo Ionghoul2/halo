@@ -1,0 +1,1055 @@
+<title>Northbank Supply Portal</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: app shell — sticky demo strip + header band, single centered column, data tables and
+   record cards below. Collapses to one column at phone width. */
+:root{
+  --paper:#f6f8fa;
+  --surface:#ffffff;
+  --surface-2:#eef2f6;
+  --ink:#121920;
+  --ink-2:#51606e;
+  --ink-3:#7d8b99;
+  --line:#dbe2e9;
+  --line-2:#c3cdd8;
+  --accent:#17527a;
+  --accent-2:#2d7bad;
+  --accent-soft:#e6f0f7;
+  --ok:#1a7347;
+  --ok-soft:#e2f2ea;
+  --warn:#8a5c08;
+  --warn-soft:#fbf0d9;
+  --bad:#9c312a;
+  --bad-soft:#fae9e7;
+  --demo:#3a2f5c;
+  --demo-ink:#efeaff;
+  --font-ui:"Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --shadow:0 1px 2px rgba(18,25,32,.05),0 4px 14px rgba(18,25,32,.05);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0d1217;
+    --surface:#151d25;
+    --surface-2:#1d2731;
+    --ink:#e7edf3;
+    --ink-2:#9bacbb;
+    --ink-3:#73838f;
+    --line:#26323d;
+    --line-2:#36454f;
+    --accent:#72b9e8;
+    --accent-2:#9ed0f2;
+    --accent-soft:#14293a;
+    --ok:#57c78d;
+    --ok-soft:#133227;
+    --warn:#dcab4c;
+    --warn-soft:#332814;
+    --bad:#e88278;
+    --bad-soft:#36201d;
+    --demo:#2b2347;
+    --demo-ink:#dcd3f7;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 14px rgba(0,0,0,.25);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0d1217;
+  --surface:#151d25;
+  --surface-2:#1d2731;
+  --ink:#e7edf3;
+  --ink-2:#9bacbb;
+  --ink-3:#73838f;
+  --line:#26323d;
+  --line-2:#36454f;
+  --accent:#72b9e8;
+  --accent-2:#9ed0f2;
+  --accent-soft:#14293a;
+  --ok:#57c78d;
+  --ok-soft:#133227;
+  --warn:#dcab4c;
+  --warn-soft:#332814;
+  --bad:#e88278;
+  --bad-soft:#36201d;
+  --demo:#2b2347;
+  --demo-ink:#dcd3f7;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 14px rgba(0,0,0,.25);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--font-ui);
+  font-size:15px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+body::before{
+  content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);
+  z-index:40;background:var(--demo);
+}
+.wrap{
+  width:100%;max-width:1120px;margin:0 auto;
+  padding-left:max(18px,env(safe-area-inset-left,0px));
+  padding-right:max(18px,env(safe-area-inset-right,0px));
+}
+h1,h2,h3{text-wrap:balance;margin:0;letter-spacing:-.018em;font-weight:700}
+p{margin:0}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px;border-radius:3px}
+.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- demo strip ---------- */
+.demobar{
+  position:sticky;top:env(safe-area-inset-top,0px);z-index:30;
+  background:var(--demo);color:var(--demo-ink);
+  border-bottom:1px solid rgba(255,255,255,.09);
+}
+.demobar .wrap{
+  display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;
+  padding-block:9px;
+}
+.demobar .tag{
+  font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  opacity:.72;white-space:nowrap;
+}
+.demobar .note{font-size:12.5px;opacity:.8;min-width:0;flex:1 1 200px}
+.seg{display:flex;gap:3px;background:rgba(255,255,255,.1);padding:3px;border-radius:7px}
+.seg button{
+  font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;
+  background:transparent;color:var(--demo-ink);border:0;
+  padding:4px 11px;border-radius:5px;white-space:nowrap;
+}
+.seg button[aria-pressed="true"]{background:var(--demo-ink);color:var(--demo)}
+
+/* ---------- site header ---------- */
+.topbar{
+  background:var(--surface);border-bottom:1px solid var(--line);
+  position:sticky;top:calc(env(safe-area-inset-top,0px) + 39px);z-index:20;
+}
+.topbar .wrap{display:flex;align-items:center;gap:14px;padding-block:13px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:11px;margin-right:auto;min-width:0}
+.mark{
+  width:34px;height:34px;flex:none;border-radius:6px;background:var(--accent);
+  display:grid;place-items:center;color:#fff;font-weight:800;font-size:15px;letter-spacing:-.04em;
+}
+:root[data-theme="dark"] .mark,
+:root:not([data-theme="light"]) .mark{color:#0d1217}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .mark{color:#fff}}
+.brand b{font-size:15.5px;font-weight:700;letter-spacing:-.02em;display:block;line-height:1.2}
+.brand span{font-size:11px;color:var(--ink-3);letter-spacing:.07em;text-transform:uppercase;font-weight:600}
+nav.main{display:flex;gap:2px;flex-wrap:wrap}
+nav.main a{
+  font-size:13.5px;font-weight:600;color:var(--ink-2);padding:6px 11px;border-radius:6px;
+}
+nav.main a:hover{background:var(--surface-2);text-decoration:none;color:var(--ink)}
+nav.main a.on{background:var(--accent-soft);color:var(--accent)}
+
+/* ---------- buttons ---------- */
+.btn{
+  font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;
+  border:1px solid var(--accent);background:var(--accent);color:var(--surface);
+  padding:8px 16px;border-radius:7px;display:inline-flex;align-items:center;gap:7px;
+}
+:root[data-theme="dark"] .btn,
+:root:not([data-theme="light"]) .btn{color:#0d1217}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .btn{color:#fff}}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--accent);border-color:var(--line-2)}
+.btn.ghost:hover{background:var(--accent-soft);filter:none}
+.btn.sm{padding:5px 11px;font-size:12.5px}
+.btn.ok{background:var(--ok);border-color:var(--ok)}
+.btn.bad{background:transparent;color:var(--bad);border-color:var(--line-2)}
+.btn.bad:hover{background:var(--bad-soft)}
+.btn[disabled]{opacity:.45;cursor:not-allowed;filter:none}
+
+/* ---------- panels ---------- */
+main{padding-block:28px 64px}
+.panel{
+  background:var(--surface);border:1px solid var(--line);border-radius:11px;
+  box-shadow:var(--shadow);overflow:hidden;
+}
+.panel-head{
+  padding:15px 18px;border-bottom:1px solid var(--line);
+  display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+}
+.panel-head h2{font-size:16px}
+.panel-head .sub{font-size:12.5px;color:var(--ink-3);min-width:0}
+.panel-body{padding:18px}
+.stack{display:flex;flex-direction:column;gap:22px}
+.eyebrow{
+  font-size:10.5px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-3);
+}
+
+/* ---------- hero ---------- */
+.hero{
+  background:var(--surface);border:1px solid var(--line);border-radius:11px;
+  padding:30px;box-shadow:var(--shadow);
+}
+.hero h1{font-size:clamp(25px,4.4vw,39px);line-height:1.1;font-weight:800;margin-top:9px}
+.hero .lede{font-size:16px;color:var(--ink-2);max-width:62ch;margin-top:13px}
+.hero .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.credrow{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:1px;
+  background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:28px;
+}
+.cred{background:var(--surface);padding:13px 15px;min-width:0}
+.cred dt{font-size:10.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3)}
+.cred dd{margin:4px 0 0;font-family:var(--font-mono);font-size:13px;font-weight:500;overflow-wrap:anywhere}
+
+/* ---------- tables ---------- */
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:620px}
+th{
+  text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-3);padding:10px 14px;border-bottom:1px solid var(--line);white-space:nowrap;
+  background:var(--surface-2);
+}
+td{padding:13px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td .pname{font-weight:600;display:block}
+td .pmeta{font-family:var(--font-mono);font-size:11.5px;color:var(--ink-3);display:block;margin-top:3px}
+th.r,td.r{text-align:right}
+
+/* ---------- pills ---------- */
+.pill{
+  display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;
+  letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:20px;white-space:nowrap;
+}
+.pill.ok{background:var(--ok-soft);color:var(--ok)}
+.pill.warn{background:var(--warn-soft);color:var(--warn)}
+.pill.bad{background:var(--bad-soft);color:var(--bad)}
+.pill.neutral{background:var(--surface-2);color:var(--ink-2)}
+.dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex:none}
+
+/* ---------- locked pricing ---------- */
+.locked{
+  display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:var(--ink-3);
+}
+.locked .bars{display:flex;gap:3px}
+.locked .bars i{display:block;width:9px;height:9px;border-radius:2px;background:var(--line-2)}
+.gate{
+  margin-top:16px;border:1px dashed var(--line-2);border-radius:10px;background:var(--surface-2);
+  padding:17px;display:flex;gap:16px;align-items:center;flex-wrap:wrap;
+}
+.gate p{font-size:13.5px;color:var(--ink-2);flex:1 1 280px;min-width:0}
+
+/* ---------- forms ---------- */
+.field{display:flex;flex-direction:column;gap:5px;min-width:0}
+.field label{font-size:12.5px;font-weight:600;color:var(--ink-2)}
+.field .hint{font-size:11.5px;color:var(--ink-3);line-height:1.4}
+input,select,textarea{
+  font:inherit;font-size:14px;color:var(--ink);background:var(--surface);
+  border:1px solid var(--line-2);border-radius:7px;padding:9px 11px;width:100%;min-width:0;
+}
+input::placeholder,textarea::placeholder{color:var(--ink-3)}
+textarea{resize:vertical;min-height:72px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:15px}
+fieldset{border:0;padding:0;margin:0;min-width:0}
+legend{
+  font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);
+  padding:0 0 11px;
+}
+.formsec{padding-block:20px;border-top:1px solid var(--line)}
+.formsec:first-of-type{border-top:0;padding-top:4px}
+
+/* ---------- RFQ / cart ---------- */
+.lines{display:flex;flex-direction:column;gap:10px}
+.line{
+  display:flex;gap:12px;align-items:center;flex-wrap:wrap;
+  border:1px solid var(--line);border-radius:9px;padding:11px 13px;background:var(--surface);
+}
+.line .who{flex:1 1 220px;min-width:0}
+.line .who b{display:block;font-size:13.5px;font-weight:600}
+.line .who span{font-family:var(--font-mono);font-size:11.5px;color:var(--ink-3)}
+.qty{display:flex;align-items:center;gap:0;border:1px solid var(--line-2);border-radius:7px;overflow:hidden}
+.qty button{
+  font:inherit;font-size:15px;font-weight:600;width:30px;height:32px;cursor:pointer;
+  background:var(--surface-2);color:var(--ink-2);border:0;
+}
+.qty button:hover{background:var(--accent-soft);color:var(--accent)}
+.qty span{min-width:38px;text-align:center;font-family:var(--font-mono);font-size:13.5px;font-weight:600}
+.totals{
+  margin-top:16px;border-top:1px solid var(--line);padding-top:14px;
+  display:flex;flex-direction:column;gap:7px;font-size:13.5px;
+}
+.totals div{display:flex;justify-content:space-between;gap:18px;color:var(--ink-2)}
+.totals div.grand{font-size:17px;font-weight:700;color:var(--ink);padding-top:7px;border-top:1px solid var(--line)}
+
+/* ---------- admin ---------- */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:13px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.kpi dt{font-size:10.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3)}
+.kpi dd{margin:6px 0 0;font-size:26px;font-weight:700;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.kpi dd small{font-size:12.5px;font-weight:600;color:var(--ink-3);letter-spacing:0}
+.appcard{border:1px solid var(--line);border-radius:10px;background:var(--surface);overflow:hidden}
+.appcard + .appcard{margin-top:12px}
+.appcard header{
+  padding:12px 15px;background:var(--surface-2);border-bottom:1px solid var(--line);
+  display:flex;gap:11px;align-items:center;flex-wrap:wrap;
+}
+.appcard header b{font-size:14px;font-weight:700;margin-right:auto}
+.appgrid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:14px;padding:15px;
+}
+.appgrid div{min-width:0}
+.appgrid dt{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.appgrid dd{margin:3px 0 0;font-family:var(--font-mono);font-size:12.5px;overflow-wrap:anywhere}
+.appcard footer{
+  padding:11px 15px;border-top:1px solid var(--line);display:flex;gap:9px;flex-wrap:wrap;align-items:center;
+}
+.appcard footer .flag{font-size:12px;color:var(--ink-2);margin-right:auto;min-width:0;flex:1 1 180px}
+
+/* ---------- invoice ---------- */
+.inv{background:var(--surface);border:1px solid var(--line);border-radius:11px;box-shadow:var(--shadow)}
+.inv-head{padding:24px;border-bottom:2px solid var(--ink);display:flex;gap:20px;flex-wrap:wrap}
+.inv-head .co{flex:1 1 230px;min-width:0}
+.inv-head .co b{font-size:17px;display:block}
+.inv-head .co address{font-style:normal;font-size:12.5px;color:var(--ink-2);margin-top:5px;line-height:1.5}
+.inv-head .meta{flex:0 1 230px;min-width:0}
+.inv-head .meta h2{font-size:23px;letter-spacing:.02em;text-transform:uppercase}
+.inv-head .meta dl{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:11px 0 0;font-size:12.5px}
+.inv-head .meta dt{color:var(--ink-3);font-weight:600}
+.inv-head .meta dd{margin:0;font-family:var(--font-mono);text-align:right}
+.remit{
+  margin:0;padding:18px 24px;background:var(--surface-2);border-top:1px solid var(--line);
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;
+}
+.remit div{min-width:0}
+.remit dt{font-size:10.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3)}
+.remit dd{margin:4px 0 0;font-family:var(--font-mono);font-size:12.5px;line-height:1.6;overflow-wrap:anywhere}
+
+.notice{
+  display:flex;gap:11px;padding:13px 15px;border-radius:9px;font-size:13px;line-height:1.5;
+  background:var(--accent-soft);color:var(--ink-2);border:1px solid var(--line);
+}
+.notice b{color:var(--ink)}
+.notice.good{background:var(--ok-soft);border-color:transparent}
+.notice.warn{background:var(--warn-soft);border-color:transparent}
+
+.empty{padding:40px 20px;text-align:center;color:var(--ink-3);font-size:13.5px}
+.foot{padding-block:26px;border-top:1px solid var(--line);margin-top:40px;font-size:12px;color:var(--ink-3)}
+.foot p + p{margin-top:7px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="demobar">
+  <div class="wrap">
+    <span class="tag">Sample portal</span>
+    <span class="note">Fictional supplier, sample catalog. Switch perspective to see what each person sees.</span>
+    <div class="seg" role="group" aria-label="Demo perspective">
+      <button type="button" data-role="visitor" aria-pressed="true">Visitor</button>
+      <button type="button" data-role="buyer" aria-pressed="false">Approved buyer</button>
+      <button type="button" data-role="admin" aria-pressed="false">Supplier admin</button>
+    </div>
+  </div>
+</div>
+
+<header class="topbar">
+  <div class="wrap">
+    <div class="brand">
+      <div class="mark">NB</div>
+      <div>
+        <b>Northbank Fine Chemicals</b>
+        <span id="roleLabel">Wholesale supply</span>
+      </div>
+    </div>
+    <nav class="main" id="nav"></nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap" id="view"></div>
+</main>
+
+<div class="wrap">
+  <div class="foot">
+    <p><b>Northbank Fine Chemicals</b> is a fictional company built to demonstrate this portal. Product names, pricing, licence numbers and documents on this page are samples.</p>
+    <p>Wholesale supply to verified facilities only. Accounts are reviewed against state board licensure and, where the material requires it, federal registration before pricing is released.</p>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+/* ---------------- data ---------------- */
+
+var CATALOG = [
+  { id:"NB-1041", name:"Ascorbic Acid, USP", cas:"50-81-7", grade:"USP/EP", pack:"25 kg fibre drum",
+    purity:"99.1% HPLC", moq:1, lead:"Stock — 2 day", store:"15–25 °C, dry",
+    tiers:[{min:1,price:286},{min:4,price:264},{min:10,price:241}] },
+  { id:"NB-1088", name:"Glycerin, USP/EP (99.7%)", cas:"56-81-5", grade:"USP/EP", pack:"220 kg steel drum",
+    purity:"99.7% titration", moq:1, lead:"Stock — 2 day", store:"Ambient",
+    tiers:[{min:1,price:418},{min:4,price:389},{min:8,price:362}] },
+  { id:"NB-2210", name:"Methylcobalamin, USP", cas:"13422-55-4", grade:"USP", pack:"1 kg amber jar",
+    purity:"98.6% HPLC", moq:1, lead:"Stock — 2 day", store:"2–8 °C, protect from light",
+    tiers:[{min:1,price:1940},{min:3,price:1815},{min:6,price:1690}] },
+  { id:"NB-2305", name:"Sodium Hyaluronate, pharma grade", cas:"9067-32-7", grade:"Ph. Eur.", pack:"500 g foil pouch",
+    purity:"97.4% HPLC", moq:2, lead:"10–14 day", store:"2–8 °C",
+    tiers:[{min:2,price:880},{min:6,price:812},{min:12,price:749}] },
+  { id:"NB-3012", name:"Magnesium Stearate, NF", cas:"557-04-0", grade:"NF", pack:"20 kg carton",
+    purity:"Conforms NF", moq:1, lead:"Stock — 2 day", store:"Ambient, dry",
+    tiers:[{min:1,price:174},{min:5,price:158},{min:12,price:142}] },
+  { id:"NB-3044", name:"Microcrystalline Cellulose PH-102, NF", cas:"9004-34-6", grade:"NF", pack:"25 kg carton",
+    purity:"Conforms NF", moq:1, lead:"Stock — 2 day", store:"Ambient, dry",
+    tiers:[{min:1,price:198},{min:5,price:181},{min:12,price:166}] },
+  { id:"NB-4150", name:"Benzyl Alcohol, NF", cas:"100-51-6", grade:"NF", pack:"18 kg can",
+    purity:"99.8% GC", moq:1, lead:"Stock — 2 day", store:"Ambient, away from oxidisers",
+    tiers:[{min:1,price:212},{min:4,price:196},{min:10,price:180}] },
+  { id:"NB-4198", name:"Poloxamer 407, NF", cas:"9003-11-6", grade:"NF", pack:"20 kg carton",
+    purity:"Conforms NF", moq:1, lead:"3–5 day", store:"Ambient, dry",
+    tiers:[{min:1,price:605},{min:4,price:562},{min:10,price:518}] },
+  { id:"NB-5020", name:"Sodium Chloride, USP", cas:"7647-14-5", grade:"USP", pack:"25 kg bag",
+    purity:"99.6% titration", moq:2, lead:"Stock — 2 day", store:"Ambient, dry",
+    tiers:[{min:2,price:96},{min:8,price:87},{min:20,price:78}] },
+  { id:"NB-5077", name:"Tromethamine (TRIS), USP", cas:"77-86-1", grade:"USP", pack:"10 kg carton",
+    purity:"99.5% titration", moq:1, lead:"Stock — 2 day", store:"Ambient, dry",
+    tiers:[{min:1,price:488},{min:4,price:451},{min:10,price:417}] }
+];
+
+var APPLICATIONS = [
+  { id:"APP-2411", facility:"Cascade Compounding Pharmacy", type:"503A compounding pharmacy",
+    contact:"D. Whitfield, PharmD", email:"purchasing@cascaderx.example", phone:"(503) 555-0144",
+    state:"Oregon", licence:"OR BOP PH-0192447", dea:"BC4471882", fei:"—",
+    ship:"2214 NW Quimby St, Portland, OR 97210", status:"pending",
+    flag:"Licence verified against OR board registry. DEA active through 06/2028.", when:"Submitted 2 hours ago" },
+  { id:"APP-2410", facility:"Harbor Point Outsourcing Facility", type:"503B outsourcing facility",
+    contact:"M. Okafor, Dir. Procurement", email:"procure@harborpoint.example", phone:"(410) 555-0197",
+    state:"Maryland", licence:"MD BOP F-004128", dea:"RH8820114", fei:"FEI 3011429076",
+    ship:"840 Keyser Industrial Dr, Baltimore, MD 21226", status:"pending",
+    flag:"FEI matches FDA registered outsourcing facility list.", when:"Submitted yesterday" },
+  { id:"APP-2407", facility:"Vanterra Analytical Laboratories", type:"Analytical / QC laboratory",
+    contact:"S. Reinholt, Lab Manager", email:"s.reinholt@vanterralab.example", phone:"(617) 555-0121",
+    state:"Massachusetts", licence:"MA DPH LAB-77214", dea:"—", fei:"—",
+    ship:"19 Tidewater Way, Quincy, MA 02171", status:"approved",
+    flag:"Approved 14 Oct. Terms: Net 30, limit $25,000.", when:"Approved 16 days ago" },
+  { id:"APP-2402", facility:"Red Oak Apothecary", type:"503A compounding pharmacy",
+    contact:"J. Pellerin", email:"jp@redoakrx.example", phone:"(214) 555-0163",
+    state:"Texas", licence:"TX BOP A-21884 (expired 08/2026)", dea:"—", fei:"—",
+    ship:"5520 Live Oak St, Dallas, TX 75206", status:"rejected",
+    flag:"Declined — board licence lapsed and no DEA registration on file. Re-apply once renewed.", when:"Declined 22 days ago" }
+];
+
+var QUOTES = [
+  { id:"RFQ-0912", facility:"Vanterra Analytical Laboratories", items:3, value:4572, status:"priced",
+    note:"Quote sent 28 Oct — valid 30 days", po:"—" },
+  { id:"RFQ-0908", facility:"Harbor Point Outsourcing Facility", items:5, value:18240, status:"new",
+    note:"Awaiting pricing — cold-chain line needs freight quote", po:"—" },
+  { id:"RFQ-0901", facility:"Vanterra Analytical Laboratories", items:2, value:3146, status:"ordered",
+    note:"Converted to INV-2026-0418", po:"PO 44-21908" }
+];
+
+var ACCOUNT = {
+  facility:"Vanterra Analytical Laboratories",
+  type:"Analytical / QC laboratory",
+  licence:"MA DPH LAB-77214",
+  terms:"Net 30",
+  limit:25000,
+  buyer:"S. Reinholt"
+};
+
+/* ---------------- state ---------------- */
+
+var state = { role:"visitor", view:"home", cart:{}, submitted:false, apps:APPLICATIONS.slice() };
+
+var NAVS = {
+  visitor:[["home","Overview"],["catalog","Catalogue"],["apply","Apply for an account"]],
+  buyer:[["catalog","Catalogue"],["quote","My request"],["invoice","Invoices"],["account","Account"]],
+  admin:[["admin","Dashboard"],["catalog","Catalogue"],["invoice","Invoices"]]
+};
+
+var ROLE_LABEL = {
+  visitor:"Wholesale supply",
+  buyer:"Buyer portal · Vanterra Analytical",
+  admin:"Supplier administration"
+};
+
+/* ---------------- helpers ---------------- */
+
+function esc(s){
+  return String(s).replace(/[&<>"']/g, function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+  });
+}
+function usd(n){
+  return "$" + n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+function usd0(n){ return "$" + n.toLocaleString("en-US"); }
+
+function unitPrice(p, qty){
+  var price = p.tiers[0].price;
+  for (var i=0;i<p.tiers.length;i++){ if (qty >= p.tiers[i].min) price = p.tiers[i].price; }
+  return price;
+}
+function cartLines(){
+  var out = [];
+  for (var id in state.cart){
+    if (!state.cart[id]) continue;
+    var p = CATALOG.filter(function(x){ return x.id===id; })[0];
+    if (p) out.push({ p:p, qty:state.cart[id] });
+  }
+  return out;
+}
+function cartCount(){
+  var n = 0;
+  for (var id in state.cart) n += state.cart[id];
+  return n;
+}
+function save(){
+  try { localStorage.setItem("nb-demo", JSON.stringify({ role:state.role, cart:state.cart })); }
+  catch(e){ /* storage unavailable — demo still works, just not remembered */ }
+}
+function load(){
+  try {
+    var raw = localStorage.getItem("nb-demo");
+    if (!raw) return;
+    var d = JSON.parse(raw);
+    if (d && d.role && NAVS[d.role]) state.role = d.role;
+    if (d && d.cart && typeof d.cart === "object") state.cart = d.cart;
+  } catch(e){ /* ignore */ }
+}
+
+/* ---------------- views ---------------- */
+
+function viewHome(){
+  return '' +
+  '<div class="stack">' +
+    '<section class="hero">' +
+      '<p class="eyebrow">Wholesale pharmaceutical ingredients</p>' +
+      '<h1>Excipients and actives for licensed compounding and laboratory use.</h1>' +
+      '<p class="lede">Northbank supplies USP, NF and Ph. Eur. grade material to 503A pharmacies, ' +
+        '503B outsourcing facilities and analytical laboratories. Every lot ships with a certificate ' +
+        'of analysis. Pricing is released to verified accounts only.</p>' +
+      '<div class="cta">' +
+        '<a class="btn" href="#apply">Apply for a wholesale account</a>' +
+        '<a class="btn ghost" href="#catalog">Browse the catalogue</a>' +
+      '</div>' +
+      '<dl class="credrow">' +
+        '<div class="cred"><dt>FDA establishment</dt><dd>FEI 3009471882</dd></div>' +
+        '<div class="cred"><dt>DUNS</dt><dd>07-412-9930</dd></div>' +
+        '<div class="cred"><dt>Quality system</dt><dd>cGMP · ICH Q7</dd></div>' +
+        '<div class="cred"><dt>Terms</dt><dd>Net 30 on approval</dd></div>' +
+      '</dl>' +
+    '</section>' +
+
+    '<section class="panel">' +
+      '<div class="panel-head"><h2>Who we sell to</h2>' +
+        '<span class="sub">Three business days to a decision, usually one.</span></div>' +
+      '<div class="panel-body">' +
+        '<div class="grid2">' +
+          '<div class="field"><label>503A compounding pharmacies</label>' +
+            '<p class="hint">Active state board of pharmacy licence in the ship-to state. DEA registration ' +
+            'required only where a scheduled material is on the order.</p></div>' +
+          '<div class="field"><label>503B outsourcing facilities</label>' +
+            '<p class="hint">FDA establishment identifier matched against the registered outsourcing ' +
+            'facility list, plus state licensure.</p></div>' +
+          '<div class="field"><label>Analytical and QC laboratories</label>' +
+            '<p class="hint">State or accrediting body registration, plus a named responsible scientist ' +
+            'on the account.</p></div>' +
+          '<div class="field"><label>Contract manufacturers</label>' +
+            '<p class="hint">Establishment registration and a signed quality agreement before the ' +
+            'first shipment releases.</p></div>' +
+        '</div>' +
+        '<div class="gate">' +
+          '<p><b>We do not sell to individuals.</b> Orders ship to the licensed facility address on ' +
+          'file, never to a residence, and the invoice is paid from the facility’s own account by ' +
+          'ACH or wire.</p>' +
+          '<a class="btn ghost" href="#apply">Start an application</a>' +
+        '</div>' +
+      '</div>' +
+    '</section>' +
+
+    '<section class="panel">' +
+      '<div class="panel-head"><h2>How ordering works</h2></div>' +
+      '<div class="panel-body">' +
+        '<div class="grid2">' +
+          '<div class="field"><label>1 · Apply</label><p class="hint">Facility details, licence numbers ' +
+          'and a purchasing contact. Five minutes.</p></div>' +
+          '<div class="field"><label>2 · Verification</label><p class="hint">We check the licence against ' +
+          'the issuing board. You get an email either way.</p></div>' +
+          '<div class="field"><label>3 · Request a quote</label><p class="hint">Build a list from the ' +
+          'catalogue. We confirm pricing, lead time and freight.</p></div>' +
+          '<div class="field"><label>4 · Purchase order</label><p class="hint">Send your PO against the ' +
+          'quote. We invoice Net 30, with the COA for each lot attached.</p></div>' +
+        '</div>' +
+      '</div>' +
+    '</section>' +
+  '</div>';
+}
+
+function viewCatalog(){
+  var unlocked = state.role !== "visitor";
+  var rows = CATALOG.map(function(p){
+    var qty = state.cart[p.id] || 0;
+    var priceCell;
+    if (!unlocked){
+      priceCell = '<span class="locked"><span class="bars"><i></i><i></i><i></i></span>Locked</span>';
+    } else {
+      var breaks = p.tiers.map(function(t){
+        return '<span class="mono" style="font-size:11.5px;color:var(--ink-3)">' +
+               t.min + '+ &nbsp;' + usd0(t.price) + '</span>';
+      }).join('<br>');
+      priceCell = '<div style="display:flex;flex-direction:column;gap:3px;align-items:flex-end">' +
+        '<b class="num" style="font-size:14.5px">' + usd0(unitPrice(p, Math.max(qty,p.moq))) + '</b>' +
+        breaks + '</div>';
+    }
+    var action = !unlocked
+      ? '<span class="pill neutral">Account required</span>'
+      : (qty > 0
+          ? '<div class="qty"><button type="button" data-dec="'+p.id+'" aria-label="Fewer">&minus;</button>' +
+            '<span>'+qty+'</span><button type="button" data-inc="'+p.id+'" aria-label="More">+</button></div>'
+          : '<button type="button" class="btn ghost sm" data-add="'+p.id+'">Add to request</button>');
+
+    return '<tr>' +
+      '<td><span class="pname">'+esc(p.name)+'</span>' +
+          '<span class="pmeta">'+esc(p.id)+' · CAS '+esc(p.cas)+' · '+esc(p.purity)+'</span></td>' +
+      '<td><span class="pill neutral">'+esc(p.grade)+'</span></td>' +
+      '<td>'+esc(p.pack)+'<span class="pmeta">MOQ '+p.moq+' · '+esc(p.store)+'</span></td>' +
+      '<td>'+esc(p.lead)+'</td>' +
+      '<td class="r">'+priceCell+'</td>' +
+      '<td class="r">'+action+'</td>' +
+    '</tr>';
+  }).join("");
+
+  var gate = unlocked ? '' :
+    '<div class="gate">' +
+      '<p><b>Wholesale pricing is released after account verification.</b> Apply with your facility ' +
+      'licence and a purchasing contact — most applications are answered within one business day.</p>' +
+      '<a class="btn" href="#apply">Apply for an account</a>' +
+    '</div>';
+
+  var banner = unlocked ?
+    '<div class="notice good"><div><b>Pricing visible — ' + esc(ACCOUNT.facility) + '.</b> ' +
+    'Terms ' + esc(ACCOUNT.terms) + ', credit limit ' + usd0(ACCOUNT.limit) + '. Prices are per pack, ' +
+    'exclusive of freight. Quantity breaks apply per line, not per order.</div></div>' : '';
+
+  return '<div class="stack">' + banner +
+    '<section class="panel">' +
+      '<div class="panel-head"><h2>Catalogue</h2>' +
+        '<span class="sub">' + CATALOG.length + ' items · all lots ship with a certificate of analysis</span>' +
+      '</div>' +
+      '<div class="tablewrap"><table>' +
+        '<thead><tr><th>Material</th><th>Grade</th><th>Pack</th><th>Lead time</th>' +
+        '<th class="r">Price / pack</th><th class="r"></th></tr></thead>' +
+        '<tbody>' + rows + '</tbody>' +
+      '</table></div>' +
+      (gate ? '<div class="panel-body" style="padding-top:0">' + gate + '</div>' : '') +
+    '</section>' +
+  '</div>';
+}
+
+function viewApply(){
+  if (state.submitted){
+    return '<div class="stack">' +
+      '<section class="panel">' +
+        '<div class="panel-head"><h2>Application received</h2></div>' +
+        '<div class="panel-body stack">' +
+          '<div class="notice good"><div><b>Reference APP-2412.</b> A confirmation has been sent to the ' +
+          'purchasing email on the application. We verify the licence against the issuing board and reply ' +
+          'within one business day, whether or not the account is approved.</div></div>' +
+          '<p class="hint" style="font-size:13.5px;color:var(--ink-2)">Nothing is charged at this stage and ' +
+          'no pricing is released until the account is active. If anything on the application needs ' +
+          'correcting, we will email rather than decline it outright.</p>' +
+          '<div><a class="btn ghost" href="#catalog">Back to the catalogue</a></div>' +
+        '</div>' +
+      '</section>' +
+      '<div class="notice"><div>In the live portal this application lands in the supplier’s dashboard. ' +
+      'Switch to <b>Supplier admin</b> in the bar at the top to see the review queue.</div></div>' +
+    '</div>';
+  }
+
+  return '<div class="stack">' +
+    '<section class="panel">' +
+      '<div class="panel-head"><h2>Apply for a wholesale account</h2>' +
+        '<span class="sub">Verified facilities only · no charge to apply</span></div>' +
+      '<div class="panel-body">' +
+        '<form id="applyForm">' +
+          '<div class="formsec"><fieldset><legend>Facility</legend><div class="grid2">' +
+            '<div class="field"><label for="f-name">Legal facility name</label>' +
+              '<input id="f-name" required placeholder="As it appears on the licence"></div>' +
+            '<div class="field"><label for="f-type">Facility type</label>' +
+              '<select id="f-type" required>' +
+                '<option>503A compounding pharmacy</option>' +
+                '<option>503B outsourcing facility</option>' +
+                '<option>Analytical / QC laboratory</option>' +
+                '<option>Contract manufacturer</option>' +
+                '<option>Research institution</option>' +
+              '</select></div>' +
+            '<div class="field"><label for="f-ein">Business EIN</label>' +
+              '<input id="f-ein" required placeholder="00-0000000" class="mono"></div>' +
+            '<div class="field"><label for="f-duns">DUNS <span style="font-weight:400;color:var(--ink-3)">(optional)</span></label>' +
+              '<input id="f-duns" placeholder="00-000-0000" class="mono"></div>' +
+          '</div></fieldset></div>' +
+
+          '<div class="formsec"><fieldset><legend>Licensure</legend><div class="grid2">' +
+            '<div class="field"><label for="f-state">Licensing state</label>' +
+              '<input id="f-state" required placeholder="State or territory"></div>' +
+            '<div class="field"><label for="f-lic">Board of pharmacy / state licence number</label>' +
+              '<input id="f-lic" required class="mono" placeholder="e.g. OR BOP PH-0000000">' +
+              '<span class="hint">Checked against the issuing board registry.</span></div>' +
+            '<div class="field"><label for="f-dea">DEA registration <span style="font-weight:400;color:var(--ink-3)">(if applicable)</span></label>' +
+              '<input id="f-dea" class="mono" placeholder="Required only for scheduled material"></div>' +
+            '<div class="field"><label for="f-fei">FDA establishment identifier <span style="font-weight:400;color:var(--ink-3)">(503B)</span></label>' +
+              '<input id="f-fei" class="mono" placeholder="FEI 0000000000"></div>' +
+          '</div></fieldset></div>' +
+
+          '<div class="formsec"><fieldset><legend>Purchasing contact</legend><div class="grid2">' +
+            '<div class="field"><label for="f-contact">Name and title</label>' +
+              '<input id="f-contact" required placeholder="Who signs off on purchase orders"></div>' +
+            '<div class="field"><label for="f-email">Work email</label>' +
+              '<input id="f-email" type="email" required placeholder="name@facility.org">' +
+              '<span class="hint">Must be at the facility domain.</span></div>' +
+            '<div class="field"><label for="f-phone">Phone</label>' +
+              '<input id="f-phone" type="tel" required placeholder="(000) 000-0000"></div>' +
+            '<div class="field"><label for="f-ap">Accounts payable email</label>' +
+              '<input id="f-ap" type="email" placeholder="ap@facility.org"></div>' +
+          '</div></fieldset></div>' +
+
+          '<div class="formsec"><fieldset><legend>Shipping</legend><div class="grid2">' +
+            '<div class="field" style="grid-column:1/-1"><label for="f-ship">Licensed facility address</label>' +
+              '<textarea id="f-ship" required placeholder="Street, city, state, ZIP"></textarea>' +
+              '<span class="hint">Shipments release only to the address on the licence. We cannot ship ' +
+              'to a residential address or a mail forwarder.</span></div>' +
+            '<div class="field" style="grid-column:1/-1"><label for="f-note">Anything we should know</label>' +
+              '<textarea id="f-note" placeholder="Materials you buy regularly, volumes, cold-chain needs"></textarea></div>' +
+          '</div></fieldset></div>' +
+
+          '<div class="formsec" style="display:flex;gap:13px;align-items:center;flex-wrap:wrap">' +
+            '<button class="btn" type="submit">Submit application</button>' +
+            '<span class="hint" style="flex:1 1 220px;min-width:0">By submitting you confirm you are ' +
+            'authorised to purchase on behalf of this facility and that the licence details are current.</span>' +
+          '</div>' +
+        '</form>' +
+      '</div>' +
+    '</section>' +
+  '</div>';
+}
+
+function viewQuote(){
+  var lines = cartLines();
+  if (!lines.length){
+    return '<div class="stack"><section class="panel">' +
+      '<div class="panel-head"><h2>Quote request</h2></div>' +
+      '<div class="empty">Nothing on the request yet. Add material from the ' +
+      '<a href="#catalog">catalogue</a> and send it over as a single RFQ.</div>' +
+      '</section></div>';
+  }
+  var sub = 0;
+  var rows = lines.map(function(l){
+    var up = unitPrice(l.p, l.qty);
+    var ext = up * l.qty;
+    sub += ext;
+    return '<div class="line">' +
+      '<div class="who"><b>'+esc(l.p.name)+'</b>' +
+        '<span>'+esc(l.p.id)+' · '+esc(l.p.pack)+' · '+esc(l.p.lead)+'</span></div>' +
+      '<div class="qty"><button type="button" data-dec="'+l.p.id+'" aria-label="Fewer">&minus;</button>' +
+        '<span>'+l.qty+'</span><button type="button" data-inc="'+l.p.id+'" aria-label="More">+</button></div>' +
+      '<div class="mono" style="min-width:92px;text-align:right">'+usd(up)+'<br>' +
+        '<span style="font-size:11.5px;color:var(--ink-3)">per pack</span></div>' +
+      '<div class="mono" style="min-width:92px;text-align:right;font-weight:600">'+usd(ext)+'</div>' +
+    '</div>';
+  }).join("");
+
+  var freight = Math.round(sub * 0.035);
+  return '<div class="stack">' +
+    '<section class="panel">' +
+      '<div class="panel-head"><h2>Quote request</h2>' +
+        '<span class="sub">'+lines.length+' line'+(lines.length===1?'':'s')+' · '+esc(ACCOUNT.facility)+'</span></div>' +
+      '<div class="panel-body">' +
+        '<div class="lines">'+rows+'</div>' +
+        '<div class="totals">' +
+          '<div><span>Material subtotal</span><span class="mono">'+usd(sub)+'</span></div>' +
+          '<div><span>Estimated freight (FCA origin)</span><span class="mono">'+usd(freight)+'</span></div>' +
+          '<div><span>Terms</span><span class="mono">'+esc(ACCOUNT.terms)+'</span></div>' +
+          '<div class="grand"><span>Estimated total</span><span class="mono">'+usd(sub+freight)+'</span></div>' +
+        '</div>' +
+        '<div class="gate" style="margin-top:20px">' +
+          '<p>Sending this requests a firm quote with confirmed lead times and lot availability. ' +
+          'Nothing is charged and no stock is committed until you return a purchase order against it.</p>' +
+          '<button class="btn" type="button" id="sendRfq">Send quote request</button>' +
+        '</div>' +
+      '</div>' +
+    '</section>' +
+  '</div>';
+}
+
+function viewAccount(){
+  return '<div class="stack">' +
+    '<section class="panel">' +
+      '<div class="panel-head"><h2>Account</h2><span class="pill ok"><span class="dot"></span>Active</span></div>' +
+      '<div class="panel-body">' +
+        '<dl class="credrow" style="margin-top:0">' +
+          '<div class="cred"><dt>Facility</dt><dd>'+esc(ACCOUNT.facility)+'</dd></div>' +
+          '<div class="cred"><dt>Type</dt><dd>'+esc(ACCOUNT.type)+'</dd></div>' +
+          '<div class="cred"><dt>Licence on file</dt><dd>'+esc(ACCOUNT.licence)+'</dd></div>' +
+          '<div class="cred"><dt>Payment terms</dt><dd>'+esc(ACCOUNT.terms)+'</dd></div>' +
+          '<div class="cred"><dt>Credit limit</dt><dd>'+usd0(ACCOUNT.limit)+'</dd></div>' +
+          '<div class="cred"><dt>Buyer of record</dt><dd>'+esc(ACCOUNT.buyer)+'</dd></div>' +
+        '</dl>' +
+        '<div class="notice warn" style="margin-top:20px"><div><b>Licence renewal due 31 Jan 2027.</b> ' +
+        'Upload the renewed certificate before that date or the account moves to quote-only and ' +
+        'shipments hold.</div></div>' +
+      '</div>' +
+    '</section>' +
+    '<section class="panel">' +
+      '<div class="panel-head"><h2>Documents</h2><span class="sub">Certificates of analysis by lot</span></div>' +
+      '<div class="tablewrap"><table><thead><tr><th>Document</th><th>Material</th><th>Lot</th>' +
+      '<th>Issued</th><th class="r"></th></tr></thead><tbody>' +
+        '<tr><td><span class="pname">Certificate of analysis</span></td><td>Methylcobalamin, USP</td>' +
+          '<td class="mono">MC-26-0881</td><td class="mono">18 Oct 2026</td>' +
+          '<td class="r"><span class="pill ok"><span class="dot"></span>On file</span></td></tr>' +
+        '<tr><td><span class="pname">Certificate of analysis</span></td><td>Sodium Chloride, USP</td>' +
+          '<td class="mono">NC-26-1142</td><td class="mono">18 Oct 2026</td>' +
+          '<td class="r"><span class="pill ok"><span class="dot"></span>On file</span></td></tr>' +
+        '<tr><td><span class="pname">Quality agreement</span></td><td>—</td>' +
+          '<td class="mono">QA-VNT-02</td><td class="mono">14 Oct 2026</td>' +
+          '<td class="r"><span class="pill ok"><span class="dot"></span>Countersigned</span></td></tr>' +
+        '<tr><td><span class="pname">Facility licence</span></td><td>—</td>' +
+          '<td class="mono">LAB-77214</td><td class="mono">Expires 31 Jan 2027</td>' +
+          '<td class="r"><span class="pill warn"><span class="dot"></span>Renewal due</span></td></tr>' +
+      '</tbody></table></div>' +
+    '</section>' +
+  '</div>';
+}
+
+function viewAdmin(){
+  var pending = state.apps.filter(function(a){ return a.status === "pending"; });
+  var cards = state.apps.map(function(a){
+    var pill = a.status === "approved" ? '<span class="pill ok"><span class="dot"></span>Approved</span>'
+             : a.status === "rejected" ? '<span class="pill bad"><span class="dot"></span>Declined</span>'
+             : '<span class="pill warn"><span class="dot"></span>Awaiting review</span>';
+    var actions = a.status === "pending"
+      ? '<button class="btn ok sm" type="button" data-approve="'+a.id+'">Approve &amp; release pricing</button>' +
+        '<button class="btn bad sm" type="button" data-reject="'+a.id+'">Decline</button>'
+      : '<span class="hint" style="font-size:12px">No action needed.</span>';
+    return '<article class="appcard">' +
+      '<header><b>'+esc(a.facility)+'</b>' +
+        '<span class="mono" style="font-size:12px;color:var(--ink-3)">'+esc(a.id)+'</span>'+pill+'</header>' +
+      '<dl class="appgrid">' +
+        '<div><dt>Facility type</dt><dd>'+esc(a.type)+'</dd></div>' +
+        '<div><dt>State licence</dt><dd>'+esc(a.licence)+'</dd></div>' +
+        '<div><dt>DEA</dt><dd>'+esc(a.dea)+'</dd></div>' +
+        '<div><dt>FDA establishment</dt><dd>'+esc(a.fei)+'</dd></div>' +
+        '<div><dt>Purchasing contact</dt><dd>'+esc(a.contact)+'<br>'+esc(a.email)+'<br>'+esc(a.phone)+'</dd></div>' +
+        '<div><dt>Ship to</dt><dd>'+esc(a.ship)+'</dd></div>' +
+      '</dl>' +
+      '<footer><span class="flag">'+esc(a.flag)+' <span style="color:var(--ink-3)">· '+esc(a.when)+'</span></span>' +
+        actions+'</footer>' +
+    '</article>';
+  }).join("");
+
+  var qrows = QUOTES.map(function(q){
+    var pill = q.status === "ordered" ? '<span class="pill ok"><span class="dot"></span>Ordered</span>'
+             : q.status === "priced" ? '<span class="pill neutral"><span class="dot"></span>Quote sent</span>'
+             : '<span class="pill warn"><span class="dot"></span>Needs pricing</span>';
+    return '<tr><td><span class="pname">'+esc(q.id)+'</span><span class="pmeta">'+esc(q.note)+'</span></td>' +
+      '<td>'+esc(q.facility)+'</td><td class="num">'+q.items+'</td>' +
+      '<td class="mono">'+esc(q.po)+'</td>' +
+      '<td class="r mono">'+usd0(q.value)+'</td><td class="r">'+pill+'</td></tr>';
+  }).join("");
+
+  var openValue = QUOTES.filter(function(q){ return q.status !== "ordered"; })
+                        .reduce(function(s,q){ return s+q.value; },0);
+
+  return '<div class="stack">' +
+    '<dl class="kpis">' +
+      '<div class="kpi"><dt>Awaiting review</dt><dd>'+pending.length+' <small>applications</small></dd></div>' +
+      '<div class="kpi"><dt>Open quotes</dt><dd>'+QUOTES.filter(function(q){return q.status!=="ordered";}).length+
+        ' <small>'+usd0(openValue)+'</small></dd></div>' +
+      '<div class="kpi"><dt>Active accounts</dt><dd>'+state.apps.filter(function(a){return a.status==="approved";}).length+
+        ' <small>verified</small></dd></div>' +
+      '<div class="kpi"><dt>Invoiced, 30 days</dt><dd>$46,180</dd></div>' +
+    '</dl>' +
+
+    '<section class="panel">' +
+      '<div class="panel-head"><h2>Account applications</h2>' +
+        '<span class="sub">Approving an account releases pricing to that buyer</span></div>' +
+      '<div class="panel-body">' + cards + '</div>' +
+    '</section>' +
+
+    '<section class="panel">' +
+      '<div class="panel-head"><h2>Quote requests</h2>' +
+        '<span class="sub">Each becomes an invoice once a purchase order comes back</span></div>' +
+      '<div class="tablewrap"><table><thead><tr><th>Request</th><th>Facility</th><th>Lines</th>' +
+      '<th>PO</th><th class="r">Value</th><th class="r">Status</th></tr></thead>' +
+      '<tbody>'+qrows+'</tbody></table></div>' +
+    '</section>' +
+  '</div>';
+}
+
+function viewInvoice(){
+  var items = [
+    { d:"Methylcobalamin, USP — 1 kg amber jar", sku:"NB-2210", lot:"MC-26-0881", q:1, u:1940 },
+    { d:"Sodium Chloride, USP — 25 kg bag", sku:"NB-5020", lot:"NC-26-1142", q:8, u:87 }
+  ];
+  var sub = items.reduce(function(s,i){ return s + i.q*i.u; },0);
+  var freight = 210;
+  var rows = items.map(function(i){
+    return '<tr><td><span class="pname">'+esc(i.d)+'</span>' +
+      '<span class="pmeta">'+esc(i.sku)+' · Lot '+esc(i.lot)+' · COA attached</span></td>' +
+      '<td class="num r">'+i.q+'</td><td class="r mono">'+usd(i.u)+'</td>' +
+      '<td class="r mono">'+usd(i.q*i.u)+'</td></tr>';
+  }).join("");
+
+  return '<div class="stack">' +
+    '<div class="notice"><div><b>Invoices are paid by ACH or wire from the facility account.</b> ' +
+    'The portal does not take card, app or peer-to-peer payments — a pharmacy’s purchasing records ' +
+    'have to survive a board inspection, and those methods leave no auditable trail.</div></div>' +
+    '<section class="inv">' +
+      '<div class="inv-head">' +
+        '<div class="co"><b>Northbank Fine Chemicals</b>' +
+          '<address>1400 Harbour Reach Dr, Suite 300<br>Tacoma, WA 98421<br>' +
+          'FEI 3009471882 · EIN 84-3109922<br>ar@northbankfine.example</address></div>' +
+        '<div class="meta"><h2>Invoice</h2>' +
+          '<dl><dt>Number</dt><dd>INV-2026-0418</dd>' +
+          '<dt>Issued</dt><dd>24 Oct 2026</dd>' +
+          '<dt>Due</dt><dd>23 Nov 2026</dd>' +
+          '<dt>Terms</dt><dd>Net 30</dd>' +
+          '<dt>PO</dt><dd>44-21908</dd></dl></div>' +
+      '</div>' +
+      '<div class="panel-body" style="border-bottom:1px solid var(--line)">' +
+        '<p class="eyebrow">Bill to</p>' +
+        '<p style="margin-top:6px;font-size:13.5px;line-height:1.6">' +
+        '<b>Vanterra Analytical Laboratories</b><br>19 Tidewater Way, Quincy, MA 02171<br>' +
+        '<span class="mono" style="font-size:12px;color:var(--ink-3)">MA DPH LAB-77214</span></p>' +
+      '</div>' +
+      '<div class="tablewrap"><table><thead><tr><th>Description</th><th class="r">Qty</th>' +
+      '<th class="r">Unit</th><th class="r">Amount</th></tr></thead><tbody>'+rows+
+        '<tr><td colspan="3" class="r" style="color:var(--ink-2)">Freight — FCA Tacoma</td>' +
+        '<td class="r mono">'+usd(freight)+'</td></tr>' +
+        '<tr><td colspan="3" class="r" style="font-weight:700;font-size:15px">Total due</td>' +
+        '<td class="r mono" style="font-weight:700;font-size:15px">'+usd(sub+freight)+'</td></tr>' +
+      '</tbody></table></div>' +
+      '<dl class="remit">' +
+        '<div><dt>ACH</dt><dd>Routing 125000024<br>Account 4471 0092 8830<br>Northbank Fine Chemicals LLC</dd></div>' +
+        '<div><dt>Wire</dt><dd>SWIFT PACWUS66<br>Account 4471 0092 8830<br>Reference INV-2026-0418</dd></div>' +
+        '<div><dt>Remittance</dt><dd>ar@northbankfine.example<br>Please quote the invoice number</dd></div>' +
+        '<div><dt>Late terms</dt><dd>1.5% per month after<br>23 Nov 2026</dd></div>' +
+      '</dl>' +
+    '</section>' +
+  '</div>';
+}
+
+/* ---------------- render ---------------- */
+
+function renderNav(){
+  var items = NAVS[state.role];
+  document.getElementById("nav").innerHTML = items.map(function(it){
+    var badge = (it[0] === "quote" && cartCount() > 0) ? " (" + cartCount() + ")" : "";
+    return '<a href="#'+it[0]+'" class="'+(state.view===it[0]?"on":"")+'">'+esc(it[1])+badge+'</a>';
+  }).join("");
+  document.getElementById("roleLabel").textContent = ROLE_LABEL[state.role];
+  var btns = document.querySelectorAll(".seg button");
+  for (var i=0;i<btns.length;i++){
+    btns[i].setAttribute("aria-pressed", btns[i].dataset.role === state.role ? "true" : "false");
+  }
+}
+
+function render(){
+  var allowed = NAVS[state.role].map(function(n){ return n[0]; });
+  if (allowed.indexOf(state.view) === -1) state.view = allowed[0];
+
+  var html;
+  switch (state.view){
+    case "catalog": html = viewCatalog(); break;
+    case "apply":   html = viewApply();   break;
+    case "quote":   html = viewQuote();   break;
+    case "account": html = viewAccount(); break;
+    case "admin":   html = viewAdmin();   break;
+    case "invoice": html = viewInvoice(); break;
+    default:        html = viewHome();
+  }
+  document.getElementById("view").innerHTML = html;
+  renderNav();
+}
+
+/* ---------------- events ---------------- */
+
+function go(view){
+  state.view = view;
+  if (location.hash.slice(1) !== view) location.hash = view;
+  else render();
+}
+
+window.addEventListener("hashchange", function(){
+  var h = location.hash.slice(1);
+  if (h) { state.view = h; render(); }
+});
+
+document.addEventListener("click", function(e){
+  var t = e.target.closest("button");
+
+  if (t && t.dataset.role){
+    state.role = t.dataset.role;
+    state.view = NAVS[state.role][0];
+    save(); go(state.view); return;
+  }
+  if (t && t.dataset.add){
+    var p = CATALOG.filter(function(x){ return x.id === t.dataset.add; })[0];
+    state.cart[t.dataset.add] = p ? p.moq : 1;
+    save(); render(); return;
+  }
+  if (t && t.dataset.inc){
+    state.cart[t.dataset.inc] = (state.cart[t.dataset.inc] || 0) + 1;
+    save(); render(); return;
+  }
+  if (t && t.dataset.dec){
+    var id = t.dataset.dec;
+    var pr = CATALOG.filter(function(x){ return x.id === id; })[0];
+    var floor = pr ? pr.moq : 1;
+    state.cart[id] = (state.cart[id] || 0) - 1;
+    if (state.cart[id] < floor) delete state.cart[id];
+    save(); render(); return;
+  }
+  if (t && t.id === "sendRfq"){
+    state.cart = {}; save();
+    state.view = "catalog"; render();
+    var v = document.getElementById("view");
+    v.insertAdjacentHTML("afterbegin",
+      '<div class="notice good" style="margin-bottom:22px"><div><b>Quote request RFQ-0914 sent.</b> ' +
+      'Northbank confirms pricing, lot availability and freight, usually the same day. Nothing is ' +
+      'committed until you return a purchase order.</div></div>');
+    return;
+  }
+  if (t && t.dataset.approve){
+    setStatus(t.dataset.approve, "approved",
+      "Approved just now. Pricing released and a welcome email sent to the purchasing contact.");
+    return;
+  }
+  if (t && t.dataset.reject){
+    setStatus(t.dataset.reject, "rejected",
+      "Declined just now. The contact is emailed the reason and may re-apply.");
+    return;
+  }
+});
+
+function setStatus(id, status, flag){
+  for (var i=0;i<state.apps.length;i++){
+    if (state.apps[i].id === id){
+      state.apps[i] = Object.assign({}, state.apps[i], { status:status, flag:flag, when:"Updated just now" });
+    }
+  }
+  render();
+}
+
+document.addEventListener("submit", function(e){
+  if (e.target && e.target.id === "applyForm"){
+    e.preventDefault();
+    state.submitted = true;
+    render();
+    window.scrollTo({ top:0, behavior:"smooth" });
+  }
+});
+
+/* ---------------- boot ---------------- */
+
+load();
+var h0 = location.hash.slice(1);
+if (h0) state.view = h0;
+else state.view = NAVS[state.role][0];
+render();
+</script>
