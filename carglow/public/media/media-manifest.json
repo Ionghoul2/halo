@@ -1,0 +1,391 @@
+{
+  "project": "Car Glow",
+  "generated": "2026-11-13",
+  "note": "Every clip here is third-party reference footage. None shows Car Glow hardware. Rights unverified.",
+  "clips": [
+    {
+      "id": "ice-mclaren",
+      "sourceFilename": "ScreenRecording_11-12-2026_19-46-08_1.mov",
+      "sha256": "f9d02f969a4d3d50af8f55f54c77fcbc062f2a92a3383580531d0cb2388356ed",
+      "durationSec": 5.82,
+      "source": {
+        "width": 1168,
+        "height": 1704
+      },
+      "web": {
+        "file": "media/hero/ice-mclaren.mp4",
+        "width": 720,
+        "height": 1050,
+        "codec": "h264, no audio"
+      },
+      "aspectRatio": "1168:1704 portrait",
+      "poster": "media/posters/ice-mclaren.jpg",
+      "category": "hero",
+      "demonstrates": "rgb-or-mapping (hardware unknown)",
+      "description": "McLaren 720S-style supercar fully covered in dense white LEDs with ice-blue and teal pixels shimmering; parked on cobblestones at night, slow orbit and close-ups of front bumper and wheel arch.",
+      "usefulRangeSec": "0.0-5.8",
+      "placement": "Homepage hero scroll-scrubbed frame sequence (93 WebP frames at 16 fps)",
+      "siteCaption": "Reference footage. Dense full-body coverage.",
+      "mobileSuitable": true,
+      "showsCarGlowHardware": false,
+      "verification": "Illustrative reference only. Not a Car Glow product demonstration.",
+      "rights": "Third-party social media footage supplied by owner. Owner states reuse permission; commercial rights NOT verified. Get written permission from each creator before public launch.",
+      "notes": "Twinkle suggests individually addressable pixels; cannot confirm from video. Do not use as proof of Static Classic."
+    },
+    {
+      "id": "lights-on-reveal",
+      "sourceFilename": "ScreenRecording_11-12-2026_21-43-36_1.mov",
+      "sha256": "07555e15af152cda850e3a448de1e415abeeb0df6d29ec1015c8222fc55e7451",
+      "durationSec": 3.3,
+      "source": {
+        "width": 1018,
+        "height": 1350
+      },
+      "web": {
+        "file": "media/hero/lights-on-reveal.mp4",
+        "width": 720,
+        "height": 954,
+        "codec": "h264, no audio"
+      },
+      "aspectRatio": "1018:1350 portrait",
+      "poster": "media/posters/lights-on-reveal.jpg",
+      "category": "hero",
+      "demonstrates": "static-classic look",
+      "description": "Two vehicles (sedan and Toyota-style van) parked outside a shop with lights off, then dense warm/multicolor mini lights switch on (~1.8 s); van then drives on a highway fully lit.",
+      "usefulRangeSec": "0.0-3.3",
+      "placement": "Scene 1 'off to on' transformation",
+      "siteCaption": "Reference footage. Lights switching on.",
+      "mobileSuitable": true,
+      "showsCarGlowHardware": false,
+      "verification": "Illustrative reference only. Not a Car Glow product demonstration.",
+      "rights": "Third-party social media footage supplied by owner. Owner states reuse permission; commercial rights NOT verified. Get written permission from each creator before public launch.",
+      "notes": "Shop signage of a third-party business visible top right (ENVY Autostyle). Crop or replace before launch."
+    },
+    {
+      "id": "community-night",
+      "sourceFilename": "ScreenRecording_11-12-2026_21-46-43_1.mov",
+      "sha256": "94e9947a8f5df13f11b72116dba0e57b651b895388d51a1bd0c1c49fabc5ef86",
+      "durationSec": 2.21,
+      "source": {
+        "width": 1168,
+        "height": 1270
+      },
+      "web": {
+        "file": "media/hero/community-night.mp4",
+        "width": 720,
+        "height": 782,
+        "codec": "h264, no audio"
+      },
+      "aspectRatio": "1168:1270 portrait",
+      "poster": "media/posters/community-night.jpg",
+      "category": "coverage",
+      "demonstrates": "mixed",
+      "description": "Residential street event with many cars and vans covered in multicolor string lights, people walking; 2.2 s.",
+      "usefulRangeSec": "0.0-2.2",
+      "placement": "Lifestyle / community moment",
+      "siteCaption": "Reference footage.",
+      "mobileSuitable": true,
+      "showsCarGlowHardware": false,
+      "verification": "Illustrative reference only. Not a Car Glow product demonstration.",
+      "rights": "Third-party social media footage supplied by owner. Owner states reuse permission; commercial rights NOT verified. Get written permission from each creator before public launch.",
+      "notes": "Short clip; loops quickly."
+    },
+    {
+      "id": "lambo-convoy",
+      "sourceFilename": "The_best_time_of_the_year_.......christmas_christmastree_christmastime_christmaslights_.mov",
+      "sha256": "11e49f75187459119f3ccae8d52c791eb39b9c34690a6db9ab6657c14372d9f2",
+      "durationSec": 10.38,
+      "source": {
+        "width": 720,
+        "height": 1280
+      },
+      "web": {
+        "file": "media/mapping/lambo-convoy.mp4",
+        "width": 720,
+        "height": 1280,
+        "codec": "h264, no audio"
+      },
+      "aspectRatio": "720:1280 portrait",
+      "poster": "media/posters/lambo-convoy.jpg",
+      "category": "mapping",
+      "demonstrates": "graphic-mapping",
+      "description": "Several Lamborghini Aventadors covered in addressable pixels showing graphics: blue/white/red face designs on hoods, red-green stripes; parked in garage, then street, then rolling convoy at night.",
+      "usefulRangeSec": "0.0-10.4",
+      "placement": "Graphic Mapping chapter and final CTA backdrop",
+      "siteCaption": "Reference footage. Mapped graphics.",
+      "mobileSuitable": true,
+      "showsCarGlowHardware": false,
+      "verification": "Illustrative reference only. Not a Car Glow product demonstration.",
+      "rights": "Third-party social media footage supplied by owner. Owner states reuse permission; commercial rights NOT verified. Get written permission from each creator before public launch.",
+      "notes": "Shows driving with displays active: pair with parked/private-property legal notice."
+    },
+    {
+      "id": "holiday-graphics",
+      "sourceFilename": "Comment__LED__if_you_want_the_link_viral_christmas_ledlights_car_carguys_3.mov",
+      "sha256": "786883c2a78dd5e52cf9c6a634c3ef9b451a6a06dc95659462a6a24ca29b1c3f",
+      "durationSec": 5.7,
+      "source": {
+        "width": 720,
+        "height": 886
+      },
+      "web": {
+        "file": "media/mapping/holiday-graphics.mp4",
+        "width": 720,
+        "height": 886,
+        "codec": "h264, no audio"
+      },
+      "aspectRatio": "720:886 portrait",
+      "poster": "media/posters/holiday-graphics.jpg",
+      "category": "mapping",
+      "demonstrates": "graphic-mapping",
+      "description": "Audi R8 and Mercedes sedan displaying recognizable mapped holiday graphics: gingerbread man, Santa, candy canes, snowflakes, gifts, Christmas tree. Ends with car driving and exhaust flames.",
+      "usefulRangeSec": "0.0-4.6",
+      "placement": "Graphic Mapping hero + comparison card",
+      "siteCaption": "Reference footage. Mapped holiday graphics.",
+      "mobileSuitable": true,
+      "showsCarGlowHardware": false,
+      "verification": "Illustrative reference only. Not a Car Glow product demonstration.",
+      "rights": "Third-party social media footage supplied by owner. Owner states reuse permission; commercial rights NOT verified. Get written permission from each creator before public launch.",
+      "notes": "Strongest evidence of the mapping look. Trim before the exhaust flames (4.6 s) for a cleaner loop if desired."
+    },
+    {
+      "id": "supercar-palette",
+      "sourceFilename": "supercar_mclaren_porsche.mp4",
+      "sha256": "7a527c248a5c3a100a02d31e1743afc11c60a89da8b73401444f1c2fc0ed62e6",
+      "durationSec": 12.3,
+      "source": {
+        "width": 720,
+        "height": 1280
+      },
+      "web": {
+        "file": "media/rgb/supercar-palette.mp4",
+        "width": 720,
+        "height": 1280,
+        "codec": "h264, no audio"
+      },
+      "aspectRatio": "720:1280 portrait",
+      "poster": "media/posters/supercar-palette.jpg",
+      "category": "rgb",
+      "demonstrates": "color-changing-rgb (look)",
+      "description": "McLaren 765LT and Porsche 911 GT3 in snow lot covered in LED lines shifting between turquoise, purple and green; multiple angles.",
+      "usefulRangeSec": "0.0-12.3",
+      "placement": "Color-Changing RGB chapter and comparison card",
+      "siteCaption": "Reference footage. Multicolor gradients.",
+      "mobileSuitable": true,
+      "showsCarGlowHardware": false,
+      "verification": "Illustrative reference only. Not a Car Glow product demonstration.",
+      "rights": "Third-party social media footage supplied by owner. Owner states reuse permission; commercial rights NOT verified. Get written permission from each creator before public launch.",
+      "notes": "Gradient across one car suggests addressable strands. Use as RGB look reference, not proof of RGB kit features."
+    },
+    {
+      "id": "dense-red",
+      "sourceFilename": "Tough_to_top_these_lights_this_year_supercar_viral_christmaslight.mov",
+      "sha256": "c37398b54eb5738bae66c18d77f8de822e945997ccb9a09e9f645b162ef1d275",
+      "durationSec": 6.36,
+      "source": {
+        "width": 720,
+        "height": 1280
+      },
+      "web": {
+        "file": "media/coverage/dense-red.mp4",
+        "width": 720,
+        "height": 1280,
+        "codec": "h264, no audio"
+      },
+      "aspectRatio": "720:1280 portrait",
+      "poster": "media/posters/dense-red.jpg",
+      "category": "coverage",
+      "demonstrates": "dense full-body",
+      "description": "Porsche 911 and McLaren covered in very dense red LEDs with scattered blue accent points; night parking lot; close-up of bumper density.",
+      "usefulRangeSec": "0.0-6.4",
+      "placement": "Coverage chapter: dense full-body",
+      "siteCaption": "Reference footage. Dense single color.",
+      "mobileSuitable": true,
+      "showsCarGlowHardware": false,
+      "verification": "Illustrative reference only. Not a Car Glow product demonstration.",
+      "rights": "Third-party social media footage supplied by owner. Owner states reuse permission; commercial rights NOT verified. Get written permission from each creator before public launch.",
+      "notes": "Do not imply Static Classic small kit reproduces this density."
+    },
+    {
+      "id": "aventador-underglow",
+      "sourceFilename": "ScreenRecording_11-12-2026_20-07-55_1.mov",
+      "sha256": "b2e684c3b637d1551af2be1776e1bae6a445f56221170514b474d2f9836e5664",
+      "durationSec": 5.64,
+      "source": {
+        "width": 1168,
+        "height": 1552
+      },
+      "web": {
+        "file": "media/underglow/aventador-underglow.mp4",
+        "width": 720,
+        "height": 956,
+        "codec": "h264, no audio"
+      },
+      "aspectRatio": "1168:1552 portrait",
+      "poster": "media/posters/aventador-underglow.jpg",
+      "category": "underglow",
+      "demonstrates": "rgb + underglow",
+      "description": "Row of Lamborghini Aventadors (doors up) with color-gradient body pixels and visible rainbow and red underglow at a 7-Eleven fuel station.",
+      "usefulRangeSec": "0.0-5.64",
+      "placement": "Underglow chapter",
+      "siteCaption": "Reference footage. Body lighting plus underglow.",
+      "mobileSuitable": true,
+      "showsCarGlowHardware": false,
+      "verification": "Illustrative reference only. Not a Car Glow product demonstration.",
+      "rights": "Third-party social media footage supplied by owner. Owner states reuse permission; commercial rights NOT verified. Get written permission from each creator before public launch.",
+      "notes": "7-Eleven branding visible. Underglow is visible but not isolated from body lights."
+    },
+    {
+      "id": "classic-string-lambos",
+      "sourceFilename": "ScreenRecording_11-12-2026_19-50-56_1.mov",
+      "sha256": "03d4eb3fec27eb948383c36ef7d7aeeadfa4eed2dec8ac435b8b909d4fbce904",
+      "durationSec": 8.3,
+      "source": {
+        "width": 1168,
+        "height": 1670
+      },
+      "web": {
+        "file": "media/static/classic-string-lambos.mp4",
+        "width": 720,
+        "height": 1030,
+        "codec": "h264, no audio"
+      },
+      "aspectRatio": "1168:1670 portrait",
+      "poster": "media/posters/classic-string-lambos.jpg",
+      "category": "static",
+      "demonstrates": "static-classic look",
+      "description": "Lamborghini Huracans wrapped in multicolor mini string lights with blue/pink underglow; driveway, fuel station and two cars side by side in darkness.",
+      "usefulRangeSec": "0.0-8.3",
+      "placement": "Static Classic chapter and comparison card",
+      "siteCaption": "Reference footage. Classic multicolor string look.",
+      "mobileSuitable": true,
+      "showsCarGlowHardware": false,
+      "verification": "Illustrative reference only. Not a Car Glow product demonstration.",
+      "rights": "Third-party social media footage supplied by owner. Owner states reuse permission; commercial rights NOT verified. Get written permission from each creator before public launch.",
+      "notes": "Best match for the Static Classic look. Underglow also visible."
+    },
+    {
+      "id": "clip-mount-bmw",
+      "sourceFilename": "ScreenRecording_11-12-2026_19-49-26_1.mov",
+      "sha256": "a07ec39df85c5c15b8a7ab93c0293676bfeb0f7c0c4ada0052bf516621680e7e",
+      "durationSec": 6.07,
+      "source": {
+        "width": 1166,
+        "height": 1370
+      },
+      "web": {
+        "file": "media/installation/clip-mount-bmw.mp4",
+        "width": 720,
+        "height": 846,
+        "codec": "h264, no audio"
+      },
+      "aspectRatio": "1166:1370 portrait",
+      "poster": "media/posters/clip-mount-bmw.jpg",
+      "category": "installation",
+      "demonstrates": "static-classic look + mounting",
+      "description": "Opens (0-0.8 s) with hands attaching a mini-light strand to white paint with a clear suction-cup clip; then BMW sedan covered in dense multicolor lights rolling out of a garage and parked under a theatre marquee.",
+      "usefulRangeSec": "0.0-6.1",
+      "placement": "Installation chapter (mounting step) and Static Classic gallery",
+      "siteCaption": "Reference footage. Suction-cup mounting.",
+      "mobileSuitable": true,
+      "showsCarGlowHardware": false,
+      "verification": "Illustrative reference only. Not a Car Glow product demonstration.",
+      "rights": "Third-party social media footage supplied by owner. Owner states reuse permission; commercial rights NOT verified. Get written permission from each creator before public launch.",
+      "notes": "Only clip that shows a mounting method; method not yet chosen for Car Glow kits."
+    },
+    {
+      "id": "string-install-huracan",
+      "sourceFilename": "ScreenRecording_11-12-2026_19-52-20_1.mov",
+      "sha256": "e43028ef0210e2464d0cd84b1fed5e895d87cc4ccdf1908005b4cca8161b2061",
+      "durationSec": 14.99,
+      "source": {
+        "width": 1028,
+        "height": 1710
+      },
+      "web": {
+        "file": "media/installation/string-install-huracan.mp4",
+        "width": 720,
+        "height": 1198,
+        "codec": "h264, no audio"
+      },
+      "aspectRatio": "1028:1710 portrait",
+      "poster": "media/posters/string-install-huracan.jpg",
+      "category": "installation",
+      "demonstrates": "static-classic look + install",
+      "description": "Hands taping green-wire mini string lights onto a carbon-fiber Huracan; close-ups of tape-mounted strands; finished cars at a fuel station; lit cars driving at night.",
+      "usefulRangeSec": "0.0-15.0",
+      "placement": "Installation chapter (routing step)",
+      "siteCaption": "Reference footage. Hand installation.",
+      "mobileSuitable": true,
+      "showsCarGlowHardware": false,
+      "verification": "Illustrative reference only. Not a Car Glow product demonstration.",
+      "rights": "Third-party social media footage supplied by owner. Owner states reuse permission; commercial rights NOT verified. Get written permission from each creator before public launch.",
+      "notes": "Shows tape directly on carbon fiber: do not present as Car Glow's paint-safe method."
+    },
+    {
+      "id": "charger-magenta",
+      "sourceFilename": "IMG_8009.jpeg",
+      "sha256": "6c56cd5c26d25cddc57577b191da7417da9f34b0dade45ca70fec632e1b4c198",
+      "category": "underglow",
+      "web": {
+        "file": "media/underglow/charger-magenta.jpg"
+      },
+      "description": "White widebody Dodge Charger with magenta underglow, magenta headlight halos and fog-light rings, parked in a driveway.",
+      "placement": "Underglow chapter still; brand color reference (magenta glow).",
+      "showsCarGlowHardware": false,
+      "rights": "Third-party social media footage supplied by owner. Owner states reuse permission; commercial rights NOT verified. Get written permission from each creator before public launch."
+    }
+  ],
+  "heroFrameSequence": {
+    "source": "e7d8a705 (ice McLaren)",
+    "files": "media/hero/frames/f001.webp ... f093.webp",
+    "fps": 16,
+    "width": 720,
+    "height": 1050
+  },
+  "designReferences": [
+    {
+      "sourceFilename": "ScreenRecording_11-12-2026_21-41-40_1.mov",
+      "description": "Clothing store reference: products hang on a curved rail over a sunset sky; drag to swing and change active item.",
+      "published": false
+    },
+    {
+      "sourceFilename": "ScreenRecording_11-12-2026_21-42-16_1.mov",
+      "description": "Real-estate reference: 3D portrait-card carousel with 01/06 counter and blurred color-matched background.",
+      "published": false
+    },
+    {
+      "sourceFilename": "ScreenRecording_11-12-2026_21-42-53_1.mp4",
+      "description": "w.wearebrand reel: scroll-driven luxury car film with sliding spec panels, and a layered burger split.",
+      "published": false
+    },
+    {
+      "sourceFilename": "ScreenRecording_11-12-2026_21-27-03_1.mp4",
+      "description": "textura.eu \"Relay\" reference: dark UI with flowing lime light streaks, glass panels, counters, pricing slider.",
+      "published": false
+    },
+    {
+      "sourceFilename": "ScreenRecording_11-12-2026_21-31-29_2.mp4",
+      "description": "textura.eu \"Motion instead of chrome\": particle shapes morphing (ring, galaxy, brain) reacting to pointer.",
+      "published": false
+    }
+  ],
+  "missingFootage": [
+    "Hood-only / front accent coverage (no clip supplied)",
+    "Any footage of actual Car Glow kit hardware, packaging or unboxing",
+    "Underglow on its own (isolated from body lights) and an underglow install",
+    "Controller / app screens for RGB and mapping",
+    "Mapping setup or camera-mapping software demo (handoff names ScreenRecording_11-10-2026 22-29-46; not supplied)",
+    "Removal and storage",
+    "Licensed or owned footage with written creator permission"
+  ],
+  "namedInHandoffButNotSupplied": [
+    "it's christmas time again #viral #porsche.mp4",
+    "Who's ready for this year #viral #supercar #porsche #mclaren.mp4",
+    "ScreenRecording_11-09-2026 17-23-28_1.mp4",
+    "ScreenRecording_11-10-2026 22-29-46_1.mp4",
+    "ScreenRecording_11-12-2026 18-51/18-54/18-57/18-59 recordings",
+    "ScreenRecording_11-12-2026 19-50-24_1.mp4",
+    "IMG_7884, IMG_8032, IMG_8036, IMG_8037, IMG_8041"
+  ]
+}
