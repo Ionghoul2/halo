@@ -9,29 +9,44 @@ document.querySelectorAll('[data-video]').forEach((el) => {
   el.outerHTML = video(el.dataset.video, el.dataset.class || '');
 });
 
-/* ---------- lineup carousel ---------- */
-const flow = document.querySelector('[data-flow]');
-flow.innerHTML = TECHS.map((t, i) => `
-  <article class="flow-card" data-i="${i}" role="group" aria-roledescription="slide" aria-label="${i + 1} of 3: ${catalog.products[t].name}">
-    ${video(catalog.products[t].media).replace('<video', '<video data-manual="1"')}
-    <div class="card-label"><span class="status s-${catalog.products[t].status}">${statusLabel(catalog.products[t].status)}</span>
-    <strong>${catalog.products[t].name}</strong></div>
-  </article>`).join('');
-flow.tabIndex = 0;
-const cards = [...flow.children];
-const bgs = [...document.querySelectorAll('[data-bg]')];
-let active = Math.max(0, TECHS.indexOf(state.tech));
-let bgFlip = 0;
+/* ---------- hero: one short film per look ---------- */
+const LOOKS = [
+  { id: 'static', media: 'look-static', name: 'Static Classic', short: 'Static', sub: `from ${money(priceRange('static')[0])}` },
+  { id: 'rgb', media: 'look-rgb', name: 'Color-Changing RGB', short: 'RGB', sub: `from ${money(priceRange('rgb')[0])}` },
+  { id: 'mapping', media: 'look-mapping', name: 'Graphic Mapping', short: 'Mapping', sub: `from ${money(priceRange('mapping')[0])} · concept` },
+  { id: 'underglow', media: 'look-underglow', name: 'RGBIC Underglow', short: 'Underglow', sub: `add-on +${money(catalog.underglow.S.upcharge)}` },
+];
+const LOOK_SECONDS = 6;
+const looksEl = document.querySelector('[data-looks]');
+const tabsEl = document.querySelector('[data-look-tabs]');
+looksEl.innerHTML = LOOKS.map((l, i) => `<div class="look" data-look="${i}">${video(l.media)}<span class="look-name">${l.name}</span></div>`).join('');
+tabsEl.innerHTML = LOOKS.map((l, i) => `
+  <button type="button" class="look-tab" role="tab" aria-selected="false" data-tab="${i}">
+    <span class="tab-bar"><i></i></span>
+    <span class="tab-name"><span class="long">${l.name}</span><span class="short">${l.short}</span></span>
+    <span class="tab-sub">${l.sub}</span>
+  </button>`).join('');
+const lookEls = [...looksEl.children];
+const tabEls = [...tabsEl.children];
 
-function renderDetail(t) {
+/* ---------- product film: scroll steps through the three technologies ---------- */
+const FILMS = { static: 'film-static', rgb: 'film-rgb', mapping: 'film-mapping' };
+const FILM_TINT = { static: 'warm', rgb: 'rgb', mapping: 'red' };
+const filmEl = document.querySelector('#lineup');
+filmEl.querySelector('[data-film-stage]').innerHTML = TECHS.map((t) => `<div class="film-vid">${video(FILMS[t])}</div>`).join('');
+filmEl.querySelector('[data-film-bg]').innerHTML = TECHS.map((t) => `<img alt="" loading="lazy" src="${BASE}media/posters/${FILMS[t]}.jpg">`).join('');
+filmEl.querySelector('[data-film-dots]').innerHTML = TECHS.map((t, i) =>
+  `<button type="button" class="film-dot" data-film-dot="${i}" aria-label="Show ${catalog.products[t].name}"></button>`).join('');
+filmEl.querySelector('[data-film-slides]').innerHTML = TECHS.map((t, i) => {
   const p = catalog.products[t];
   const [lo, hi] = priceRange(t);
   const [l1, l2] = ledRange(t);
-  document.querySelector('[data-lineup-detail]').innerHTML = `
+  return `
+  <article class="film-slide" data-slide="${i}">
     <span class="status s-${p.status}">${statusLabel(p.status)}</span>
-    <h3 class="h3">${p.name}</h3>
+    <h3 class="film-name">${p.name}</h3>
     <p class="tagline">${p.tagline}</p>
-    <p>${p.summary}</p>
+    <p class="film-summary">${p.summary}</p>
     <dl class="spec spec-row">
       <div><dt>Planned price</dt><dd>${money(lo)} – ${money(hi)}</dd></div>
       <div><dt>Planned LEDs</dt><dd>${num(l1)} – ${num(l2)}</dd></div>
@@ -41,47 +56,47 @@ function renderDetail(t) {
       <ul class="no" aria-label="Not promised">${p.notPromised.map((x) => `<li>${x}</li>`).join('')}</ul>
     </div>
     <div class="cta-row">
-      <a class="btn btn-ghost" href="${productUrl(t)}">See ${p.name}</a>
-      <button type="button" class="btn btn-glow" data-pick="${t}">Build with ${p.name}</button>
-    </div>`;
-  document.querySelector('[data-pick]').addEventListener('click', () => {
-    setState({ tech: t });
-    scrollToEl(document.querySelector('#build'));
+      <button type="button" class="btn btn-glow" data-pick="${t}">Build this kit</button>
+      <a class="btn btn-ghost" href="${productUrl(t)}">Full details</a>
+    </div>
+  </article>`;
+}).join('');
+const filmVids = [...filmEl.querySelectorAll('.film-vid')];
+const filmSlides = [...filmEl.querySelectorAll('.film-slide')];
+const filmBgs = [...filmEl.querySelectorAll('[data-film-bg] img')];
+const filmDots = [...filmEl.querySelectorAll('[data-film-dot]')];
+let film = -1;
+let filmST = null;
+function setFilm(i) {
+  if (i === film) return;
+  film = i;
+  filmVids.forEach((el, k) => {
+    const on = k === i;
+    el.classList.toggle('is-active', on);
+    const v = el.querySelector('video');
+    v.dataset.active = on ? '1' : '0';
+    if (on && v.dataset.visible === '1') playIfAllowed(v); else v.pause();
   });
+  filmSlides.forEach((el, k) => { el.classList.toggle('is-active', k === i); el.setAttribute('aria-hidden', String(k !== i)); });
+  filmBgs.forEach((el, k) => el.classList.toggle('is-active', k === i));
+  filmDots.forEach((el, k) => el.setAttribute('aria-current', String(k === i)));
+  filmEl.querySelector('[data-film-count]').textContent = `${i + 1} / 3`;
+  if (filmST?.isActive) tintTo(FILM_TINT[TECHS[i]]);
 }
-
-function setActive(i) {
-  active = (i + cards.length) % cards.length;
-  cards.forEach((card, idx) => {
-    let o = (((idx - active) % 3) + 3) % 3;
-    if (o === 2) o = -1;
-    card.style.setProperty('--o', o);
-    card.classList.toggle('is-active', o === 0);
-    card.setAttribute('aria-hidden', String(o !== 0));
-    const v = card.querySelector('video');
-    v.dataset.active = o === 0 ? '1' : '0';
-    if (o === 0) playIfAllowed(v); else v.pause();
-  });
-  const t = TECHS[active];
-  const next = bgs[bgFlip ^= 1];
-  next.src = `${BASE}media/posters/${catalog.products[t].media}.jpg`;
-  bgs.forEach((b) => b.classList.toggle('on', b === next));
-  document.querySelector('[data-flow-count]').textContent = `${active + 1} / 3`;
-  renderDetail(t);
+function goFilm(i) {
+  const n = Math.max(0, Math.min(2, i));
+  if (!filmST) { setFilm(n); return; }
+  const y = filmST.start + ((n + 0.5) / 3) * (filmST.end - filmST.start);
+  if (lenis) lenis.scrollTo(y); else scrollTo(0, y);
 }
-document.querySelector('[data-flow-prev]').addEventListener('click', () => setActive(active - 1));
-document.querySelector('[data-flow-next]').addEventListener('click', () => setActive(active + 1));
-cards.forEach((c) => c.addEventListener('click', () => setActive(+c.dataset.i)));
-flow.addEventListener('keydown', (e) => {
-  if (e.key === 'ArrowLeft') setActive(active - 1);
-  if (e.key === 'ArrowRight') setActive(active + 1);
-});
-let downX = null;
-flow.addEventListener('pointerdown', (e) => { downX = e.clientX; });
-flow.addEventListener('pointerup', (e) => {
-  if (downX !== null && Math.abs(e.clientX - downX) > 40) setActive(active + (e.clientX < downX ? 1 : -1));
-  downX = null;
-});
+filmEl.querySelector('[data-film-prev]').addEventListener('click', () => goFilm(film - 1));
+filmEl.querySelector('[data-film-next]').addEventListener('click', () => goFilm(film + 1));
+filmDots.forEach((el, i) => el.addEventListener('click', () => goFilm(i)));
+filmEl.querySelectorAll('[data-pick]').forEach((b) => b.addEventListener('click', () => {
+  setState({ tech: b.dataset.pick });
+  scrollToEl(document.querySelector('#build'));
+}));
+setFilm(0);
 
 /* ---------- kit contents, underglow, price table ---------- */
 const kitGrid = document.querySelector('[data-kit-grid]');
@@ -107,11 +122,12 @@ swatchEl.addEventListener('click', (e) => {
 
 const table = document.querySelector('[data-price-table]');
 table.innerHTML = `<caption class="sr-only">Planned prices for all 18 kits</caption>
-  <thead><tr><th scope="col">Technology</th>${SIZES.map((s) => `<th scope="col">${catalog.sizes[s].name}</th><th scope="col">+ Underglow</th>`).join('')}</tr></thead>
-  <tbody>${TECHS.map((t) => `<tr><th scope="row">${catalog.products[t].name}</th>${SIZES.map((s) => [false, true].map((ug) => {
+  <thead><tr><th scope="col">Lighting</th>${SIZES.map((s) => `<th scope="col">${catalog.sizes[s].name}<small>${catalog.sizes[s].lengthFt} ft</small></th>`).join('')}</tr></thead>
+  <tbody>${TECHS.map((t) => `<tr><th scope="row">${catalog.products[t].name}</th>${SIZES.map((s) => `<td>${[false, true].map((ug) => {
     const v = variantFor(t, s, ug);
-    return `<td><button type="button" class="price-cell" data-cell="${v.sku}" data-t="${t}" data-s="${s}" data-u="${ug ? 1 : 0}" aria-pressed="false">${money(v.ownerTargetPrice)}</button></td>`;
-  }).join('')).join('')}</tr>`).join('')}</tbody>`;
+    const label = `${catalog.products[t].name}, ${catalog.sizes[s].name}${ug ? ', with underglow' : ''}: ${money(v.ownerTargetPrice)}`;
+    return `<button type="button" class="price-cell${ug ? ' with-ug' : ''}" data-cell="${v.sku}" data-t="${t}" data-s="${s}" data-u="${ug ? 1 : 0}" aria-pressed="false" aria-label="${label}">${ug ? '<small>+ glow</small>' : ''}${money(v.ownerTargetPrice)}</button>`;
+  }).join('')}</td>`).join('')}</tr>`).join('')}</tbody>`;
 table.addEventListener('click', (e) => {
   const b = e.target.closest('[data-cell]');
   if (!b) return;
@@ -121,7 +137,7 @@ table.addEventListener('click', (e) => {
 
 subscribe((s) => {
   const v = variantFor(s.tech, s.size, s.ug);
-  kitGrid.innerHTML = kitContents(v).map(([a, b]) => `<li><span class="kit-chip">Planned</span><strong>${a}</strong><p>${b}</p></li>`).join('');
+  kitGrid.innerHTML = kitContents(v).map(([a, b]) => `<li><strong>${a}</strong><span>${b}</span></li>`).join('');
   ugBtn.textContent = s.ug ? 'Remove underglow' : 'Add underglow to my build';
   ugBtn.setAttribute('aria-pressed', String(s.ug));
   document.querySelector('[data-ug-total]').textContent =
@@ -130,7 +146,6 @@ subscribe((s) => {
 });
 
 mountBuilder(document.querySelector('[data-builder]'));
-setActive(active);
 
 /* ---------- motion ---------- */
 const lenis = initMotion();
@@ -139,31 +154,11 @@ function scrollToEl(el) {
   else el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
 }
 
-// Hero: one short film per look. Desktop shows all four side by side with the active one widened;
-// phones crossfade between them. Tabs pick a look and show how long until the next one.
-const LOOKS = [
-  { id: 'static', media: 'look-static', name: 'Static Classic', short: 'Static', sub: `from ${money(priceRange('static')[0])}` },
-  { id: 'rgb', media: 'look-rgb', name: 'Color-Changing RGB', short: 'RGB', sub: `from ${money(priceRange('rgb')[0])}` },
-  { id: 'mapping', media: 'look-mapping', name: 'Graphic Mapping', short: 'Mapping', sub: `from ${money(priceRange('mapping')[0])} · concept` },
-  { id: 'underglow', media: 'look-underglow', name: 'RGBIC Underglow', short: 'Underglow', sub: `add-on +${money(catalog.underglow.S.upcharge)}` },
-];
-const LOOK_SECONDS = 6;
-const looksEl = document.querySelector('[data-looks]');
-const tabsEl = document.querySelector('[data-look-tabs]');
-looksEl.innerHTML = LOOKS.map((l, i) => `<div class="look" data-look="${i}">${video(l.media)}<span class="look-name">${l.name}</span></div>`).join('');
-tabsEl.innerHTML = LOOKS.map((l, i) => `
-  <button type="button" class="look-tab" role="tab" aria-selected="false" data-tab="${i}">
-    <span class="tab-bar"><i></i></span>
-    <span class="tab-name"><span class="long">${l.name}</span><span class="short">${l.short}</span></span>
-    <span class="tab-sub">${l.sub}</span>
-  </button>`).join('');
-const lookEls = [...looksEl.children];
-const tabEls = [...tabsEl.children];
+// Hero. Desktop shows all four looks side by side with the active one widened; phones show one full-screen film.
 const wide = matchMedia('(min-width: 861px)');
 let look = 0;
 let heroVisible = true;
 let lookTween = null;
-
 function syncLookVideos() {
   lookEls.forEach((el, i) => {
     const v = el.querySelector('video');
@@ -197,6 +192,7 @@ document.querySelector('[data-hero-build]').addEventListener('click', () => {
   scrollToEl(document.querySelector('#build'));
 });
 setLook(0);
+ScrollTrigger.config({ ignoreMobileResize: true });
 ScrollTrigger.create({
   trigger: '#hero', start: 'top bottom', end: 'bottom top',
   onToggle: (self) => {
@@ -209,6 +205,13 @@ ScrollTrigger.create({
 if (!reduceMotion) {
   gsap.from('.hero-copy > *, .look-tab', { y: 28, autoAlpha: 0, duration: 0.9, ease: 'power3.out', stagger: 0.07, delay: 0.15 });
   gsap.to('.looks', { yPercent: 10, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
+
+  // Pin the product film; each third of the scroll shows the next technology.
+  filmST = ScrollTrigger.create({
+    trigger: '#lineup', start: 'top top', end: () => `+=${Math.round(innerHeight * 2.1)}`, pin: true,
+    onUpdate: (self) => setFilm(Math.min(2, Math.floor(self.progress * 3))),
+    onToggle: (self) => { if (self.isActive) tintTo(FILM_TINT[TECHS[film]]); },
+  });
 
   const mm = gsap.matchMedia();
   mm.add('(min-width: 900px)', () => {

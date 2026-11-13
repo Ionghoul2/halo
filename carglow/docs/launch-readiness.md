@@ -1,6 +1,6 @@
 # Car Glow — launch readiness
 
-Status on 2026-11-13 (v2): the independent website preview is built and tested. v1 is saved as commit `4f90ad9` on this branch and at its own preview link. **Nothing is purchasable.** Every kit shows "Early access" (Static, RGB) or "Concept · coming soon" (Mapping).
+Status on 2026-11-13 (v3): the independent website preview is built and tested. v1 is saved as commit `4f90ad9` on this branch and at its own preview link. **Nothing is purchasable.** Every kit shows "Early access" (Static, RGB) or "Concept · coming soon" (Mapping).
 
 ## Blockers to taking real orders
 

@@ -33,6 +33,12 @@ color ([COLOR]), big wide uppercase headlines, short punchy lines, generous
 empty space. No template look, no stock photos, no emoji, no fake reviews or
 discounts. References attached: [LIST REELS / RECORDINGS].
 
+PHONE FIRST
+Most visitors arrive from a phone. Every scene must fill a phone screen and
+read at a glance. Footage is portrait; fill the screen without cropping the
+subject (place the clip at the top and fill below with a blurred copy).
+Keep text sections short: lists, not walls of cards.
+
 HERO
 Full-screen video, not a still. Show the full range of what we sell, not one
 item: [LIST THE 3-4 PRODUCTS OR LOOKS]. Each gets its own short film cut from
@@ -43,8 +49,9 @@ Tabs let the visitor switch looks and show a timer until the next one.
 SCENES (in scroll order)
 1. Hero (above)
 2. Reveal: [ONE-LINE STORY OF THE TRANSFORMATION]
-3. Collection: 3D card carousel, one card per product, each stating what it
-   does and what it does not do
+3. Collection: a pinned full-screen film. Scrolling steps through each
+   product; the video, name, price and "build this" button change together.
+   State what each product does and does not do
 4. Configurator: [INPUTS, e.g. vehicle, size, add-on] with a live price
 5. Proof / range: sideways-scrolling reel of footage
 6. What's included

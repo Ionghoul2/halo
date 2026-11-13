@@ -15,7 +15,7 @@ npx vite preview --port 4173 & npm run qa   # 18-variant, sizing, persistence, o
 |------|------|
 | Prices, LED estimates, every variant field, cost ceilings | `src/data/catalog.json` |
 | Configurator, vehicle sizing, shared state, motion | `src/shared.js` |
-| Homepage scenes (four-look video hero, carousel, coverage reel, color picker) | `index.html`, `src/home.js` |
+| Homepage scenes (four-look video hero, scroll-stepped product film, coverage reel, color picker) | `index.html`, `src/home.js` |
 | Moving WebGL background, section tints | `src/shared.js` (`initAmbient`) |
 | Site-type name and reusable build prompt | `docs/4d-site-prompt.md` |
 | Product pages | `products/*/index.html` (render from `src/product.js`) |

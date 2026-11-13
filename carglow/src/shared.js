@@ -35,6 +35,10 @@ export const MEDIA = {
   'look-rgb': { dir: 'hero', alt: 'McLarens and Porsches in shifting turquoise, purple, green and blue light' },
   'look-mapping': { dir: 'hero', alt: 'Cars showing mapped LED graphics: gingerbread man, faces, stripes' },
   'look-underglow': { dir: 'hero', alt: 'Row of Lamborghinis with rainbow and red underglow' },
+  'film-static': { dir: 'static', alt: 'A BMW covered in multicolor lights rolls out of a garage, then a street of lit cars' },
+  'film-rgb': { dir: 'rgb', alt: 'McLaren and Porsches in white, blue and red light at a warehouse lot' },
+  'film-mapping': { dir: 'mapping', alt: 'Lamborghinis showing mapped LED faces and stripes in a garage and on the street' },
+  'final-film': { dir: 'hero', alt: 'Gold Lamborghini with mapped LED graphics rolling down a road at night' },
   'two-tone-pixels': { dir: 'rgb', alt: 'McLaren and Porsche in white, blue and red pixel light, with smoke' },
   'pixel-install-lambo': { dir: 'installation', alt: 'Pixel strands taped in rows across a yellow Lamborghini hood' },
   'ice-mclaren': { dir: 'hero', alt: 'Supercar covered in dense white and ice-blue LEDs at night' },
@@ -135,7 +139,7 @@ export function renderChrome(active = '') {
   <header class="nav">
     <a class="wordmark" href="${BASE}index.html" aria-label="Car Glow home">CAR<span class="dot" aria-hidden="true"></span>GLOW</a>
     <nav aria-label="Products">${link('static', 'Static')}${link('rgb', 'RGB')}${link('mapping', 'Mapping')}${link('underglow', 'Underglow')}</nav>
-    <button class="motion-toggle" type="button" aria-pressed="false" data-motion-toggle>Pause motion</button>
+    <button class="motion-toggle" type="button" aria-pressed="false" data-motion-toggle><span class="motion-icon" aria-hidden="true"></span><span class="long" data-motion-label>Pause motion</span></button>
     <a class="btn btn-glow nav-cta" href="${BASE}index.html#build">Find my lights</a>
   </header>`);
   document.body.insertAdjacentHTML('beforeend', `
@@ -263,7 +267,8 @@ export function initMotion() {
   const toggle = document.querySelector('[data-motion-toggle]');
   const sync = () => {
     toggle.setAttribute('aria-pressed', String(paused));
-    toggle.textContent = paused ? 'Play motion' : 'Pause motion';
+    toggle.querySelector('[data-motion-label]').textContent = paused ? 'Play motion' : 'Pause motion';
+    toggle.setAttribute('aria-label', paused ? 'Play motion' : 'Pause motion');
     document.documentElement.classList.toggle('motion-paused', paused);
     videos.forEach((v) => {
       if (paused) v.pause();
@@ -297,7 +302,7 @@ export function initReveals() {
   }));
   if (reduceMotion) return;
   gsap.utils.toArray('[data-reveal]').forEach((el) => {
-    gsap.from(el, { y: 36, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 90%', once: true } });
+    gsap.from(el, { y: 40, autoAlpha: 0, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 92%', once: true } });
   });
   gsap.utils.toArray('[data-parallax]').forEach((el) => {
     gsap.fromTo(el, { yPercent: -el.dataset.parallax }, {

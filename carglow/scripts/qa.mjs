@@ -45,6 +45,13 @@ const browser = await chromium.launch();
   await page.click('[data-hero-build]');
   check((await page.textContent('[data-sum-sku]')).startsWith('MAP-'), 'hero CTA did not carry Mapping into the build');
   check(await page.evaluate(() => !!document.querySelector('canvas.ambient')), 'ambient background canvas missing');
+  // Product film: each step shows its technology, and "Build this kit" carries it into the build.
+  for (const [i, code] of [[0, 'STATIC-'], [1, 'RGB-'], [2, 'MAP-']]) {
+    await page.click(`[data-film-dot="${i}"]`);
+    check(await page.getAttribute(`[data-slide="${i}"]`, 'aria-hidden') === 'false', `film step ${i} not shown`);
+    await page.click(`[data-slide="${i}"] [data-pick]`);
+    check((await page.textContent('[data-sum-sku]')).startsWith(code), `film step ${i} did not carry ${code} into the build`);
+  }
   console.log('hero check done');
 
   // 2. Vehicle sizing.
@@ -117,16 +124,22 @@ const wheelTo = (sel, extra = 0) => async (page) => {
     await page.waitForTimeout(50);
   }
 };
+const wheelBy = (px) => async (page) => { for (let d = 0; d < px; d += 100) { await page.mouse.wheel(0, 100); await page.waitForTimeout(40); } };
 const heroSteps = [
   ['01-hero', async () => {}],
   ['02-hero-mapping', async (page) => { await page.click('[data-tab="2"]'); }],
   ['03-reveal', wheelTo('#reveal', 40)],
-  ['04-lineup', wheelTo('#lineup', 80)],
-  ['05-build', wheelTo('#build', 60)],
-  ['05b-build-options', wheelTo('#build', 620)],
-  ['06-coverage', wheelTo('#kit', -1400)],
-  ['07-kit', wheelTo('#kit', 20)],
-  ['08-final', wheelTo('#final', 40)],
+  ['04-film-static', wheelTo('#lineup', 60)],
+  ['05-film-rgb', async (page) => { await wheelBy(Math.round(page.viewportSize().height * 0.75))(page); }],
+  ['06-film-mapping', async (page) => { await wheelBy(Math.round(page.viewportSize().height * 0.7))(page); }],
+  ['07-coverage', wheelTo('#coverage', 40)],
+  ['08-build', wheelTo('#build', 40)],
+  ['09-build-options', wheelTo('#build', 560)],
+  ['10-kit', wheelTo('#kit', 20)],
+  ['11-underglow', wheelTo('#underglow', 20)],
+  ['12-install', wheelTo('#install', 20)],
+  ['13-prices', wheelTo('#prices', 20)],
+  ['14-final', wheelTo('#final', 0)],
 ];
 await shots('desktop', { viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 }, heroSteps);
 await shots('mobile', { ...devices['iPhone 13'], deviceScaleFactor: 1 }, heroSteps);
