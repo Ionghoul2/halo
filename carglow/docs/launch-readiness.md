@@ -1,6 +1,6 @@
 # Car Glow — launch readiness
 
-Status on 2026-11-13: the independent website preview is built and tested. **Nothing is purchasable.** Every kit shows "Early access" (Static, RGB) or "Concept · coming soon" (Mapping).
+Status on 2026-11-13 (v2): the independent website preview is built and tested. v1 is saved as commit `4f90ad9` on this branch and at its own preview link. **Nothing is purchasable.** Every kit shows "Early access" (Static, RGB) or "Concept · coming soon" (Mapping).
 
 ## Blockers to taking real orders
 
@@ -11,7 +11,7 @@ Status on 2026-11-13: the independent website preview is built and tested. **Not
 | 3 | Power system not designed. Thousands of LEDs need a fused automotive DC design, not a cigarette-lighter inverter. | Electrical design + qualified review per kit size. |
 | 4 | Mounting method not chosen or tested on paint, plastic, aluminum, carbon. | Test install + removal on sample panels. |
 | 5 | Graphic Mapping workflow unproven (camera mapping, GIF/image upload). | Working demo on the exact controller + software (WLED / xLights / other). |
-| 6 | **Footage rights.** All 11 clips are third-party social media videos. Two show other businesses' signage (ENVY Autostyle, 7-Eleven). | Written permission from each creator, or replace with your own footage. |
+| 6 | **Footage rights.** Every clip is a third-party social media video. The ENVY Autostyle sign and the main 7-Eleven logo are now blurred; small pump signage remains. | Written permission from each creator, or replace with your own footage. |
 | 7 | Early-access form saves to the visitor's browser only. | Connect to Klaviyo / Shopify customer list / a form service. |
 | 8 | Shipping, returns, warranty and legal pages don't exist. | Write policies; legal review of lighting-law and paint-damage language. |
 | 9 | Shopify not connected. | After 1–5: create real products/variants, map SKUs, test orders. |
@@ -29,6 +29,16 @@ What the **complete delivered body kit** may cost (LEDs + controller + power + m
 Mapping ceilings are **before** ad spend and returns allowances, and assume a 2.9% + $0.30 payment fee (verify your Shopify plan).
 
 At these numbers, every kit must deliver all hardware for under about one cent per light. Addressable pixels and controllers generally cost far more than that, so expect most targets to fail once quoted. Mapping Small has $36.68 for 8,000 pixels and is almost certainly impossible. Underglow has no margin target yet.
+
+## What a competitor actually ships
+
+One of your reference reels ("Send this to a BMW owner") shows the retail box behind that look: **"Xmas Car LED Light System · 32M / 105FT · 320 LEDs · 160 clips included."**
+
+- That kit is **320 LEDs**. The Car Glow plan is 4,400 to 8,200 LEDs for Static and RGB, roughly 14 to 26 times more.
+- 320 LEDs over 105 ft is one light about every 4 inches along a single string wound around the car, not a 2-inch grid over every panel.
+- Your $45 to $82 Static prices are in line with a kit like that. They are not in line with 4,400+ LEDs.
+
+Decision for you: sell a string kit like the competitor's (prices can work, look is sparser), or keep the dense grid (look matches the supercar clips, prices must rise a lot). The site can present either; the catalog just needs the real numbers.
 
 ## Supplier RFQ — ask for each of the 9 body kits + 2 underglow kits
 

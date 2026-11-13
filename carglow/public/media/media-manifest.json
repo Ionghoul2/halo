@@ -1,6 +1,6 @@
 {
   "project": "Car Glow",
-  "generated": "2026-11-13",
+  "generated": "2026-11-13 (v2)",
   "note": "Every clip here is third-party reference footage. None shows Car Glow hardware. Rights unverified.",
   "clips": [
     {
@@ -24,7 +24,7 @@
       "demonstrates": "rgb-or-mapping (hardware unknown)",
       "description": "McLaren 720S-style supercar fully covered in dense white LEDs with ice-blue and teal pixels shimmering; parked on cobblestones at night, slow orbit and close-ups of front bumper and wheel arch.",
       "usefulRangeSec": "0.0-5.8",
-      "placement": "Homepage hero scroll-scrubbed frame sequence (93 WebP frames at 16 fps)",
+      "placement": "Reveal section collage (was the v1 scroll-scrubbed hero)",
       "siteCaption": "Reference footage. Dense full-body coverage.",
       "mobileSuitable": true,
       "showsCarGlowHardware": false,
@@ -59,7 +59,7 @@
       "showsCarGlowHardware": false,
       "verification": "Illustrative reference only. Not a Car Glow product demonstration.",
       "rights": "Third-party social media footage supplied by owner. Owner states reuse permission; commercial rights NOT verified. Get written permission from each creator before public launch.",
-      "notes": "Shop signage of a third-party business visible top right (ENVY Autostyle). Crop or replace before launch."
+      "notes": "ENVY Autostyle sign blurred in the web copy (first 2.25 s)."
     },
     {
       "id": "community-night",
@@ -92,9 +92,9 @@
     },
     {
       "id": "lambo-convoy",
-      "sourceFilename": "The_best_time_of_the_year_.......christmas_christmastree_christmastime_christmaslights_.mov",
-      "sha256": "11e49f75187459119f3ccae8d52c791eb39b9c34690a6db9ab6657c14372d9f2",
-      "durationSec": 10.38,
+      "sourceFilename": "The_best_time_of_the_year_.......christmas_christmastree_christmastime_christmaslights_.mp4",
+      "sha256": "027c05c8de1a51e5b532e8f4159578982ddffd6be27b2a1b12d6cb51a036fe16",
+      "durationSec": 19.69,
       "source": {
         "width": 720,
         "height": 1280
@@ -109,8 +109,8 @@
       "poster": "media/posters/lambo-convoy.jpg",
       "category": "mapping",
       "demonstrates": "graphic-mapping",
-      "description": "Several Lamborghini Aventadors covered in addressable pixels showing graphics: blue/white/red face designs on hoods, red-green stripes; parked in garage, then street, then rolling convoy at night.",
-      "usefulRangeSec": "0.0-10.4",
+      "description": "Longer upload of the same reel. Lamborghini Aventadors showing mapped graphics (faces, stripes): garage, street with scissor doors, then rolling convoy.",
+      "usefulRangeSec": "5.45-19.65 (convoy); 0-5.3 is install close-ups",
       "placement": "Graphic Mapping chapter and final CTA backdrop",
       "siteCaption": "Reference footage. Mapped graphics.",
       "mobileSuitable": true,
@@ -233,7 +233,7 @@
       "showsCarGlowHardware": false,
       "verification": "Illustrative reference only. Not a Car Glow product demonstration.",
       "rights": "Third-party social media footage supplied by owner. Owner states reuse permission; commercial rights NOT verified. Get written permission from each creator before public launch.",
-      "notes": "7-Eleven branding visible. Underglow is visible but not isolated from body lights."
+      "notes": "Main 7-Eleven logo blurred in the web copy. Small \"7-ELEVEN\" text on pump toppers is still faintly visible."
     },
     {
       "id": "classic-string-lambos",
@@ -314,7 +314,7 @@
       "demonstrates": "static-classic look + install",
       "description": "Hands taping green-wire mini string lights onto a carbon-fiber Huracan; close-ups of tape-mounted strands; finished cars at a fuel station; lit cars driving at night.",
       "usefulRangeSec": "0.0-15.0",
-      "placement": "Installation chapter (routing step)",
+      "placement": "Not placed in v2 (replaced by pixel-install-lambo). File kept.",
       "siteCaption": "Reference footage. Hand installation.",
       "mobileSuitable": true,
       "showsCarGlowHardware": false,
@@ -334,15 +334,66 @@
       "placement": "Underglow chapter still; brand color reference (magenta glow).",
       "showsCarGlowHardware": false,
       "rights": "Third-party social media footage supplied by owner. Owner states reuse permission; commercial rights NOT verified. Get written permission from each creator before public launch."
+    },
+    {
+      "id": "two-tone-pixels",
+      "sourceFilename": "Who_s_ready_for_this_year_viral_supercar_porsche_mclaren.mp4",
+      "sha256": "28591616fa2df20cc1ba7c78f0b632808e53e7239ffb15bd0562ca48aa42b876",
+      "durationSec": 13.35,
+      "source": {
+        "width": 720,
+        "height": 1280
+      },
+      "web": {
+        "file": "media/rgb/two-tone-pixels.mp4",
+        "width": 720,
+        "height": 1280,
+        "codec": "h264, no audio"
+      },
+      "aspectRatio": "720:1280 portrait",
+      "poster": "media/posters/two-tone-pixels.jpg",
+      "category": "rgb",
+      "demonstrates": "addressable pixel look (white/blue/red)",
+      "description": "McLaren 765LT and Porsche 911s in white, blue and red pixel light; opens with a drift through tyre smoke, then wide parked shots at a warehouse lot.",
+      "usefulRangeSec": "0-13.3",
+      "placement": "Coverage reel (\"Two-tone pixels\"); excerpt 4.9-7.9 s in the RGB hero film",
+      "siteCaption": "Reference footage.",
+      "mobileSuitable": true,
+      "showsCarGlowHardware": false,
+      "verification": "Illustrative reference only. Not a Car Glow product demonstration.",
+      "rights": "Third-party social media footage supplied by owner. Owner states reuse permission; commercial rights NOT verified. Get written permission from each creator before public launch.",
+      "notes": "Half-and-half colors on one car need addressable pixels; not proof of the RGB kit."
+    },
+    {
+      "id": "pixel-install-lambo",
+      "sourceFilename": "The_best_time_of_the_year_.......christmas_christmastree_christmastime_christmaslights_.mp4",
+      "sha256": "027c05c8de1a51e5b532e8f4159578982ddffd6be27b2a1b12d6cb51a036fe16",
+      "durationSec": 19.69,
+      "source": {
+        "width": 720,
+        "height": 1280
+      },
+      "web": {
+        "file": "media/installation/pixel-install-lambo.mp4",
+        "width": 720,
+        "height": 1280,
+        "codec": "h264, no audio"
+      },
+      "aspectRatio": "720:1280 portrait",
+      "poster": "media/posters/pixel-install-lambo.jpg",
+      "category": "installation",
+      "demonstrates": "graphic-mapping install",
+      "description": "Close-ups of pixel strands taped in serpentine rows on a yellow Lamborghini (door, hood badge), and a red Lamborghini with its front trunk open and wiring routed inside.",
+      "usefulRangeSec": "0-5.3",
+      "placement": "Installation section",
+      "siteCaption": "Reference footage.",
+      "mobileSuitable": true,
+      "showsCarGlowHardware": false,
+      "verification": "Illustrative reference only. Not a Car Glow product demonstration.",
+      "rights": "Third-party social media footage supplied by owner. Owner states reuse permission; commercial rights NOT verified. Get written permission from each creator before public launch.",
+      "notes": "Shows another installer's tape-on method and \"exoticars\" door lettering. Not Car Glow's method."
     }
   ],
-  "heroFrameSequence": {
-    "source": "e7d8a705 (ice McLaren)",
-    "files": "media/hero/frames/f001.webp ... f093.webp",
-    "fps": 16,
-    "width": 720,
-    "height": 1050
-  },
   "designReferences": [
     {
       "sourceFilename": "ScreenRecording_11-12-2026_21-41-40_1.mov",
@@ -368,6 +419,21 @@
       "sourceFilename": "ScreenRecording_11-12-2026_21-31-29_2.mp4",
       "description": "textura.eu \"Motion instead of chrome\": particle shapes morphing (ring, galaxy, brain) reacting to pointer.",
       "published": false
+    },
+    {
+      "sourceFilename": "When_car_rental_website_sells_the_experience_webdesign_webanimation.mp4",
+      "description": "Dubai luxury car rental site: full-screen cinematic video hero with big type, dissolves between scenes, a ring of car cards, then one slide per car.",
+      "published": false
+    },
+    {
+      "sourceFilename": "ScreenRecording_11-12-2026_20-03-43_1.mp4",
+      "description": "vibe_code reel: 3D sneaker page where picking a color recolors the product and the whole page.",
+      "published": false
+    },
+    {
+      "sourceFilename": "ScreenRecording_11-12-2026_18-59-48_1.mp4",
+      "description": "Tutorial reel: make start and end images, animate between them with a video model (Veo 3.1, Kling, Seedance), merge clips in Canva.",
+      "published": false
     }
   ],
   "missingFootage": [
@@ -375,17 +441,63 @@
     "Any footage of actual Car Glow kit hardware, packaging or unboxing",
     "Underglow on its own (isolated from body lights) and an underglow install",
     "Controller / app screens for RGB and mapping",
-    "Mapping setup or camera-mapping software demo (handoff names ScreenRecording_11-10-2026 22-29-46; not supplied)",
     "Removal and storage",
-    "Licensed or owned footage with written creator permission"
+    "Licensed or owned footage with written creator permission",
+    "Mapping software / controller demo"
   ],
   "namedInHandoffButNotSupplied": [
     "it's christmas time again #viral #porsche.mp4",
-    "Who's ready for this year #viral #supercar #porsche #mclaren.mp4",
     "ScreenRecording_11-09-2026 17-23-28_1.mp4",
     "ScreenRecording_11-10-2026 22-29-46_1.mp4",
-    "ScreenRecording_11-12-2026 18-51/18-54/18-57/18-59 recordings",
     "ScreenRecording_11-12-2026 19-50-24_1.mp4",
-    "IMG_7884, IMG_8032, IMG_8036, IMG_8037, IMG_8041"
-  ]
+    "IMG_7884, IMG_8032, IMG_8036, IMG_8037, IMG_8041",
+    "ScreenRecording_11-12-2026 18-51 / 18-54 / 18-57 / 18-59-09 recordings"
+  ],
+  "heroFilms": {
+    "note": "Edited with ffmpeg: each is cropped to 720x1000, crossfaded (0.5 s) and faded at the loop point.",
+    "films": [
+      {
+        "file": "media/hero/look-static.mp4",
+        "look": "Static Classic",
+        "cuts": [
+          "ScreenRecording_11-12-2026_19-50-56_1.mov 1.7-8.3 s",
+          "ScreenRecording_11-12-2026_19-49-26_1.mov 4.35-6.1 s"
+        ]
+      },
+      {
+        "file": "media/hero/look-rgb.mp4",
+        "look": "Color-Changing RGB",
+        "cuts": [
+          "supercar_mclaren_porsche.mp4 0-8.5 s",
+          "Who_s_ready_for_this_year_viral_supercar_porsche_mclaren.mp4 4.9-7.9 s"
+        ]
+      },
+      {
+        "file": "media/hero/look-mapping.mp4",
+        "look": "Graphic Mapping",
+        "cuts": [
+          "Comment__LED__if_you_want_the_link_viral_christmas_ledlights_car_carguys_3.mov 0.3-2.6 s",
+          "The_best_time_of_the_year_.......christmas_christmastree_christmastime_christmaslights_.mp4 5.45-9.6 s and 13.4-18.6 s"
+        ]
+      },
+      {
+        "file": "media/hero/look-underglow.mp4",
+        "look": "RGBIC Underglow",
+        "cuts": [
+          "ScreenRecording_11-12-2026_20-07-55_1.mov 0-5.6 s (7-Eleven logo blurred)"
+        ]
+      }
+    ]
+  },
+  "notUsed": [
+    {
+      "sourceFilename": "Send_this_to_a_BMW_owner_christmas_car_carslover_fyp.mp4",
+      "reason": "Caption burned across the whole clip. Kept as market research: shows a competitor box labelled \"Xmas Car LED Light System, 32M / 105FT, 320 LEDs, 160 clips included\", a suction-cup clip install, and the lit BMW."
+    },
+    {
+      "sourceFilename": "Link_in_bio__christmas_grinch_giftideas.mp4",
+      "reason": "Different product (Grinch plush on a BMW trunk), not LED lighting. Captions burned in."
+    }
+  ],
+  "duplicateUploads": "Four screen recordings sent on the second upload are byte-identical to the first batch (21-27-03, 21-41-40, 21-42-16, 21-42-53)."
 }

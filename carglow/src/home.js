@@ -1,7 +1,7 @@
 import {
   BASE, TECHS, SIZES, catalog, gsap, ScrollTrigger, reduceMotion, money, num, state, setState, subscribe,
   variantFor, priceRange, ledRange, statusLabel, productUrl, video, kitContents, renderChrome, initMotion,
-  initReveals, playIfAllowed, mountBuilder,
+  initReveals, playIfAllowed, isPaused, onMotionChange, tintTo, mountBuilder,
 } from './shared.js';
 
 renderChrome();
@@ -88,6 +88,23 @@ const kitGrid = document.querySelector('[data-kit-grid]');
 const ugBtn = document.querySelector('[data-ug-add]');
 ugBtn.addEventListener('click', () => setState({ ug: !state.ug }));
 
+// Underglow color preview: hue-shifts the reference photo and the page's ambient light.
+const SWATCHES = [['Magenta', 0, 'magenta', '#e14bff'], ['Ice blue', -105, 'ice', '#6fd8ff'], ['Green', -160, 'rgb', '#3dffa8'], ['Red', 60, 'red', '#ff3b4a'], ['Amber', 95, 'warm', '#ffa53b']];
+const swatchEl = document.querySelector('[data-swatches]');
+swatchEl.innerHTML = SWATCHES.map(([name, , , hex], i) =>
+  `<button type="button" class="swatch" style="--c:${hex}" data-swatch="${i}" aria-label="${name}" aria-pressed="${i === 0}"></button>`).join('')
+  + '<span class="swatch-name" data-swatch-name aria-live="polite">Magenta</span>';
+swatchEl.addEventListener('click', (e) => {
+  const b = e.target.closest('[data-swatch]');
+  if (!b) return;
+  const [name, deg, tint] = SWATCHES[+b.dataset.swatch];
+  swatchEl.querySelectorAll('[data-swatch]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+  swatchEl.querySelector('[data-swatch-name]').textContent = name;
+  document.querySelector('.ug-photo img').style.filter = `hue-rotate(${deg}deg)`;
+  document.querySelector('#underglow').dataset.tint = tint;
+  tintTo(tint);
+});
+
 const table = document.querySelector('[data-price-table]');
 table.innerHTML = `<caption class="sr-only">Planned prices for all 18 kits</caption>
   <thead><tr><th scope="col">Technology</th>${SIZES.map((s) => `<th scope="col">${catalog.sizes[s].name}</th><th scope="col">+ Underglow</th>`).join('')}</tr></thead>
@@ -122,88 +139,76 @@ function scrollToEl(el) {
   else el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
 }
 
-// Hero: scroll scrubs the clip and "switches on" the lights.
-const FRAMES = 93;
-const canvas = document.querySelector('[data-hero-canvas]');
-const ctx = canvas.getContext('2d');
-const tiny = Object.assign(document.createElement('canvas'), { width: 18, height: 26 });
-const tctx = tiny.getContext('2d');
-const frames = new Array(FRAMES);
-const hero = { frame: reduceMotion ? FRAMES - 1 : 0, light: reduceMotion ? 1 : 0.24 };
-const countEl = document.querySelector('[data-hero-count]');
-const barEl = document.querySelector('[data-hero-bar]');
+// Hero: one short film per look. Desktop shows all four side by side with the active one widened;
+// phones crossfade between them. Tabs pick a look and show how long until the next one.
+const LOOKS = [
+  { id: 'static', media: 'look-static', name: 'Static Classic', short: 'Static', sub: `from ${money(priceRange('static')[0])}` },
+  { id: 'rgb', media: 'look-rgb', name: 'Color-Changing RGB', short: 'RGB', sub: `from ${money(priceRange('rgb')[0])}` },
+  { id: 'mapping', media: 'look-mapping', name: 'Graphic Mapping', short: 'Mapping', sub: `from ${money(priceRange('mapping')[0])} · concept` },
+  { id: 'underglow', media: 'look-underglow', name: 'RGBIC Underglow', short: 'Underglow', sub: `add-on +${money(catalog.underglow.S.upcharge)}` },
+];
+const LOOK_SECONDS = 6;
+const looksEl = document.querySelector('[data-looks]');
+const tabsEl = document.querySelector('[data-look-tabs]');
+looksEl.innerHTML = LOOKS.map((l, i) => `<div class="look" data-look="${i}">${video(l.media)}<span class="look-name">${l.name}</span></div>`).join('');
+tabsEl.innerHTML = LOOKS.map((l, i) => `
+  <button type="button" class="look-tab" role="tab" aria-selected="false" data-tab="${i}">
+    <span class="tab-bar"><i></i></span>
+    <span class="tab-name"><span class="long">${l.name}</span><span class="short">${l.short}</span></span>
+    <span class="tab-sub">${l.sub}</span>
+  </button>`).join('');
+const lookEls = [...looksEl.children];
+const tabEls = [...tabsEl.children];
+const wide = matchMedia('(min-width: 861px)');
+let look = 0;
+let heroVisible = true;
+let lookTween = null;
 
-function frameAt(i) {
-  for (let d = 0; d < FRAMES; d++) {
-    if (frames[i - d]?.complete) return frames[i - d];
-    if (frames[i + d]?.complete) return frames[i + d];
-  }
-  return null;
+function syncLookVideos() {
+  lookEls.forEach((el, i) => {
+    const v = el.querySelector('video');
+    const on = heroVisible && (wide.matches || i === look);
+    v.dataset.visible = heroVisible ? '1' : '0';
+    v.dataset.active = on ? '1' : '0';
+    if (on) playIfAllowed(v); else v.pause();
+  });
 }
-function drawHero() {
-  const img = frameAt(hero.frame);
-  const W = canvas.width;
-  const H = canvas.height;
-  ctx.fillStyle = '#07060b';
-  ctx.fillRect(0, 0, W, H);
-  if (img) {
-    const iw = img.naturalWidth;
-    const ih = img.naturalHeight;
-    tctx.drawImage(img, 0, 0, tiny.width, tiny.height);
-    const bs = Math.max(W / tiny.width, H / tiny.height);
-    ctx.globalAlpha = 0.55;
-    ctx.drawImage(tiny, (W - tiny.width * bs) / 2, (H - tiny.height * bs) / 2, tiny.width * bs, tiny.height * bs);
-    ctx.globalAlpha = 1;
-    if (W / H > 1.05) {
-      const h = H;
-      const w = (h * iw) / ih;
-      const x = Math.min(W - w, W * 0.7 - w / 2);
-      ctx.drawImage(img, x, 0, w, h);
-    } else {
-      const s = Math.max(W / iw, H / ih);
-      ctx.drawImage(img, (W - iw * s) / 2, (H - ih * s) / 2, iw * s, ih * s);
-    }
-  }
-  ctx.fillStyle = `rgba(7,6,11,${(1 - hero.light).toFixed(3)})`;
-  ctx.fillRect(0, 0, W, H);
-  const lit = Math.round(((hero.light - 0.24) / 0.76) * 5600 / 10) * 10;
-  countEl.textContent = num(reduceMotion ? 5600 : Math.max(0, lit));
-  barEl.style.transform = `scaleX(${reduceMotion ? 1 : Math.max(0, (hero.light - 0.24) / 0.76)})`;
+function setLook(i) {
+  look = (i + LOOKS.length) % LOOKS.length;
+  lookEls.forEach((el, k) => el.classList.toggle('is-active', k === look));
+  tabEls.forEach((el, k) => {
+    el.setAttribute('aria-selected', String(k === look));
+    if (k !== look) gsap.set(el.querySelector('i'), { scaleX: 0 });
+  });
+  syncLookVideos();
+  lookTween?.kill();
+  const bar = tabEls[look].querySelector('i');
+  if (reduceMotion) { gsap.set(bar, { scaleX: 1 }); return; }
+  lookTween = gsap.fromTo(bar, { scaleX: 0 }, { scaleX: 1, duration: LOOK_SECONDS, ease: 'none', onComplete: () => setLook(look + 1) });
+  if (isPaused() || !heroVisible) lookTween.pause();
 }
-function sizeCanvas() {
-  const dpr = Math.min(devicePixelRatio || 1, 2);
-  canvas.width = Math.round(canvas.clientWidth * dpr);
-  canvas.height = Math.round(canvas.clientHeight * dpr);
-  drawHero();
-}
-function loadFrame(i) {
-  const img = new Image();
-  img.decoding = 'async';
-  img.src = `${BASE}media/hero/frames/f${String(i + 1).padStart(3, '0')}.webp`;
-  frames[i] = img;
-  return img.decode().catch(() => {}).then(() => { if (Math.abs(i - hero.frame) < 3) drawHero(); });
-}
-const firstIdx = hero.frame;
-loadFrame(firstIdx).then(async () => {
-  if (reduceMotion) return;
-  for (let i = 0; i < FRAMES; i += 8) await Promise.all(Array.from({ length: 8 }, (_, k) => i + k).filter((k) => k < FRAMES && k !== firstIdx).map(loadFrame));
+tabEls.forEach((el, i) => el.addEventListener('click', () => setLook(i)));
+lookEls.forEach((el, i) => el.addEventListener('click', () => setLook(i)));
+wide.addEventListener('change', syncLookVideos);
+onMotionChange((p) => { if (p) lookTween?.pause(); else if (heroVisible) lookTween?.resume(); });
+document.querySelector('[data-hero-build]').addEventListener('click', () => {
+  const id = LOOKS[look].id;
+  setState(id === 'underglow' ? { ug: true } : { tech: id });
+  scrollToEl(document.querySelector('#build'));
 });
-addEventListener('resize', sizeCanvas);
-sizeCanvas();
+setLook(0);
+ScrollTrigger.create({
+  trigger: '#hero', start: 'top bottom', end: 'bottom top',
+  onToggle: (self) => {
+    heroVisible = self.isActive;
+    syncLookVideos();
+    if (heroVisible && !isPaused()) lookTween?.resume(); else lookTween?.pause();
+  },
+});
 
 if (!reduceMotion) {
-  const p = { v: 0 };
-  gsap.timeline({ scrollTrigger: { trigger: '#hero', start: 'top top', end: '+=200%', pin: true, scrub: 0.6 } })
-    .to(p, {
-      v: 1, duration: 1, ease: 'none',
-      onUpdate() {
-        hero.frame = Math.round(p.v * (FRAMES - 1));
-        hero.light = 0.24 + 0.76 * Math.min(1, p.v / 0.5);
-        drawHero();
-      },
-    }, 0)
-    .to('.hero-copy', { y: -50, duration: 1, ease: 'none' }, 0)
-    .to('.scroll-cue', { autoAlpha: 0, duration: 0.1 }, 0);
+  gsap.from('.hero-copy > *, .look-tab', { y: 28, autoAlpha: 0, duration: 0.9, ease: 'power3.out', stagger: 0.07, delay: 0.15 });
+  gsap.to('.looks', { yPercent: 10, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
 
   const mm = gsap.matchMedia();
   mm.add('(min-width: 900px)', () => {

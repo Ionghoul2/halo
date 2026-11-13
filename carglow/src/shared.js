@@ -1,10 +1,11 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { SplitText } from 'gsap/SplitText';
 import Lenis from 'lenis';
 import catalog from './data/catalog.json';
 import './styles.css';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, SplitText);
 export { gsap, ScrollTrigger, catalog };
 
 export const BASE = document.documentElement.dataset.base || '';
@@ -30,6 +31,12 @@ export const ledRange = (tech) => {
 export const statusLabel = (s) => (s === 'concept' ? 'Concept · coming soon' : 'Early access');
 
 export const MEDIA = {
+  'look-static': { dir: 'hero', alt: 'Lamborghinis and a BMW wrapped in classic multicolor string lights' },
+  'look-rgb': { dir: 'hero', alt: 'McLarens and Porsches in shifting turquoise, purple, green and blue light' },
+  'look-mapping': { dir: 'hero', alt: 'Cars showing mapped LED graphics: gingerbread man, faces, stripes' },
+  'look-underglow': { dir: 'hero', alt: 'Row of Lamborghinis with rainbow and red underglow' },
+  'two-tone-pixels': { dir: 'rgb', alt: 'McLaren and Porsche in white, blue and red pixel light, with smoke' },
+  'pixel-install-lambo': { dir: 'installation', alt: 'Pixel strands taped in rows across a yellow Lamborghini hood' },
   'ice-mclaren': { dir: 'hero', alt: 'Supercar covered in dense white and ice-blue LEDs at night' },
   'lights-on-reveal': { dir: 'hero', alt: 'A sedan and a van light up with thousands of mini lights' },
   'community-night': { dir: 'hero', alt: 'A street full of cars covered in multicolor lights' },
@@ -58,7 +65,7 @@ const write = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } ca
 export const state = { ...DEFAULT, ...read(KEY, {}) };
 const listeners = new Set();
 export function setState(patch) {
-  Object.assign(state, patch);
+  Object.assign(state, patch, { touched: true });
   write(KEY, state);
   listeners.forEach((f) => f(state));
 }
@@ -150,26 +157,119 @@ export function renderChrome(active = '') {
     document.querySelector('[data-buybar-label]').textContent =
       `${catalog.products[s.tech].name} · ${catalog.sizes[s.size].name}${s.ug ? ' + underglow' : ''}`;
     document.querySelector('[data-buybar-price]').textContent = money(v.ownerTargetPrice);
+    document.querySelector('[data-buybar]').dataset.touched = s.touched ? '1' : '0';
   });
 }
 
 /* ---------- motion ---------- */
 let paused = read('carglow:paused', reduceMotion);
 const videos = new Set();
+const motionListeners = new Set();
+export const isPaused = () => paused;
+export const onMotionChange = (f) => motionListeners.add(f);
 export function playIfAllowed(v) {
   videos.add(v);
   if (!v.getAttribute('src')) v.src = v.dataset.src;
   if (!paused) v.play().catch(() => {});
 }
+
+/* Ambient background: an LED grid with bands of light drifting across it. One fixed WebGL canvas for the whole page. */
+const TINTS = {
+  magenta: [[0.88, 0.29, 1.0], [0.36, 0.22, 1.0]],
+  ice: [[0.56, 0.89, 1.0], [0.3, 0.42, 1.0]],
+  rgb: [[0.1, 0.9, 0.75], [0.7, 0.3, 1.0]],
+  warm: [[1.0, 0.62, 0.2], [0.88, 0.29, 1.0]],
+  red: [[1.0, 0.22, 0.28], [0.88, 0.29, 1.0]],
+};
+const FRAG = `precision mediump float;
+uniform vec2 u_res; uniform float u_t; uniform float u_s; uniform float u_cell; uniform vec3 u_a; uniform vec3 u_b;
+float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+void main(){
+  vec2 p = (gl_FragCoord.xy - 0.5 * u_res) / u_res.y;
+  vec3 acc = vec3(0.0); float lit = 0.0;
+  for (int i = 0; i < 3; i++) {
+    float fi = float(i);
+    float y = p.y - (fi - 1.0) * 0.36 + 0.2 * sin(p.x * 1.4 + u_t * 0.22 + fi * 2.1 + u_s) + 0.09 * sin(p.x * 3.1 - u_t * 0.31 + fi * 1.3);
+    float w = 0.07 + 0.04 * sin(p.x * 0.9 + u_t * 0.17 + fi);
+    float band = exp(-y * y / (w * w));
+    float core = exp(-y * y / (w * w * 0.02));
+    vec3 c = mix(u_a, u_b, 0.5 + 0.5 * sin(p.x * 1.2 + fi * 1.9 + u_t * 0.1));
+    acc += c * (band * 0.10 + core * 0.16);
+    lit += band;
+  }
+  vec2 gp = gl_FragCoord.xy / u_cell;
+  vec2 cell = floor(gp); vec2 f = fract(gp) - 0.5;
+  float tw = 0.5 + 0.5 * sin(u_t * 1.4 + hash(cell) * 6.2831);
+  float dot_ = smoothstep(0.2, 0.03, length(f));
+  acc += mix(u_a, u_b, hash(cell + 7.0)) * dot_ * tw * (0.035 + 0.5 * min(lit, 1.0));
+  gl_FragColor = vec4(vec3(0.027, 0.024, 0.043) + acc, 1.0);
+}`;
+function initAmbient() {
+  const canvas = Object.assign(document.createElement('canvas'), { className: 'ambient' });
+  canvas.setAttribute('aria-hidden', 'true');
+  const gl = canvas.getContext('webgl', { antialias: false, alpha: false, powerPreference: 'low-power' });
+  if (!gl) return;
+  const shader = (type, src) => { const sh = gl.createShader(type); gl.shaderSource(sh, src); gl.compileShader(sh); return sh; };
+  const prog = gl.createProgram();
+  gl.attachShader(prog, shader(gl.VERTEX_SHADER, 'attribute vec2 p; void main(){ gl_Position = vec4(p, 0.0, 1.0); }'));
+  gl.attachShader(prog, shader(gl.FRAGMENT_SHADER, FRAG));
+  gl.linkProgram(prog);
+  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return;
+  gl.useProgram(prog);
+  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(prog, 'p');
+  gl.enableVertexAttribArray(loc);
+  gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+  const U = Object.fromEntries(['u_res', 'u_t', 'u_s', 'u_cell', 'u_a', 'u_b'].map((n) => [n, gl.getUniformLocation(prog, n)]));
+  document.body.prepend(canvas);
+  document.documentElement.classList.add('has-ambient');
+
+  const cur = TINTS.magenta.map((c) => [...c]);
+  let target = TINTS.magenta;
+  let ratio = 0.5;
+  const resize = () => {
+    ratio = Math.min(devicePixelRatio || 1, 2) * 0.5;
+    canvas.width = Math.round(innerWidth * ratio);
+    canvas.height = Math.round(innerHeight * ratio);
+    gl.viewport(0, 0, canvas.width, canvas.height);
+  };
+  const draw = (ms) => {
+    cur.forEach((c, i) => c.forEach((_, k) => { c[k] += (target[i][k] - c[k]) * 0.05; }));
+    gl.uniform2f(U.u_res, canvas.width, canvas.height);
+    gl.uniform1f(U.u_t, ms / 1000);
+    gl.uniform1f(U.u_s, scrollY * 0.0012);
+    gl.uniform1f(U.u_cell, 26 * ratio);
+    gl.uniform3fv(U.u_a, cur[0]);
+    gl.uniform3fv(U.u_b, cur[1]);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  };
+  let frame = 0;
+  const loop = (ms) => {
+    if (!paused && !document.hidden && frame++ % 2 === 0) draw(ms);
+    requestAnimationFrame(loop);
+  };
+  addEventListener('resize', () => { resize(); draw(performance.now()); });
+  resize();
+  draw(4000);
+  requestAnimationFrame(loop);
+
+  setTint = (name) => { target = TINTS[name]; };
+}
+let setTint = null;
+export const tintTo = (name) => setTint?.(name);
+
 export function initMotion() {
   const toggle = document.querySelector('[data-motion-toggle]');
   const sync = () => {
     toggle.setAttribute('aria-pressed', String(paused));
     toggle.textContent = paused ? 'Play motion' : 'Pause motion';
+    document.documentElement.classList.toggle('motion-paused', paused);
     videos.forEach((v) => {
       if (paused) v.pause();
       else if (v.dataset.visible === '1' && v.dataset.active !== '0') v.play().catch(() => {});
     });
+    motionListeners.forEach((f) => f(paused));
   };
   toggle.addEventListener('click', () => { paused = !paused; write('carglow:paused', paused); sync(); });
 
@@ -180,6 +280,7 @@ export function initMotion() {
   }), { rootMargin: '200px 0px' });
   document.querySelectorAll('video[data-src]').forEach((v) => { videos.add(v); io.observe(v); });
   sync();
+  initAmbient();
 
   if (reduceMotion) return null;
   const lenis = new Lenis({ anchors: { offset: -70 }, lerp: 0.12 });
@@ -190,9 +291,28 @@ export function initMotion() {
 }
 // Call after any pinned sections are created so trigger positions include pin spacing.
 export function initReveals() {
+  if (setTint) document.querySelectorAll('[data-tint]').forEach((el) => ScrollTrigger.create({
+    trigger: el, start: 'top 55%', end: 'bottom 55%',
+    onToggle: (self) => { if (self.isActive) setTint(el.dataset.tint); },
+  }));
   if (reduceMotion) return;
   gsap.utils.toArray('[data-reveal]').forEach((el) => {
     gsap.from(el, { y: 36, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 90%', once: true } });
+  });
+  gsap.utils.toArray('[data-parallax]').forEach((el) => {
+    gsap.fromTo(el, { yPercent: -el.dataset.parallax }, {
+      yPercent: +el.dataset.parallax, ease: 'none',
+      scrollTrigger: { trigger: el.parentElement, start: 'top bottom', end: 'bottom top', scrub: true },
+    });
+  });
+  document.fonts.ready.then(() => {
+    gsap.utils.toArray('.h2').forEach((el) => SplitText.create(el, {
+      type: 'lines', autoSplit: true,
+      onSplit: (self) => gsap.from(self.lines, {
+        yPercent: 60, autoAlpha: 0, duration: 0.9, ease: 'power4.out', stagger: 0.09,
+        scrollTrigger: { trigger: el, start: 'top 92%', once: true },
+      }),
+    }));
   });
 }
 
@@ -203,7 +323,8 @@ export function mountBuilder(root, { lockTech = null } = {}) {
   const sizeBtn = (k) => `<button type="button" class="opt" data-size="${k}" aria-pressed="false">
       <span class="opt-title">${catalog.sizes[k].name}</span><span class="opt-sub">${catalog.sizes[k].lengthFt} ft</span>
       <span class="badge-rec" hidden>Recommended</span></button>`;
-  const techBtn = (k) => `<button type="button" class="opt" data-tech="${k}" aria-pressed="false">
+  const techBtn = (k) => `<button type="button" class="opt opt-tech" data-tech="${k}" aria-pressed="false">
+      ${video(catalog.products[k].media, 'opt-video')}
       <span class="opt-title">${catalog.products[k].name}</span><span class="opt-sub">from ${money(priceRange(k)[0])}</span></button>`;
 
   root.innerHTML = `
@@ -284,6 +405,7 @@ export function mountBuilder(root, { lockTech = null } = {}) {
   $('#veh-model').value = state.model;
   $('#veh-length').value = state.lengthFt;
 
+  const shown = { v: null };
   let lastQuery = '';
   const loadModels = async () => {
     const q = `${state.make}|${state.year}`;
@@ -329,7 +451,13 @@ export function mountBuilder(root, { lockTech = null } = {}) {
   subscribe((s) => {
     const v = variantFor(s.tech, s.size, s.ug);
     const rec = recommend(s);
-    $$('[data-tech]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.tech === s.tech)));
+    $$('[data-tech]').forEach((b) => {
+      const on = b.dataset.tech === s.tech;
+      b.setAttribute('aria-pressed', String(on));
+      const vid = b.querySelector('video');
+      vid.dataset.active = on ? '1' : '0';
+      if (on && vid.dataset.visible === '1') playIfAllowed(vid); else vid.pause();
+    });
     $$('[data-size]').forEach((b) => {
       b.setAttribute('aria-pressed', String(b.dataset.size === s.size));
       b.querySelector('.badge-rec').hidden = !(rec && rec.size === b.dataset.size);
@@ -356,7 +484,9 @@ export function mountBuilder(root, { lockTech = null } = {}) {
     $('[data-sum-grid]').textContent = `${v.plannedPitchIn} in`;
     $('[data-sum-sku]').textContent = v.sku;
     $('[data-sum-status]').textContent = statusLabel(v.status);
-    $('[data-sum-price]').textContent = money(v.ownerTargetPrice);
+    const priceEl = $('[data-sum-price]');
+    if (reduceMotion || shown.v === null) { shown.v = v.ownerTargetPrice; priceEl.textContent = money(shown.v); }
+    else gsap.to(shown, { v: v.ownerTargetPrice, duration: 0.5, ease: 'power2.out', overwrite: true, onUpdate: () => { priceEl.textContent = money(Math.round(shown.v)); } });
     $('[data-sum-contents]').innerHTML = kitContents(v).map(([a, b]) => `<li><strong>${a}</strong><span>${b}</span><em>Planned</em></li>`).join('');
     const custom = rec?.size === 'CUSTOM';
     const fit = $('[data-sum-fit]');

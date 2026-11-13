@@ -36,6 +36,17 @@ const browser = await chromium.launch();
   }
   console.log(`18-variant check: ${tested} tested`);
 
+  // Hero: each tab selects its look, and the hero CTA carries the look into the build.
+  for (let i = 0; i < 4; i++) {
+    await page.click(`[data-tab="${i}"]`);
+    check(await page.getAttribute(`[data-look="${i}"]`, 'class') === 'look is-active', `hero tab ${i} did not activate its look`);
+  }
+  await page.click('[data-tab="2"]');
+  await page.click('[data-hero-build]');
+  check((await page.textContent('[data-sum-sku]')).startsWith('MAP-'), 'hero CTA did not carry Mapping into the build');
+  check(await page.evaluate(() => !!document.querySelector('canvas.ambient')), 'ambient background canvas missing');
+  console.log('hero check done');
+
   // 2. Vehicle sizing.
   const cases = [['sedan', '', 'Medium'], ['fullsuv', '', 'Large'], ['sports', '', 'Small'], ['sedan', '192 in', 'Medium'], ['pickup', '21', 'Fitment check required'], ['van', '', 'Fitment check required'], ['crossover', '14.5', 'Small']];
   for (const [body, len, want] of cases) {
@@ -107,13 +118,14 @@ const wheelTo = (sel, extra = 0) => async (page) => {
   }
 };
 const heroSteps = [
-  ['01-hero-dark', async () => {}],
-  ['02-hero-lit', async (page) => { for (let i = 0; i < 12; i++) { await page.mouse.wheel(0, 120); await page.waitForTimeout(60); } }],
-  ['03-reveal', wheelTo('#reveal', 60)],
+  ['01-hero', async () => {}],
+  ['02-hero-mapping', async (page) => { await page.click('[data-tab="2"]'); }],
+  ['03-reveal', wheelTo('#reveal', 40)],
   ['04-lineup', wheelTo('#lineup', 80)],
   ['05-build', wheelTo('#build', 60)],
+  ['05b-build-options', wheelTo('#build', 620)],
   ['06-coverage', wheelTo('#kit', -1400)],
-  ['07-underglow', wheelTo('#underglow', 80)],
+  ['07-kit', wheelTo('#kit', 20)],
   ['08-final', wheelTo('#final', 40)],
 ];
 await shots('desktop', { viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 }, heroSteps);
