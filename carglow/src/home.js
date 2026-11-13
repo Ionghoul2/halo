@@ -98,6 +98,69 @@ filmEl.querySelectorAll('[data-pick]').forEach((b) => b.addEventListener('click'
 }));
 setFilm(0);
 
+/* ---------- coverage deck: 3D cards that turn as the page scrolls ---------- */
+const DECK = [
+  ['dense-red', 'Dense single color', 'Points packed tight across every panel. Closest to our Mapping grid.'],
+  ['classic-string-lambos', 'Classic string', 'Multicolor mini lights over the whole body. The Static Classic look.'],
+  ['lambo-convoy', 'Mapped graphics', 'Faces and stripes drawn across hoods. Needs addressable pixels.'],
+  ['two-tone-pixels', 'Two-tone pixels', 'Half white, half color on the same car. Needs addressable pixels.'],
+  ['supercar-palette', 'Color gradients', 'Turquoise, purple and green flowing across one car.'],
+  ['community-night', 'The whole street', 'What happens when a few lit cars show up to the same place.'],
+];
+const deckEl = document.querySelector('#coverage');
+const two = (n) => String(n).padStart(2, '0');
+deckEl.querySelector('[data-deck]').innerHTML = DECK.map(([id, title], i) => `
+  <article class="deck-card" data-card="${i}">${video(id)}<span class="deck-chip">${two(i + 1)}</span><span class="deck-label">${title}</span></article>`).join('');
+deckEl.querySelector('[data-deck-bg]').innerHTML = DECK.map(([id]) => `<img alt="" loading="lazy" src="${BASE}media/posters/${id}.jpg">`).join('');
+const deckCards = [...deckEl.querySelectorAll('.deck-card')];
+const deckBgs = [...deckEl.querySelectorAll('[data-deck-bg] img')];
+const deck = { p: 0 };
+let deckActive = -1;
+let deckST = null;
+function renderDeck() {
+  const act = Math.max(0, Math.min(DECK.length - 1, Math.round(deck.p)));
+  deckCards.forEach((el, i) => {
+    const o = i - deck.p;
+    const a = Math.abs(o);
+    el.style.setProperty('--o', o.toFixed(3));
+    el.style.setProperty('--a', Math.min(a, 2.6).toFixed(3));
+    el.style.zIndex = String(20 - Math.round(a * 4));
+    el.style.visibility = a > 2.6 ? 'hidden' : 'visible';
+  });
+  if (act === deckActive) return;
+  deckActive = act;
+  deckCards.forEach((el, i) => {
+    const on = i === act;
+    el.classList.toggle('is-active', on);
+    const v = el.querySelector('video');
+    v.dataset.active = on ? '1' : '0';
+    if (on && v.dataset.visible === '1') playIfAllowed(v); else v.pause();
+  });
+  deckBgs.forEach((el, i) => el.classList.toggle('is-active', i === act));
+  deckEl.querySelector('[data-deck-n]').textContent = two(act + 1);
+  deckEl.querySelector('[data-deck-title]').textContent = DECK[act][1];
+  deckEl.querySelector('[data-deck-text]').textContent = DECK[act][2];
+}
+function goDeck(i) {
+  const n = Math.max(0, Math.min(DECK.length - 1, i));
+  if (!deckST) { deck.p = n; deckEl.classList.add('is-stepped'); renderDeck(); return; }
+  const y = deckST.start + (n / (DECK.length - 1)) * (deckST.end - deckST.start);
+  if (lenis) lenis.scrollTo(y); else scrollTo(0, y);
+}
+deckEl.querySelector('[data-deck-prev]').addEventListener('click', () => goDeck(deckActive - 1));
+deckEl.querySelector('[data-deck-next]').addEventListener('click', () => goDeck(deckActive + 1));
+deckCards.forEach((el, i) => el.addEventListener('click', () => { if (i !== deckActive) goDeck(i); }));
+let deckTouch = null;
+deckEl.addEventListener('touchstart', (e) => { deckTouch = [e.touches[0].clientX, e.touches[0].clientY]; }, { passive: true });
+deckEl.addEventListener('touchend', (e) => {
+  if (!deckTouch) return;
+  const dx = e.changedTouches[0].clientX - deckTouch[0];
+  const dy = e.changedTouches[0].clientY - deckTouch[1];
+  deckTouch = null;
+  if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.5) goDeck(deckActive + (dx < 0 ? 1 : -1));
+}, { passive: true });
+renderDeck();
+
 /* ---------- kit contents, underglow, price table ---------- */
 const kitGrid = document.querySelector('[data-kit-grid]');
 const ugBtn = document.querySelector('[data-ug-add]');
@@ -213,15 +276,14 @@ if (!reduceMotion) {
     onToggle: (self) => { if (self.isActive) tintTo(FILM_TINT[TECHS[film]]); },
   });
 
-  const mm = gsap.matchMedia();
-  mm.add('(min-width: 900px)', () => {
-    const track = document.querySelector('[data-track]');
-    const dist = () => track.scrollWidth - document.documentElement.clientWidth + 48;
-    gsap.to(track, {
-      x: () => -dist(), ease: 'none',
-      scrollTrigger: { trigger: '.coverage-pin', start: 'top top', end: () => `+=${dist()}`, pin: true, scrub: 0.5, invalidateOnRefresh: true },
-    });
-  });
+  // Pin the coverage deck; scroll turns the cards and settles on the nearest one.
+  deckST = gsap.to(deck, {
+    p: DECK.length - 1, ease: 'none', onUpdate: renderDeck,
+    scrollTrigger: {
+      trigger: '#coverage', start: 'top top', end: () => `+=${Math.round(innerHeight * 0.5 * (DECK.length - 1))}`, pin: true, scrub: 0.5,
+      snap: { snapTo: 1 / (DECK.length - 1), duration: { min: 0.15, max: 0.45 }, delay: 0.08, ease: 'power2.out' },
+    },
+  }).scrollTrigger;
 }
 
 const buybar = document.querySelector('[data-buybar]');

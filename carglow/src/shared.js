@@ -130,6 +130,34 @@ export function kitContents(v) {
   return items;
 }
 
+/* ---------- Christmas light garland under the menu (seasonal: remove the svg in renderChrome to turn off) ---------- */
+const GARLAND = ['#ff3b4a', '#3dff8a', '#ffc94a', '#5aa8ff', '#ff6ad5'];
+let garlandW = 0;
+function buildGarland() {
+  const svg = document.querySelector('[data-garland]');
+  const W = innerWidth;
+  if (!svg || W === garlandW) return;
+  garlandW = W;
+  const swags = Math.max(3, Math.round(W / 118));
+  const span = W / swags;
+  const SAG = 13;
+  let wire = 'M 0 2';
+  let bulbs = '';
+  for (let i = 0; i < swags; i++) {
+    const x0 = i * span;
+    wire += ` Q ${(x0 + span / 2).toFixed(1)} ${2 + SAG * 2} ${(x0 + span).toFixed(1)} 2`;
+    [0.2, 0.4, 0.6, 0.8].forEach((t, k) => {
+      const x = x0 + t * span;
+      const y = 2 + SAG * 4 * t * (1 - t);
+      const n = i * 4 + k;
+      const c = GARLAND[n % GARLAND.length];
+      bulbs += `<g class="g-bulb" style="animation-delay:-${((n * 0.37) % 2.6).toFixed(2)}s" fill="${c}"><circle class="halo" cx="${x.toFixed(1)}" cy="${(y + 6).toFixed(1)}" r="8"/><rect x="${(x - 1.2).toFixed(1)}" y="${y.toFixed(1)}" width="2.4" height="2.6" fill="#2a2536"/><ellipse cx="${x.toFixed(1)}" cy="${(y + 6.4).toFixed(1)}" rx="2.7" ry="4"/></g>`;
+    });
+  }
+  svg.setAttribute('viewBox', `0 0 ${W} 36`);
+  svg.innerHTML = `<path d="${wire}" fill="none" stroke="rgba(229,220,255,0.35)" stroke-width="1"/>${bulbs}`;
+}
+
 /* ---------- page chrome ---------- */
 export function renderChrome(active = '') {
   const link = (key, label) =>
@@ -141,7 +169,10 @@ export function renderChrome(active = '') {
     <nav aria-label="Products">${link('static', 'Static')}${link('rgb', 'RGB')}${link('mapping', 'Mapping')}${link('underglow', 'Underglow')}</nav>
     <button class="motion-toggle" type="button" aria-pressed="false" data-motion-toggle><span class="motion-icon" aria-hidden="true"></span><span class="long" data-motion-label>Pause motion</span></button>
     <a class="btn btn-glow nav-cta" href="${BASE}index.html#build">Find my lights</a>
+    <svg class="garland" data-garland aria-hidden="true"></svg>
   </header>`);
+  buildGarland();
+  addEventListener('resize', buildGarland);
   document.body.insertAdjacentHTML('beforeend', `
   <footer class="footer">
     <div class="footer-inner">
@@ -178,34 +209,52 @@ export function playIfAllowed(v) {
 }
 
 /* Ambient background: an LED grid with bands of light drifting across it. One fixed WebGL canvas for the whole page. */
+// Every tint keeps the green "essence" and changes the second color.
+const GREEN = [0.1, 0.92, 0.6];
 const TINTS = {
-  magenta: [[0.88, 0.29, 1.0], [0.36, 0.22, 1.0]],
-  ice: [[0.56, 0.89, 1.0], [0.3, 0.42, 1.0]],
-  rgb: [[0.1, 0.9, 0.75], [0.7, 0.3, 1.0]],
-  warm: [[1.0, 0.62, 0.2], [0.88, 0.29, 1.0]],
-  red: [[1.0, 0.22, 0.28], [0.88, 0.29, 1.0]],
+  essence: [GREEN, [0.1, 0.72, 0.95]],
+  magenta: [GREEN, [0.88, 0.29, 1.0]],
+  ice: [[0.1, 0.9, 0.78], [0.42, 0.58, 1.0]],
+  rgb: [GREEN, [0.66, 0.32, 1.0]],
+  warm: [GREEN, [1.0, 0.72, 0.25]],
+  red: [GREEN, [1.0, 0.22, 0.28]],
 };
-const FRAG = `precision mediump float;
+const FRAG = `#ifdef GL_FRAGMENT_PRECISION_HIGH
+precision highp float;
+#else
+precision mediump float;
+#endif
 uniform vec2 u_res; uniform float u_t; uniform float u_s; uniform float u_cell; uniform vec3 u_a; uniform vec3 u_b;
 float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+float noise(vec2 p){
+  vec2 i = floor(p); vec2 f = fract(p); f = f * f * (3.0 - 2.0 * f);
+  return mix(mix(hash(i), hash(i + vec2(1.0, 0.0)), f.x), mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), f.x), f.y);
+}
 void main(){
   vec2 p = (gl_FragCoord.xy - 0.5 * u_res) / u_res.y;
+  // Rotate so the light runs corner to corner, and let scrolling push it along.
+  vec2 q = vec2(p.x * 0.82 + p.y * 0.57, -p.x * 0.57 + p.y * 0.82);
+  float flow = u_t * 0.05 + u_s;
   vec3 acc = vec3(0.0); float lit = 0.0;
-  for (int i = 0; i < 3; i++) {
+  for (int i = 0; i < 2; i++) {
     float fi = float(i);
-    float y = p.y - (fi - 1.0) * 0.36 + 0.2 * sin(p.x * 1.4 + u_t * 0.22 + fi * 2.1 + u_s) + 0.09 * sin(p.x * 3.1 - u_t * 0.31 + fi * 1.3);
-    float w = 0.07 + 0.04 * sin(p.x * 0.9 + u_t * 0.17 + fi);
+    float n = noise(vec2(q.x * 1.25 + flow * (1.0 + fi * 0.6) + fi * 7.3, fi * 3.1 + u_t * 0.03));
+    float y = q.y + (fi - 0.5) * 0.78 + (n - 0.5) * 0.6;
+    float w = 0.15 + 0.11 * noise(vec2(q.x * 0.8 - flow + fi * 4.0, 2.0));
     float band = exp(-y * y / (w * w));
-    float core = exp(-y * y / (w * w * 0.02));
-    vec3 c = mix(u_a, u_b, 0.5 + 0.5 * sin(p.x * 1.2 + fi * 1.9 + u_t * 0.1));
-    acc += c * (band * 0.10 + core * 0.16);
+    float core = exp(-y * y / (w * w * 0.04));
+    float mixv = clamp(0.5 + 1.1 * (noise(vec2(q.x * 0.9 + flow * 0.7, fi + 5.0)) - 0.5), 0.0, 1.0);
+    acc += mix(u_a, u_b, mixv) * (band * 0.2 + core * 0.09);
     lit += band;
   }
-  vec2 gp = gl_FragCoord.xy / u_cell;
-  vec2 cell = floor(gp); vec2 f = fract(gp) - 0.5;
-  float tw = 0.5 + 0.5 * sin(u_t * 1.4 + hash(cell) * 6.2831);
-  float dot_ = smoothstep(0.2, 0.03, length(f));
-  acc += mix(u_a, u_b, hash(cell + 7.0)) * dot_ * tw * (0.035 + 0.5 * min(lit, 1.0));
+  // Dust: small sparks drifting along the light.
+  vec2 g = gl_FragCoord.xy / u_cell; g.x += flow * 5.0; g.y -= flow * 2.0;
+  vec2 cell = floor(g); vec2 f = fract(g) - 0.5;
+  float h = hash(cell);
+  vec2 off = (vec2(hash(cell + 3.1), hash(cell + 9.7)) - 0.5) * 0.6;
+  float spark = smoothstep(0.11, 0.0, length(f - off)) * step(0.7, h);
+  float tw = 0.45 + 0.55 * sin(u_t * (1.0 + h * 2.0) + h * 40.0);
+  acc += mix(u_a, u_b, h) * spark * tw * (0.22 + 1.1 * min(lit, 1.0));
   gl_FragColor = vec4(vec3(0.027, 0.024, 0.043) + acc, 1.0);
 }`;
 function initAmbient() {
@@ -229,8 +278,8 @@ function initAmbient() {
   document.body.prepend(canvas);
   document.documentElement.classList.add('has-ambient');
 
-  const cur = TINTS.magenta.map((c) => [...c]);
-  let target = TINTS.magenta;
+  const cur = TINTS.essence.map((c) => [...c]);
+  let target = TINTS.essence;
   let ratio = 0.5;
   const resize = () => {
     ratio = Math.min(devicePixelRatio || 1, 2) * 0.5;
@@ -243,7 +292,7 @@ function initAmbient() {
     gl.uniform2f(U.u_res, canvas.width, canvas.height);
     gl.uniform1f(U.u_t, ms / 1000);
     gl.uniform1f(U.u_s, scrollY * 0.0012);
-    gl.uniform1f(U.u_cell, 26 * ratio);
+    gl.uniform1f(U.u_cell, 30 * ratio);
     gl.uniform3fv(U.u_a, cur[0]);
     gl.uniform3fv(U.u_b, cur[1]);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
@@ -262,6 +311,77 @@ function initAmbient() {
 }
 let setTint = null;
 export const tintTo = (name) => setTint?.(name);
+
+/* A winding string of Christmas lights fixed behind the page. A small car drives along it as the page
+   scrolls and lights the bulbs it has just passed. */
+const BULBS = ['#ff3b4a', '#3dff8a', '#ffc94a', '#5aa8ff', '#ff6ad5'];
+const NS = 'http://www.w3.org/2000/svg';
+function initTrack() {
+  const svg = document.createElementNS(NS, 'svg');
+  svg.setAttribute('class', 'track-bg');
+  svg.setAttribute('aria-hidden', 'true');
+  svg.innerHTML = `<defs><linearGradient id="beam" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#fff6d8" stop-opacity="0.55"/><stop offset="1" stop-color="#fff6d8" stop-opacity="0"/></linearGradient></defs>
+    <path class="wire" fill="none"/><g class="bulbs"></g>
+    <g class="car"><ellipse class="car-glow" rx="15" ry="22"/><path d="M-6 -15 L-15 -52 L15 -52 L6 -15Z" fill="url(#beam)"/>
+      <rect class="car-body" x="-7.5" y="-15" width="15" height="30" rx="5.5"/><rect class="car-cabin" x="-5.5" y="-7" width="11" height="13" rx="3"/>
+      <rect class="car-hl" x="-6.5" y="-15.5" width="4" height="2.4" rx="1"/><rect class="car-hl" x="2.5" y="-15.5" width="4" height="2.4" rx="1"/>
+      <rect class="car-tl" x="-6.5" y="13.2" width="4" height="2" rx="1"/><rect class="car-tl" x="2.5" y="13.2" width="4" height="2" rx="1"/></g>`;
+  const canvas = document.querySelector('canvas.ambient');
+  if (canvas) canvas.after(svg); else document.body.prepend(svg);
+  const wire = svg.querySelector('.wire');
+  const bulbG = svg.querySelector('.bulbs');
+  const car = svg.querySelector('.car');
+  const GAP = 30;
+  let L = 0;
+  let bulbs = [];
+  let lastY = scrollY;
+  let dir = 1;
+  let lastIdx = -99;
+  function layout() {
+    const W = innerWidth;
+    const H = innerHeight;
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    // Phones: run down the right edge, cross once, then down the left edge, so the car stays out of the text.
+    wire.setAttribute('d', W < 700
+      ? `M ${W - 9} -70 L ${W - 9} ${0.3 * H} C ${W - 9} ${0.47 * H}, 9 ${0.47 * H}, 9 ${0.64 * H} L 9 ${H + 70}`
+      : `M ${0.8 * W} -70 C ${0.98 * W} ${0.2 * H}, ${0.02 * W} ${0.28 * H}, ${0.18 * W} ${0.52 * H} S ${0.94 * W} ${0.8 * H}, ${0.66 * W} ${H + 70}`);
+    L = wire.getTotalLength();
+    const n = Math.floor(L / GAP);
+    bulbG.innerHTML = Array.from({ length: n }, (_, i) => {
+      const pt = wire.getPointAtLength((i + 0.5) * GAP);
+      const c = BULBS[i % BULBS.length];
+      return `<g class="bulb" fill="${c}"><circle class="halo" cx="${pt.x.toFixed(1)}" cy="${pt.y.toFixed(1)}" r="9"/><circle cx="${pt.x.toFixed(1)}" cy="${pt.y.toFixed(1)}" r="2.6"/></g>`;
+    }).join('');
+    bulbs = [...bulbG.children];
+    lastIdx = -99;
+    update();
+  }
+  function update() {
+    const y = scrollY;
+    if (y !== lastY) dir = y > lastY ? 1 : -1;
+    lastY = y;
+    const p = (y / (innerHeight * 2.4)) % 1;
+    const l = p * L;
+    const a = wire.getPointAtLength(l);
+    const b = wire.getPointAtLength(Math.min(L, l + 2));
+    const deg = (Math.atan2(b.y - a.y, b.x - a.x) * 180) / Math.PI + 90 + (dir < 0 ? 180 : 0);
+    car.setAttribute('transform', `translate(${a.x.toFixed(1)} ${a.y.toFixed(1)}) rotate(${deg.toFixed(1)})`);
+    const idx = Math.floor(l / GAP);
+    if (idx !== lastIdx) {
+      bulbs.forEach((el, i) => { const d = (idx - i) * dir; el.classList.toggle('lit', d >= 0 && d < 9); });
+      lastIdx = idx;
+    }
+  }
+  let queued = false;
+  addEventListener('scroll', () => {
+    if (queued || paused) return;
+    queued = true;
+    requestAnimationFrame(() => { queued = false; update(); });
+  }, { passive: true });
+  addEventListener('resize', layout);
+  if (reduceMotion) svg.classList.add('still');
+  layout();
+}
 
 export function initMotion() {
   const toggle = document.querySelector('[data-motion-toggle]');
@@ -286,6 +406,7 @@ export function initMotion() {
   document.querySelectorAll('video[data-src]').forEach((v) => { videos.add(v); io.observe(v); });
   sync();
   initAmbient();
+  initTrack();
 
   if (reduceMotion) return null;
   const lenis = new Lenis({ anchors: { offset: -70 }, lerp: 0.12 });

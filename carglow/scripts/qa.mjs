@@ -45,6 +45,14 @@ const browser = await chromium.launch();
   await page.click('[data-hero-build]');
   check((await page.textContent('[data-sum-sku]')).startsWith('MAP-'), 'hero CTA did not carry Mapping into the build');
   check(await page.evaluate(() => !!document.querySelector('canvas.ambient')), 'ambient background canvas missing');
+  check(await page.evaluate(() => document.querySelectorAll('.track-bg .bulb').length > 20), 'scroll light string missing');
+  check(await page.evaluate(() => document.querySelectorAll('.garland .g-bulb').length >= 12), 'menu garland missing');
+  // Coverage deck: each step centers its card and updates the counter and caption.
+  for (let i = 0; i < 6; i++) {
+    check(await page.getAttribute(`[data-card="${i}"]`, 'class') === 'deck-card is-active', `deck card ${i} not active`);
+    check(await page.textContent('[data-deck-n]') === `0${i + 1}`, `deck counter wrong at ${i}`);
+    if (i < 5) await page.click('[data-deck-next]');
+  }
   // Product film: each step shows its technology, and "Build this kit" carries it into the build.
   for (const [i, code] of [[0, 'STATIC-'], [1, 'RGB-'], [2, 'MAP-']]) {
     await page.click(`[data-film-dot="${i}"]`);
@@ -131,15 +139,14 @@ const heroSteps = [
   ['03-reveal', wheelTo('#reveal', 40)],
   ['04-film-static', wheelTo('#lineup', 60)],
   ['05-film-rgb', async (page) => { await wheelBy(Math.round(page.viewportSize().height * 0.75))(page); }],
-  ['06-film-mapping', async (page) => { await wheelBy(Math.round(page.viewportSize().height * 0.7))(page); }],
-  ['07-coverage', wheelTo('#coverage', 40)],
-  ['08-build', wheelTo('#build', 40)],
-  ['09-build-options', wheelTo('#build', 560)],
+  ['06-deck-1', wheelTo('#coverage', 30)],
+  ['07-deck-mid', async (page) => { await wheelBy(Math.round(page.viewportSize().height * 0.75))(page); }],
+  ['08-deck-3', async (page) => { await wheelBy(Math.round(page.viewportSize().height * 0.5))(page); }],
+  ['09-build', wheelTo('#build', 40)],
   ['10-kit', wheelTo('#kit', 20)],
   ['11-underglow', wheelTo('#underglow', 20)],
-  ['12-install', wheelTo('#install', 20)],
-  ['13-prices', wheelTo('#prices', 20)],
-  ['14-final', wheelTo('#final', 0)],
+  ['12-prices', wheelTo('#prices', 20)],
+  ['13-final', wheelTo('#final', 0)],
 ];
 await shots('desktop', { viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 }, heroSteps);
 await shots('mobile', { ...devices['iPhone 13'], deviceScaleFactor: 1 }, heroSteps);

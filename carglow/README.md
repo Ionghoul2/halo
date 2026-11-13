@@ -15,8 +15,9 @@ npx vite preview --port 4173 & npm run qa   # 18-variant, sizing, persistence, o
 |------|------|
 | Prices, LED estimates, every variant field, cost ceilings | `src/data/catalog.json` |
 | Configurator, vehicle sizing, shared state, motion | `src/shared.js` |
-| Homepage scenes (four-look video hero, scroll-stepped product film, coverage reel, color picker) | `index.html`, `src/home.js` |
+| Homepage scenes (four-look video hero, scroll-stepped product film, 3D coverage deck, color picker) | `index.html`, `src/home.js` |
 | Moving WebGL background, section tints | `src/shared.js` (`initAmbient`) |
+| Scroll car on a string of lights, menu garland (seasonal) | `src/shared.js` (`initTrack`, `buildGarland`) |
 | Site-type name and reusable build prompt | `docs/4d-site-prompt.md` |
 | Product pages | `products/*/index.html` (render from `src/product.js`) |
 | Footage + manifest | `public/media/`, `public/media/media-manifest.json` |

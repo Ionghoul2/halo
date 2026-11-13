@@ -53,7 +53,9 @@ SCENES (in scroll order)
    product; the video, name, price and "build this" button change together.
    State what each product does and does not do
 4. Configurator: [INPUTS, e.g. vehicle, size, add-on] with a live price
-5. Proof / range: sideways-scrolling reel of footage
+5. Proof / range: a pinned 3D card deck. Scrolling turns tilted glass cards
+   past the camera with a 01/06 counter; the background glow matches the
+   active card
 6. What's included
 7. Add-on with a live color picker
 8. How it works / install
@@ -61,8 +63,10 @@ SCENES (in scroll order)
 10. FAQ, then a full-screen video call to action
 
 MOTION
-Every section has something moving behind it: a WebGL light background whose
-color changes per section. Selected options animate (a light chases the
+Every section has something moving behind it: a WebGL aurora ("essence") with
+drifting sparks that flows as the visitor scrolls and changes color per
+section. Add one signature scroll object tied to the product, for example a
+small car that drives along a string of lights as the page scrolls. Selected options animate (a light chases the
 border, price counts up). Headlines rise in line by line. Smooth scrolling.
 Honor "reduce motion" with a still version and give a pause button.
 
@@ -97,6 +101,14 @@ desktop previews, then list only what still blocks taking real orders.
 | Hero range | Static Classic, Color-Changing RGB, Graphic Mapping, RGBIC Underglow |
 | Configurator | Vehicle → size → lighting → underglow, 18 combinations |
 | Color picker | Underglow section: magenta, ice blue, green, red, amber |
+
+## Layout rule learned on a real iPhone
+
+Never make a padded, centered block (`width: 100%` + `margin-inline: auto` + side padding) a direct child of a column flexbox. Chrome sizes it correctly; iPhone Safari lost the side margins and the text touched the screen edge. Put a plain wrapper in the flexbox and the padded block inside it.
+
+## Seasonal layer
+
+The Christmas pieces are separate from the brand so they can come off in January: the hero line ("…this Christmas."), the light garland under the menu (`buildGarland` in `src/shared.js`) and the bulb colors on the scroll string.
 
 ## To push it further
 

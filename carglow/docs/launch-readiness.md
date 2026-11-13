@@ -1,6 +1,10 @@
 # Car Glow — launch readiness
 
-Status on 2026-11-13 (v3): the independent website preview is built and tested. v1 is saved as commit `4f90ad9` on this branch and at its own preview link. **Nothing is purchasable.** Every kit shows "Early access" (Static, RGB) or "Concept · coming soon" (Mapping).
+Status on 2026-11-13 (v4): the independent website preview is built and tested. v1 is saved as commit `4f90ad9` on this branch and at its own preview link. **Nothing is purchasable.** Every kit shows "Early access" (Static, RGB) or "Concept · coming soon" (Mapping).
+
+## Not yet confirmed on a real phone
+
+A v2 screenshot from an iPhone showed coverage text touching the left screen edge. The likely cause (a padded, centered block inside a column flexbox, which Safari sizes differently from Chrome) has been removed from the coverage section and the hero. This environment has no Safari to test with, so it needs one look on an iPhone.
 
 ## Blockers to taking real orders
 
