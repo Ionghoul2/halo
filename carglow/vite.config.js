@@ -10,6 +10,7 @@ export default defineConfig({
       input: {
         home: resolve(import.meta.dirname, 'index.html'),
         ...Object.fromEntries(pages.map((p) => [p, resolve(import.meta.dirname, `products/${p}/index.html`)])),
+        ...Object.fromEntries(['build', 'pricing', 'install'].map((p) => [p, resolve(import.meta.dirname, `${p}/index.html`)])),
       },
     },
   },

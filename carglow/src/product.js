@@ -5,7 +5,7 @@ import {
 
 const key = document.documentElement.dataset.product;
 const main = document.querySelector('#main');
-renderChrome(key);
+renderChrome(key, { buybar: key !== 'underglow' });
 
 const GALLERY = {
   static: [['classic-string-lambos', 'Multicolor string lights, full body'], ['clip-mount-bmw', 'Dense multicolor on a sedan'], ['lights-on-reveal', 'Switching on']],
@@ -19,7 +19,7 @@ const install = `
       <header class="section-head" data-reveal><p class="eyebrow">Install and delivery</p><h2 class="h2" id="inst-title">What to expect.</h2></header>
       <div class="info-grid">
         <div><h3>Installation</h3><p>Prep, mount, route power, set up the controller. Plan on real time for thousands of lights. We'll publish measured install times after test installs.</p>
-          <p><a href="${BASE}index.html#install">See the install steps</a></p></div>
+          <p><a href="${BASE}install/index.html">See the install steps</a></p></div>
         <div><h3>Power</h3><p>Each kit gets a fused automotive power system sized to its real load. No high-current cigarette-lighter setups.</p></div>
         <div><h3>Shipping</h3><p>Cost, delivery time and whether everything arrives in one box are set once a supplier is confirmed.</p></div>
         <div><h3>Where to use it</h3><p>Parked displays, photos and private-property events. Check local laws before driving with exterior lights on.</p></div>
@@ -52,10 +52,11 @@ if (key === 'underglow') {
         <span class="status s-early-access">Early access</span>
         <p class="lede">Flowing multi-color light under the car. Add it to any body kit, or buy it on its own once verified.</p>
         <p class="p-price">Add-on <strong>+$45</strong> Small/Medium · <strong>+$58</strong> Large · Standalone price not set</p>
-        <div class="cta-row"><button type="button" class="btn btn-glow" data-ug-toggle></button><a class="btn btn-ghost" href="${BASE}index.html#build">Build a full kit</a></div>
+        <div class="cta-row"><button type="button" class="btn btn-glow" data-ug-toggle></button><a class="btn btn-ghost" href="${BASE}build/index.html">Build a full kit</a></div>
         <p class="hint" data-ug-now aria-live="polite"></p>
+        <div class="swatches" role="group" aria-label="Preview a glow color" data-swatches></div>
       </div>
-      <figure class="p-hero-media" style="margin:0"><img src="${BASE}media/underglow/charger-magenta.jpg" alt="White Charger with magenta underglow and headlight halos" width="1020" height="1052" style="border-radius:22px;width:100%;height:auto"></figure>
+      <figure class="p-hero-media" style="margin:0"><img data-ug-photo src="${BASE}media/underglow/charger-magenta.jpg" alt="White Charger with magenta underglow and headlight halos" width="1020" height="1052" style="border-radius:22px;width:100%;height:auto"></figure>
     </div>
   </section>
   <section class="section"><div class="wrap">
@@ -71,6 +72,19 @@ if (key === 'underglow') {
     <figure>${video('classic-string-lambos')}<figcaption>Blue and pink underglow under string lights. Reference footage.</figcaption></figure>
   </div></section>
   ${install}`;
+  // Color preview: hue-shifts the reference photo. Simulated, labeled as such.
+  const SWATCHES = [['Magenta', 0, '#e14bff'], ['Ice blue', -105, '#6fd8ff'], ['Green', -160, '#3dffa8'], ['Red', 60, '#ff3b4a'], ['Amber', 95, '#ffa53b']];
+  const sw = main.querySelector('[data-swatches]');
+  sw.innerHTML = SWATCHES.map(([n, , hex], i) => `<button type="button" class="swatch" style="--c:${hex}" data-swatch="${i}" aria-label="Preview ${n}" aria-pressed="${i === 0}"></button>`).join('')
+    + '<span class="swatch-name" data-swatch-name aria-live="polite">Magenta · simulated preview</span>';
+  sw.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-swatch]');
+    if (!b) return;
+    const [n, deg] = SWATCHES[+b.dataset.swatch];
+    sw.querySelectorAll('[data-swatch]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    sw.querySelector('[data-swatch-name]').textContent = `${n} · simulated preview`;
+    main.querySelector('[data-ug-photo]').style.filter = `hue-rotate(${deg}deg)`;
+  });
   const btn = main.querySelector('[data-ug-toggle]');
   btn.addEventListener('click', () => setState({ ug: !state.ug }));
   subscribe((s) => {
@@ -79,7 +93,7 @@ if (key === 'underglow') {
     main.querySelector('[data-ug-now]').textContent =
       `Your build: ${catalog.products[s.tech].name} · ${catalog.sizes[s.size].name}${s.ug ? ' + underglow' : ''}, ${money(v.ownerTargetPrice)} planned.`;
   });
-  document.querySelector('[data-buybar-cta]').href = `${BASE}index.html#summary`;
+  
 } else {
   const p = catalog.products[key];
   const [lo, hi] = priceRange(key);
@@ -96,7 +110,7 @@ if (key === 'underglow') {
         <p class="lede">${p.summary}</p>
         <p class="p-price">Planned <strong>${money(lo)} – ${money(hi)}</strong> · ~${num(l1)}–${num(l2)} ${key === 'mapping' ? 'pixels' : 'LEDs'}</p>
         ${p.status === 'concept' ? '<p class="notice">Concept. Not for sale until custom graphics and mapping are proven on the exact hardware we ship.</p>' : ''}
-        <div class="cta-row"><a class="btn btn-glow" href="#configure">Configure</a><a class="btn btn-ghost" href="${BASE}index.html#lineup">Compare all three</a></div>
+        <div class="cta-row"><a class="btn btn-glow" href="#configure">Configure</a><a class="btn btn-ghost" href="${BASE}index.html#collection">Compare all three</a></div>
       </div>
       <div class="p-hero-media">${video(p.media)}<p class="ref-note">Reference footage. Not Car Glow hardware.</p></div>
     </div>

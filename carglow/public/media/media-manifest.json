@@ -1,6 +1,6 @@
 {
   "project": "Car Glow",
-  "generated": "2026-11-13 (v4)",
+  "generated": "2026-11-13 (v5)",
   "note": "Every clip here is third-party reference footage. None shows Car Glow hardware. Rights unverified.",
   "clips": [
     {
@@ -392,6 +392,31 @@
       "verification": "Illustrative reference only. Not a Car Glow product demonstration.",
       "rights": "Third-party social media footage supplied by owner. Owner states reuse permission; commercial rights NOT verified. Get written permission from each creator before public launch.",
       "notes": "Shows another installer's tape-on method and \"exoticars\" door lettering. Not Car Glow's method."
+    },
+    {
+      "id": "white-mclaren",
+      "sourceFilename": "ScreenRecording_11-12-2026_18-51-44_1.mov",
+      "sha256": "049468118496909241c2cbff7d30c06639db4fe55ade0d814f2b31e2f3f68dc7",
+      "durationSec": 8.42,
+      "source": {
+        "width": 1168,
+        "height": 1766
+      },
+      "web": {
+        "file": "media/hero/white-mclaren.mp4 (phone, 720 wide) and media/hero/white-mclaren-wide.mp4 (desktop, 1120x710)",
+        "codec": "h264, no audio"
+      },
+      "category": "hero",
+      "demonstrates": "dense white full-body coverage (hardware unknown)",
+      "description": "McLaren 765LT side profile covered in dense white LEDs with soft lilac glow from inside, against a pure black backdrop; slow tracking camera.",
+      "usefulRangeSec": "0-8.4",
+      "placement": "v5 homepage statement section",
+      "siteCaption": "Reference footage.",
+      "mobileSuitable": true,
+      "showsCarGlowHardware": false,
+      "verification": "Illustrative reference only. Not a Car Glow product demonstration.",
+      "rights": "Third-party social media footage supplied by owner. Owner states reuse permission; commercial rights NOT verified. Get written permission from each creator before public launch.",
+      "notes": "Cropped to remove the app sound icon in the bottom-right corner."
     }
   ],
   "designReferences": [
@@ -433,6 +458,11 @@
     {
       "sourceFilename": "ScreenRecording_11-12-2026_18-59-48_1.mp4",
       "description": "Tutorial reel: make start and end images, animate between them with a video model (Veo 3.1, Kling, Seedance), merge clips in Canva.",
+      "published": false
+    },
+    {
+      "sourceFilename": "ScreenRecording_11-10-2026_22-28-51_1.mp4",
+      "description": "webmotion_studio \"Veltrix\" reel: minimal luxury car site. Centered wide wordmark, spaced tagline, one button over a full-bleed car; then a \"Models/Collection\" row of cards with the center card highlighted. The reference for the v5 minimal homepage.",
       "published": false
     }
   ],
@@ -525,5 +555,5 @@
       "reason": "Different product (Grinch plush on a BMW trunk), not LED lighting. Captions burned in."
     }
   ],
-  "duplicateUploads": "Four screen recordings sent on the second upload are byte-identical to the first batch (21-27-03, 21-41-40, 21-42-16, 21-42-53)."
+  "duplicateUploads": "Third upload batch repeated six earlier recordings (21-42-16, 20-03-43, 19-46-08, 21-41-40, 20-07-55, 19-49-26). Earlier batches repeated 21-27-03, 21-41-40, 21-42-16, 21-42-53, 21-31-29."
 }

@@ -18,6 +18,7 @@ export const TECHS = ['static', 'rgb', 'mapping'];
 export const SIZES = ['S', 'M', 'L'];
 export const SLUG = { static: 'static-classic', rgb: 'color-changing-rgb', mapping: 'graphic-mapping', underglow: 'rgbic-underglow' };
 export const productUrl = (key) => `${BASE}products/${SLUG[key]}/index.html`;
+export const pageUrl = (page) => `${BASE}${page}/index.html`;
 export const variantFor = (tech, size, ug) =>
   catalog.variants.find((v) => v.technology === tech && v.size === size && v.underglow === ug);
 export const priceRange = (tech) => {
@@ -39,6 +40,12 @@ export const MEDIA = {
   'film-rgb': { dir: 'rgb', alt: 'McLaren and Porsches in white, blue and red light at a warehouse lot' },
   'film-mapping': { dir: 'mapping', alt: 'Lamborghinis showing mapped LED faces and stripes in a garage and on the street' },
   'final-film': { dir: 'hero', alt: 'Gold Lamborghini with mapped LED graphics rolling down a road at night' },
+  'look-static-wide': { dir: 'hero', alt: 'Lamborghinis wrapped in classic multicolor string lights' },
+  'look-rgb-wide': { dir: 'hero', alt: 'McLaren in shifting turquoise, purple and green light' },
+  'look-mapping-wide': { dir: 'hero', alt: 'Audi R8 showing mapped LED holiday graphics' },
+  'look-underglow-wide': { dir: 'hero', alt: 'Row of Lamborghinis with rainbow and red underglow' },
+  'white-mclaren': { dir: 'hero', alt: 'McLaren covered in dense white LEDs against a black backdrop' },
+  'white-mclaren-wide': { dir: 'hero', alt: 'McLaren covered in dense white LEDs against a black backdrop' },
   'two-tone-pixels': { dir: 'rgb', alt: 'McLaren and Porsche in white, blue and red pixel light, with smoke' },
   'pixel-install-lambo': { dir: 'installation', alt: 'Pixel strands taped in rows across a yellow Lamborghini hood' },
   'ice-mclaren': { dir: 'hero', alt: 'Supercar covered in dense white and ice-blue LEDs at night' },
@@ -55,7 +62,7 @@ export const MEDIA = {
 };
 export const video = (id, cls = '') => {
   const m = MEDIA[id];
-  return `<video class="${cls}" muted loop playsinline preload="none" poster="${BASE}media/posters/${id}.jpg"
+  return `<video class="${cls}" muted loop playsinline autoplay preload="none" poster="${BASE}media/posters/${id}.jpg"
     data-src="${BASE}media/${m.dir}/${id}.mp4" aria-label="${m.alt}"></video>`;
 };
 
@@ -159,45 +166,76 @@ function buildGarland() {
 }
 
 /* ---------- page chrome ---------- */
-export function renderChrome(active = '') {
-  const link = (key, label) =>
-    `<a href="${productUrl(key)}" ${active === key ? 'aria-current="page"' : ''}>${label}</a>`;
+export function renderChrome(active = '', { buybar = false } = {}) {
+  const cur = (k) => (active === k ? 'aria-current="page"' : '');
+  const pages = [['collection', 'Collection', `${BASE}index.html#collection`], ['build', 'Build', pageUrl('build')],
+    ['pricing', 'Pricing', pageUrl('pricing')], ['install', 'Install', pageUrl('install')]];
+  const products = [['static', 'Static Classic'], ['rgb', 'Color-Changing RGB'], ['mapping', 'Graphic Mapping'], ['underglow', 'RGBIC Underglow']];
   document.body.insertAdjacentHTML('afterbegin', `
   <a class="skip" href="#main">Skip to content</a>
   <header class="nav">
     <a class="wordmark" href="${BASE}index.html" aria-label="Car Glow home">CAR<span class="dot" aria-hidden="true"></span>GLOW</a>
-    <nav aria-label="Products">${link('static', 'Static')}${link('rgb', 'RGB')}${link('mapping', 'Mapping')}${link('underglow', 'Underglow')}</nav>
+    <nav aria-label="Main">${pages.map(([k, l, h]) => `<a href="${h}" ${cur(k)}>${l}</a>`).join('')}</nav>
     <button class="motion-toggle" type="button" aria-pressed="false" data-motion-toggle><span class="motion-icon" aria-hidden="true"></span><span class="long" data-motion-label>Pause motion</span></button>
-    <a class="btn btn-glow nav-cta" href="${BASE}index.html#build">Find my lights</a>
+    <a class="btn btn-glow nav-cta" href="${pageUrl('build')}">Find my lights</a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" data-menu-open>Menu</button>
     <svg class="garland" data-garland aria-hidden="true"></svg>
-  </header>`);
+  </header>
+  <div class="menu" id="menu" data-menu hidden>
+    <button class="menu-close" type="button" data-menu-close>Close</button>
+    <nav aria-label="Menu">
+      ${pages.map(([k, l, h]) => `<a class="menu-big" href="${h}" ${cur(k)}>${l}</a>`).join('')}
+      <p class="eyebrow">Kits</p>
+      ${products.map(([k, l]) => `<a class="menu-small" href="${productUrl(k)}" ${cur(k)}>${l}</a>`).join('')}
+    </nav>
+  </div>`);
   buildGarland();
   addEventListener('resize', buildGarland);
+  const menu = document.querySelector('[data-menu]');
+  const openBtn = document.querySelector('[data-menu-open]');
+  const setMenu = (open) => {
+    menu.hidden = !open;
+    openBtn.setAttribute('aria-expanded', String(open));
+    document.documentElement.classList.toggle('menu-open', open);
+    if (open) menu.querySelector('a').focus(); else openBtn.focus();
+  };
+  openBtn.addEventListener('click', () => setMenu(true));
+  menu.querySelector('[data-menu-close]').addEventListener('click', () => setMenu(false));
+  menu.addEventListener('click', (e) => { if (e.target.closest('a')) setMenu(false); });
+  addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menu.hidden) setMenu(false); });
+
   document.body.insertAdjacentHTML('beforeend', `
   <footer class="footer">
     <div class="footer-inner">
       <a class="wordmark" href="${BASE}index.html">CAR<span class="dot" aria-hidden="true"></span>GLOW</a>
-      <nav aria-label="Footer">${link('static', 'Static Classic')}${link('rgb', 'Color-Changing RGB')}${link('mapping', 'Graphic Mapping')}${link('underglow', 'RGBIC Underglow')}</nav>
+      <nav aria-label="Footer">${pages.map(([, l, h]) => `<a href="${h}">${l}</a>`).join('')}${products.map(([k, l]) => `<a href="${productUrl(k)}">${l}</a>`).join('')}</nav>
       <p class="fine">Preview build. No payments are taken and no kit is in stock yet. Prices shown are planned prices.
       All footage is third-party reference footage showing the look, not Car Glow hardware.
       Decorative lighting is for parked display and private property. Check your local vehicle lighting laws.</p>
     </div>
-  </footer>
+  </footer>`);
+  if (!buybar) return;
+  document.body.insertAdjacentHTML('beforeend', `
   <div class="buybar" data-buybar hidden>
     <div><span class="buybar-label" data-buybar-label></span><strong class="buybar-price" data-buybar-price></strong></div>
     <a class="btn btn-glow" href="#summary" data-buybar-cta>Join early access</a>
   </div>`);
+  const bar = document.querySelector('[data-buybar]');
   subscribe((s) => {
     const v = variantFor(s.tech, s.size, s.ug);
     document.querySelector('[data-buybar-label]').textContent =
       `${catalog.products[s.tech].name} · ${catalog.sizes[s.size].name}${s.ug ? ' + underglow' : ''}`;
     document.querySelector('[data-buybar-price]').textContent = money(v.ownerTargetPrice);
-    document.querySelector('[data-buybar]').dataset.touched = s.touched ? '1' : '0';
+    bar.dataset.touched = s.touched ? '1' : '0';
   });
+  ScrollTrigger.create({ start: 280, onEnter: () => { bar.hidden = false; }, onLeaveBack: () => { bar.hidden = true; } });
 }
 
 /* ---------- motion ---------- */
-let paused = read('carglow:paused', reduceMotion);
+// Videos always start playing. A pause lasts for this visit only (sessionStorage), so the site opens moving again.
+const readSession = (k) => { try { return sessionStorage.getItem(k) === '1'; } catch { return false; } };
+const writeSession = (k, v) => { try { sessionStorage.setItem(k, v ? '1' : '0'); } catch { /* storage blocked */ } };
+let paused = readSession('carglow:paused');
 const videos = new Set();
 const motionListeners = new Set();
 export const isPaused = () => paused;
@@ -396,7 +434,7 @@ export function initMotion() {
     });
     motionListeners.forEach((f) => f(paused));
   };
-  toggle.addEventListener('click', () => { paused = !paused; write('carglow:paused', paused); sync(); });
+  toggle.addEventListener('click', () => { paused = !paused; writeSession('carglow:paused', paused); sync(); });
 
   const io = new IntersectionObserver((entries) => entries.forEach(({ target: v, isIntersecting }) => {
     v.dataset.visible = isIntersecting ? '1' : '0';
@@ -405,6 +443,13 @@ export function initMotion() {
   }), { rootMargin: '200px 0px' });
   document.querySelectorAll('video[data-src]').forEach((v) => { videos.add(v); io.observe(v); });
   sync();
+  // iPhone Low Power Mode blocks autoplay until the visitor touches the page; any tap restarts what should be playing.
+  const resume = () => {
+    if (paused) return;
+    videos.forEach((v) => { if (v.paused && v.dataset.visible === '1' && v.dataset.active !== '0') playIfAllowed(v); });
+  };
+  ['touchend', 'click', 'keydown'].forEach((e) => addEventListener(e, resume, { passive: true }));
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) resume(); });
   initAmbient();
   initTrack();
 

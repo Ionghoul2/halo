@@ -10,14 +10,37 @@ mkdirSync(SHOTS, { recursive: true });
 
 const failures = [];
 const check = (ok, msg) => { if (!ok) failures.push(msg); };
-const pages = ['index.html', ...['static-classic', 'color-changing-rgb', 'graphic-mapping', 'rgbic-underglow'].map((p) => `products/${p}/index.html`)];
+const pages = ['index.html', 'build/index.html', 'pricing/index.html', 'install/index.html',
+  ...['static-classic', 'color-changing-rgb', 'graphic-mapping', 'rgbic-underglow'].map((p) => `products/${p}/index.html`)];
 
 const browser = await chromium.launch();
 
-// 1. All 18 combinations on the homepage configurator.
 {
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' });
+
+  // 1. Home: four sections, one hero film at a time, three priced kits that start a build.
   await page.goto(BASE + 'index.html');
+  const sections = await page.$$eval('main > section', (els) => els.map((e) => e.id));
+  check(sections.join(',') === 'hero,collection,how,final', `home sections: ${sections}`);
+  for (let i = 0; i < 4; i++) {
+    await page.click(`[data-tab="${i}"]`);
+    check(await page.getAttribute(`[data-look="${i}"]`, 'class') === 'look is-active', `hero tab ${i} did not activate its look`);
+  }
+  check((await page.getAttribute('[data-look="0"] video', 'data-src')).includes('look-static-wide'), 'desktop hero should use the wide cut');
+  check(await page.evaluate(() => !!document.querySelector('canvas.ambient')), 'ambient background canvas missing');
+  check(await page.evaluate(() => document.querySelectorAll('.track-bg .bulb').length > 20), 'scroll light string missing');
+  check(await page.evaluate(() => document.querySelectorAll('.garland .g-bulb').length >= 12), 'menu garland missing');
+  for (const [i, price] of [[0, '$45'], [1, '$56'], [2, '$449']]) {
+    if (i > 0) await page.click('[data-deck-next]');
+    check(await page.textContent('[data-deck-n]') === `0${i + 1}`, `deck counter wrong at ${i}`);
+    check((await page.textContent('[data-deck-meta]')).includes(price), `deck ${i} should show from ${price}`);
+  }
+  await page.click('[data-deck-choose]');
+  await page.waitForURL(/build\/index\.html/);
+  check((await page.textContent('[data-sum-sku]')).startsWith('MAP-'), 'Choose on the deck did not carry Mapping into the build');
+  console.log('home check done');
+
+  // 2. All 18 combinations on the build page.
   let tested = 0;
   for (const v of catalog.variants) {
     await page.click(`[data-builder] [data-tech="${v.technology}"]`);
@@ -30,39 +53,11 @@ const browser = await chromium.launch();
     check(sku === v.sku, `SKU ${v.sku}: got ${sku}`);
     check(price === want, `${v.sku} price: want ${want}, got ${price}`);
     check(leds === `~${v.plannedLEDCount.toLocaleString('en-US')}`, `${v.sku} LEDs: got ${leds}`);
-    const cell = await page.getAttribute(`[data-cell="${v.sku}"]`, 'aria-pressed');
-    check(cell === 'true', `${v.sku} not highlighted in price table`);
     tested++;
   }
   console.log(`18-variant check: ${tested} tested`);
 
-  // Hero: each tab selects its look, and the hero CTA carries the look into the build.
-  for (let i = 0; i < 4; i++) {
-    await page.click(`[data-tab="${i}"]`);
-    check(await page.getAttribute(`[data-look="${i}"]`, 'class') === 'look is-active', `hero tab ${i} did not activate its look`);
-  }
-  await page.click('[data-tab="2"]');
-  await page.click('[data-hero-build]');
-  check((await page.textContent('[data-sum-sku]')).startsWith('MAP-'), 'hero CTA did not carry Mapping into the build');
-  check(await page.evaluate(() => !!document.querySelector('canvas.ambient')), 'ambient background canvas missing');
-  check(await page.evaluate(() => document.querySelectorAll('.track-bg .bulb').length > 20), 'scroll light string missing');
-  check(await page.evaluate(() => document.querySelectorAll('.garland .g-bulb').length >= 12), 'menu garland missing');
-  // Coverage deck: each step centers its card and updates the counter and caption.
-  for (let i = 0; i < 6; i++) {
-    check(await page.getAttribute(`[data-card="${i}"]`, 'class') === 'deck-card is-active', `deck card ${i} not active`);
-    check(await page.textContent('[data-deck-n]') === `0${i + 1}`, `deck counter wrong at ${i}`);
-    if (i < 5) await page.click('[data-deck-next]');
-  }
-  // Product film: each step shows its technology, and "Build this kit" carries it into the build.
-  for (const [i, code] of [[0, 'STATIC-'], [1, 'RGB-'], [2, 'MAP-']]) {
-    await page.click(`[data-film-dot="${i}"]`);
-    check(await page.getAttribute(`[data-slide="${i}"]`, 'aria-hidden') === 'false', `film step ${i} not shown`);
-    await page.click(`[data-slide="${i}"] [data-pick]`);
-    check((await page.textContent('[data-sum-sku]')).startsWith(code), `film step ${i} did not carry ${code} into the build`);
-  }
-  console.log('hero check done');
-
-  // 2. Vehicle sizing.
+  // 3. Vehicle sizing.
   const cases = [['sedan', '', 'Medium'], ['fullsuv', '', 'Large'], ['sports', '', 'Small'], ['sedan', '192 in', 'Medium'], ['pickup', '21', 'Fitment check required'], ['van', '', 'Fitment check required'], ['crossover', '14.5', 'Small']];
   for (const [body, len, want] of cases) {
     await page.click(`[data-body="${body}"]`);
@@ -70,21 +65,49 @@ const browser = await chromium.launch();
     const got = (await page.textContent('[data-rec] .rec-size'))?.trim();
     check(got === want, `sizing ${body} ${len || '(no length)'}: want ${want}, got ${got}`);
   }
+  await page.fill('#veh-length', '');
   console.log(`sizing check: ${cases.length} cases`);
 
-  // 3. Persistence across pages: set Large + underglow, open RGB page.
-  await page.fill('#veh-length', '');
-  await page.click('[data-builder] [data-tech="rgb"]');
-  await page.click('[data-builder] [data-size="L"]');
-  await page.click('[data-builder] [data-ug="1"]');
+  // 4. Pricing page: 18 prices, and tapping one opens that build.
+  await page.goto(BASE + 'pricing/index.html');
+  check((await page.$$('[data-cell]')).length === 18, 'pricing table should have 18 prices');
+  await page.click('[data-cell="RGB-L-UG"]');
+  await page.waitForURL(/build\/index\.html/);
+  check(await page.textContent('[data-sum-sku]') === 'RGB-L-UG', 'pricing cell did not open that build');
+
+  // 5. Persistence across pages, and the underglow color preview.
   await page.goto(BASE + 'products/color-changing-rgb/index.html');
   check(await page.textContent('[data-sum-sku]') === 'RGB-L-UG', 'build did not persist to RGB product page');
   check(await page.textContent('[data-sum-price]') === '$167', 'persisted price wrong on RGB page');
   await page.goto(BASE + 'products/graphic-mapping/index.html');
   check(await page.textContent('[data-sum-sku]') === 'MAP-L-UG', 'mapping page did not lock technology');
   check((await page.textContent('[data-sum-cta]')).includes('concept'), 'mapping CTA should be concept waitlist');
-  console.log('persistence check done');
+  await page.goto(BASE + 'products/rgbic-underglow/index.html');
+  await page.click('[data-swatch="1"]');
+  check(((await page.getAttribute('[data-ug-photo]', 'style')) || '').includes('hue-rotate'), 'underglow color preview did not apply');
+  console.log('pricing / persistence / underglow check done');
   await page.close();
+}
+
+// 6. Videos start on their own on a fresh visit; a pause lasts only for that visit.
+{
+  const ctx = await browser.newContext({ ...devices['iPhone 13'] });
+  const page = await ctx.newPage();
+  await page.goto(BASE + 'index.html', { waitUntil: 'networkidle' });
+  await page.waitForTimeout(1500);
+  const playing = await page.evaluate(() => [...document.querySelectorAll('.look video')].filter((v) => !v.paused).length);
+  check(playing === 1, `phone hero should play exactly one film without a tap, got ${playing}`);
+  await page.click('[data-motion-toggle]');
+  await page.reload({ waitUntil: 'networkidle' });
+  await page.waitForTimeout(800);
+  check(await page.getAttribute('[data-motion-toggle]', 'aria-pressed') === 'true', 'pause should last for the visit');
+  await ctx.close();
+  const fresh = await browser.newContext({ ...devices['iPhone 13'] });
+  const p2 = await fresh.newPage();
+  await p2.goto(BASE + 'index.html', { waitUntil: 'networkidle' });
+  check(await p2.getAttribute('[data-motion-toggle]', 'aria-pressed') === 'false', 'a new visit should start playing');
+  await fresh.close();
+  console.log('autoplay check done');
 }
 
 // 4. Every page: no horizontal overflow, no console errors, no purchase buttons.
@@ -136,17 +159,11 @@ const wheelBy = (px) => async (page) => { for (let d = 0; d < px; d += 100) { aw
 const heroSteps = [
   ['01-hero', async () => {}],
   ['02-hero-mapping', async (page) => { await page.click('[data-tab="2"]'); }],
-  ['03-reveal', wheelTo('#reveal', 40)],
-  ['04-film-static', wheelTo('#lineup', 60)],
-  ['05-film-rgb', async (page) => { await wheelBy(Math.round(page.viewportSize().height * 0.75))(page); }],
-  ['06-deck-1', wheelTo('#coverage', 30)],
-  ['07-deck-mid', async (page) => { await wheelBy(Math.round(page.viewportSize().height * 0.75))(page); }],
-  ['08-deck-3', async (page) => { await wheelBy(Math.round(page.viewportSize().height * 0.5))(page); }],
-  ['09-build', wheelTo('#build', 40)],
-  ['10-kit', wheelTo('#kit', 20)],
-  ['11-underglow', wheelTo('#underglow', 20)],
-  ['12-prices', wheelTo('#prices', 20)],
-  ['13-final', wheelTo('#final', 0)],
+  ['03-deck-1', wheelTo('#collection', 30)],
+  ['04-deck-2', async (page) => { await wheelBy(Math.round(page.viewportSize().height * 0.6))(page); }],
+  ['05-how', wheelTo('#how', 0)],
+  ['06-how-steps', wheelTo('.how-inner', -120)],
+  ['07-final', wheelTo('#final', 0)],
 ];
 await shots('desktop', { viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 }, heroSteps);
 await shots('mobile', { ...devices['iPhone 13'], deviceScaleFactor: 1 }, heroSteps);
