@@ -142,3 +142,9 @@ None of the three suppliers lists vehicle fitment beyond "universal", so every f
 2. Import `shopify-addons-draft.csv` in Shopify: Products → Import. My Store 3 already has an "Aura RGBIC Underglow" draft and two interior kits, so delete or merge those to avoid duplicates.
 3. Connect fulfillment. Alibaba items: **Start dropshipping** on each listing (Alibaba.com's dropshipping link to Shopify), then map each SKU using `fulfillment-mapping.csv`. AliExpress supplies or backups: DSers. Map Complete Kits as bundles, and check that your DSers plan includes bundle mapping.
 4. Place 1 test order per product before removing the draft line and publishing.
+
+## Reference check against owner's reels (added 2026-11-21)
+
+- **Interior reel (purple Charger dash):** the thin glowing lines curve around the gauge cluster, the screen and the console edges, so they are **flexible fiber-optic strip**, not rigid acrylic bars. There is also a pink footwell glow. The selected Flydee acrylic kit gives straight door and dash bars only. A closer match is an acrylic + fiber-optic combo, e.g. AliExpress 3256813019165991 "Dreamcolor acrylic … 18 in 1 with 175 in fiber optic strip" ($30.40 listing default, free shipping), or a fiber-optic kit plus footwell lights. Not yet verified.
+- **Underglow in the string-light reels:** solid purple/violet glow. Any app RGB kit reproduces this, so RGBIC is only needed for the rainbow-flow look in the Aventador clip.
+- **Christmas string lights covering the cars (BMW E92, black coupe, yellow Porsche):** multicolor mini LED string lights on dark wire, taped every few inches with black tape. This is the body-light product and was **not** part of this add-on sourcing round. Estimated density: roughly 600–2,000 bulbs per car depending on coverage (estimate from photos).
