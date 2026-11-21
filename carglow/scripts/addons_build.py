@@ -36,6 +36,12 @@ SUP = {
     'USB_ADAPTER': dict(platform='AliExpress', supplier='12–24V dual-USB 3.1A car socket adapter',
                        url='https://www.aliexpress.com/item/1005007393354459.html',
                        price=2.00, ship=0.00, eta='est. 7–12 days', est=True),
+    'FIBER_KIEND': dict(platform='AliExpress', supplier='KIEND Official Store · flexible EL/fiber app kit (337 reviews, 2,000+ sold)',
+                       url='https://www.aliexpress.us/item/3256808719830496.html',
+                       price=16.69, ship=0.00, eta='Nov 30–Dec 04 (free shipping)'),
+    'FOOTWELL_APP': dict(platform='AliExpress', supplier='4pcs footwell LED, app + cigarette plug (15,000+ sold)',
+                        url='https://www.aliexpress.us/item/3256808849627738.html',
+                        price=14.69, ship=0.00, eta='Nov 30–Dec 04 (free shipping)'),
 }
 
 UG_SIZE = {  # Car Glow size -> exact Alibaba "Specification" value, plus fit estimate
@@ -64,6 +70,11 @@ VARIANTS += [
     ('CG-INT-CK', 'car-glow-interior-kit', ('Complete Kit',), 79, 65,
      [('INT_ALIBABA', 'Light Color: 18 IN 1 colorful smart light APP-SYMPHONY MODEL', 1),
       ('FUSE_TAP', '16PCS kit', 1), ('T_TAP', '30 sets', 1), ('TRIM_TOOL', '5 pcs', 1)], 1700),
+    ('CG-FIB-DL', 'car-glow-fiber-dash-kit', ('Dash Lines',), 49, 39,
+     [('FIBER_KIEND', 'Emitting Color: 6in1 8m Cigarette', 1)], 500),
+    ('CG-FIB-FW', 'car-glow-fiber-dash-kit', ('Dash Lines + Footwell',), 79, 69,
+     [('FIBER_KIEND', 'Emitting Color: 6in1 8m Cigarette', 1),
+      ('FOOTWELL_APP', '4pcs 22 LEDs * 2pcs 1m (USB APP + Cigarette Lighter)', 1)], 800),
 ]
 
 PRODUCTS = {
@@ -96,6 +107,15 @@ PRODUCTS = {
               '<h4>Lights Only (18 in 1)</h4><p>Acrylic light strips including 4 x 75 cm door trim strips, 4 footwell lights, 4 door-pocket lights and 4 door-handle lights, a dashboard strip and the app controller.</p>'
               '<h4>Complete Kit</h4><p>Lights Only plus an add-a-fuse tap set, quick-splice connectors for the four door modules and a 5-piece trim tool set.</p>'
               '<p><em>Fit is an estimate: universal 12V, designed for 4-door cars. Each door module needs its own 12V feed from the door wiring. Professional install recommended.</em></p>')),
+    'car-glow-fiber-dash-kit': dict(
+        title='Car Glow Fiber Dash Kit', type='Interior Lighting', options=('Package',),
+        tags='car-glow, add-on, interior, fiber-optic, draft-needs-verification',
+        seo='Thin glowing lines around your gauges, screen and console, plus footwell glow. App controlled.',
+        body=('<p>[DRAFT: confirm before publishing. Order 1 sample and check brightness; some buyers report weak light.]</p>'
+              '<p>Thin, flexible light lines that tuck into the seams around your gauge cluster, screen and center console. Pick any color from your phone.</p>'
+              '<h4>Dash Lines</h4><p>8 m of flexible fiber light in 6 pieces, app controller, remote and 12V car-socket plug.</p>'
+              '<h4>Dash Lines + Footwell</h4><p>Everything in Dash Lines plus 4 footwell lights with their own app control and car-socket plug.</p>'
+              '<p><em>Fit is an estimate: universal 12V, tucks into most dash seams. Fiber lines and footwell lights use separate apps.</em></p>')),
 }
 
 

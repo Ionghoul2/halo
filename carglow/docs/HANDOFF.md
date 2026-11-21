@@ -37,6 +37,7 @@ Read this first when picking the project back up. Newest entries at the top.
 
 - Report: `docs/sourcing/addons-sourcing-report.md`. Shopify draft import: `docs/sourcing/shopify-addons-draft.csv` (10 variants, all draft). Supplier mapping: `docs/sourcing/fulfillment-mapping.csv`. Regenerate with `python3 scripts/addons_build.py`.
 - Selected (lowest delivered US price): eyes Alibaba Houyi `(59*12)*2` $21.27 · underglow Alibaba LumenX $17.65 (RGBIC unconfirmed; backup AliExpress Unionlux ~$41.49) · interior Alibaba Flydee 18-in-1 symphony $15.00 (dashboard strip unconfirmed).
+- Round 2: fiber dash kit selected = KIEND AliExpress 6in1 8m Cigarette $16.69 + app footwell $14.69 (both by Dec 4); added as draft `car-glow-fiber-dash-kit`. Christmas string lights NOT sourced: no verified 12V multicolor spool you can order one at a time; US Christmas Light Source 12V = $0.50/bulb; Alibaba Kiara 300-LED needs custom 12V + 25-day lead. Next: RFQ for 12V 300-LED 30 m spool.
 - Shopify is NOT connected from Claude. The store connection (My Store 3, `whipef-3h`) lives in ChatGPT. Nothing was created in Shopify.
 
 ## Ideas queued for next session
