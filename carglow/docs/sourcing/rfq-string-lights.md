@@ -48,4 +48,4 @@ Can samples ship within 3 days? Thank you.
 
 - Pick on **landed cost per 300 LEDs** (string + air freight ÷ quantity), the **lit photo or video** looking like the reels, and **power draw ≤ 15 W per string**.
 - Order 2 samples from the best 2 replies before buying 50+.
-- The 50-piece stock order can be dropshipped from the US by us. Plan about $250–300 for 50 strings plus freight once the quotes are in.
+- Optional: a 50-string stock order (about $250–300 plus freight, estimate) would let you ship from the US yourself and reach customers faster. Only if a factory can't dropship single orders.
