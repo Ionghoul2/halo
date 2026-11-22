@@ -6,10 +6,24 @@ const { chromium, devices } = createRequire(import.meta.url)('playwright');
 const BASE = process.env.QA_URL || 'http://localhost:4173/';
 const SHOTS = process.env.QA_SHOTS || 'qa-shots';
 const catalog = JSON.parse(readFileSync(new URL('../src/data/catalog.json', import.meta.url)));
+const bridge = JSON.parse(readFileSync(new URL('../src/data/shopify-bridge.json', import.meta.url)));
 mkdirSync(SHOTS, { recursive: true });
 
 const failures = [];
 const check = (ok, msg) => { if (!ok) failures.push(msg); };
+
+// 0. Shopify bridge: every catalog SKU has exactly one numeric Shopify variant, and no SKU is sellable while canPurchase is false.
+{
+  const bridged = Object.values(bridge.products).flatMap((p) => Object.entries(p.variants));
+  const ids = bridged.map(([, v]) => v.variantNumericId);
+  check(new Set(ids).size === ids.length && ids.every((id) => /^\d+$/.test(id)), 'shopify-bridge: variant IDs must be unique numbers');
+  for (const v of catalog.variants) {
+    const hit = bridged.filter(([sku]) => sku === v.sku);
+    check(hit.length === 1, `shopify-bridge: ${v.sku} mapped ${hit.length} times`);
+    if (hit[0]) check(hit[0][1].plannedPriceUSD === v.ownerTargetPrice, `shopify-bridge: ${v.sku} price ${hit[0][1].plannedPriceUSD} != catalog ${v.ownerTargetPrice}`);
+  }
+  console.log(`shopify-bridge check done (${bridged.length} variants, canPurchase=${bridge.canPurchase})`);
+}
 const pages = ['index.html', 'build/index.html', 'pricing/index.html', 'install/index.html',
   ...['static-classic', 'color-changing-rgb', 'graphic-mapping', 'rgbic-underglow'].map((p) => `products/${p}/index.html`)];
 
@@ -176,7 +190,9 @@ for (const vp of [{ name: 'mobile', ...devices['iPhone 13'] }, { name: 'desktop'
     const { sw, cw } = await page.evaluate(() => ({ sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth }));
     check(sw <= cw, `${vp.name} ${p}: horizontal overflow ${sw} > ${cw}`);
     const buy = await page.$$eval('button, a', (els) => els.map((e) => e.textContent.trim()).filter((t) => /add to cart|buy now|checkout/i.test(t)));
-    check(buy.length === 0, `${vp.name} ${p}: purchase controls present: ${buy}`);
+    check(buy.length === 0 || bridge.canPurchase === true, `${vp.name} ${p}: purchase controls present: ${buy}`);
+    const cartLinks = await page.$$eval('a[href*="/cart/"]', (els) => els.length);
+    check(cartLinks === 0 || bridge.canPurchase === true, `${vp.name} ${p}: Shopify cart link present while canPurchase is false`);
     check(errors.length === 0, `${vp.name} ${p}: errors ${errors.join(' | ')}`);
     await page.close();
   }

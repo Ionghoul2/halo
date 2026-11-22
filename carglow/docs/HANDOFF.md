@@ -61,3 +61,5 @@ Read this first when picking the project back up. Newest entries at the top.
 - **v1:** first cinematic build, 18-variant catalog, media manifest, QA script.
 
 - 2026-11-22: KTRLIGHT check for Shopify drafts 15441314742576 (RGB Strings) and 15441315037488 (P25 Mesh) in `docs/sourcing/ktrlight-dsers-check.md`. DSers blocked (Advanced plan needed), Shopify not connected; nothing mapped or connected to checkout; website untouched.
+
+- 2026-11-22: Shopify bridge. ChatGPT created 3 draft Shopify products with 18 variants matching the catalog SKUs (static 15441340989744, rgb 15441341022512, mapping 15441341055280). Their IDs are in `src/data/shopify-bridge.json`. The build page shows a "Checkout" button (Shopify cart link `https://<shopDomain>/cart/<variantId>:1`) only when `canPurchase` and that variant's `availableForSale` are both true; today both are false, so nothing is buyable. To sell a kit: make the Shopify product active and published to the Online Store, remove the storefront password, set the two flags, rebuild. QA checks every SKU is mapped once with the catalog price and that no cart link appears while `canPurchase` is false.

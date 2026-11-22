@@ -3,6 +3,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import Lenis from 'lenis';
 import catalog from './data/catalog.json';
+import bridge from './data/shopify-bridge.json';
 import './styles.css';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
@@ -18,6 +19,18 @@ export const TECHS = ['static', 'rgb', 'mapping'];
 export const SIZES = ['S', 'M', 'L'];
 export const SLUG = { static: 'static-classic', rgb: 'color-changing-rgb', mapping: 'graphic-mapping', underglow: 'rgbic-underglow' };
 export const productUrl = (key) => `${BASE}products/${SLUG[key]}/index.html`;
+
+// Shopify checkout link for one kit SKU, or null. Stays null until the store owner
+// sets canPurchase and that variant's availableForSale to true in shopify-bridge.json
+// (product active, published to the Online Store, priced and fulfillable).
+export function checkoutUrl(sku) {
+  if (bridge.canPurchase !== true) return null;
+  for (const p of Object.values(bridge.products)) {
+    const v = p.variants?.[sku];
+    if (v) return v.availableForSale === true && /^\d+$/.test(v.variantNumericId) ? `https://${bridge.shopDomain}/cart/${v.variantNumericId}:1` : null;
+  }
+  return null;
+}
 export const pageUrl = (page) => `${BASE}${page}/index.html`;
 export const variantFor = (tech, size, ug) =>
   catalog.variants.find((v) => v.technology === tech && v.size === size && v.underglow === ug);
@@ -570,13 +583,14 @@ export function mountBuilder(root, { lockTech = null } = {}) {
         <summary>What's planned in the kit</summary>
         <ul data-sum-contents></ul>
       </details>
+      <a class="btn btn-glow summary-buy" data-sum-buy hidden></a>
       <form class="waitlist" data-waitlist novalidate>
         <label for="wl-email" class="sr-only">Email</label>
         <input id="wl-email" name="email" type="email" autocomplete="email" placeholder="you@example.com…" required spellcheck="false">
         <button class="btn btn-glow" type="submit" data-sum-cta>Join early access</button>
         <p class="hint" data-wl-msg aria-live="polite"></p>
       </form>
-      <p class="fine">Not purchasable yet. LED counts are estimates until a supplier confirms the kit.</p>
+      <p class="fine" data-sum-fine>Not purchasable yet. LED counts are estimates until a supplier confirms the kit.</p>
     </aside>
   </div>`;
 
@@ -680,5 +694,12 @@ export function mountBuilder(root, { lockTech = null } = {}) {
     fit.hidden = !custom;
     fit.textContent = custom ? 'Your vehicle needs a fitment check before we can match a kit.' : '';
     $('[data-sum-cta]').textContent = custom ? 'Request fitment check' : v.status === 'concept' ? 'Join the concept waitlist' : 'Join early access';
+    const buyUrl = custom ? null : checkoutUrl(v.sku);
+    const buy = $('[data-sum-buy]');
+    buy.hidden = !buyUrl;
+    buy.textContent = buyUrl ? `Checkout · ${money(v.ownerTargetPrice)}` : '';
+    if (buyUrl) buy.href = buyUrl; else buy.removeAttribute('href');
+    $('[data-waitlist]').hidden = Boolean(buyUrl);
+    $('[data-sum-fine]').hidden = Boolean(buyUrl);
   });
 }
