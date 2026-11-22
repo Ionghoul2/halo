@@ -1,6 +1,6 @@
 import {
   TECHS, SIZES, catalog, money, state, setState, subscribe, variantFor, pageUrl, video, kitContents,
-  renderChrome, initMotion, initReveals, mountBuilder,
+  renderChrome, initMotion, initReveals, mountBuilder, buyableAddons,
 } from './shared.js';
 
 const page = document.documentElement.dataset.page;
@@ -26,6 +26,29 @@ const FAQ = `
       <details><summary>When can I buy?</summary><p>Join early access. We open orders kit by kit once each one's parts, power system and shipping are confirmed. No payment is taken today.</p></details>
     </div>
   </div></section>`;
+
+// Shown only once at least one add-on has a live Shopify variant (see shopify-bridge.json).
+function addonSection() {
+  const addons = buyableAddons();
+  if (!addons.length) return '';
+  return `
+  <section class="section" id="addons" aria-labelledby="addons-title"><div class="wrap">
+    <header class="section-head" data-reveal>
+      <p class="eyebrow">Available now</p>
+      <h2 class="h2" id="addons-title">Add-ons you can order today.</h2>
+      <p class="lede">Ships from our suppliers to US addresses. Secure checkout by Shopify.</p>
+    </header>
+    <ul class="addon-grid">${addons.map((a) => `
+      <li class="addon-card" data-reveal>
+        <h3 class="h3">${a.title}</h3>
+        <p>${a.blurb}</p>
+        <ul class="addon-options">${a.options.map((o) => `
+          <li><span>${o.label}</span><a class="btn btn-glow" href="${o.url}" data-addon="${o.sku}">Checkout · ${money(o.priceUSD)}</a></li>`).join('')}
+        </ul>
+      </li>`).join('')}
+    </ul>
+  </div></section>`;
+}
 
 if (page === 'build') {
   document.title = 'Build your kit · Car Glow';
@@ -55,6 +78,7 @@ if (page === 'pricing') {
     <div class="table-scroll" data-reveal><table class="price-table" data-price-table></table></div>
     <p class="fine table-note">Prices are planned and may change once suppliers confirm each kit. No payment is taken today.</p>
   </div></section>
+  ${addonSection()}
   ${FAQ}`;
   const table = main.querySelector('[data-price-table]');
   table.innerHTML = `<caption class="sr-only">Planned prices for all 18 kits</caption>

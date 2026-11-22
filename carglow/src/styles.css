@@ -585,3 +585,11 @@ video.landscape-crop { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; bo
 @media (max-width: 860px) {
   .buybar { background: rgba(16, 14, 23, 0.97); backdrop-filter: none; -webkit-backdrop-filter: none; }
 }
+
+/* Add-ons for sale (Pricing page, shown only when Shopify variants are live) */
+.addon-grid { list-style: none; margin: 2.5rem 0 0; padding: 0; display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
+.addon-card { border: 1px solid rgba(255,255,255,.1); border-radius: 22px; padding: 1.5rem; background: rgba(255,255,255,.03); display: flex; flex-direction: column; gap: .75rem; }
+.addon-card p { margin: 0; color: var(--muted, #b9b3c6); }
+.addon-options { list-style: none; margin: auto 0 0; padding: 0; display: grid; gap: .6rem; }
+.addon-options li { display: flex; align-items: center; justify-content: space-between; gap: .75rem; flex-wrap: wrap; }
+.addon-options .btn { white-space: nowrap; }

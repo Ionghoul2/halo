@@ -23,13 +23,19 @@ export const productUrl = (key) => `${BASE}products/${SLUG[key]}/index.html`;
 // Shopify checkout link for one kit SKU, or null. Stays null until the store owner
 // sets canPurchase and that variant's availableForSale to true in shopify-bridge.json
 // (product active, published to the Online Store, priced and fulfillable).
+const cartLink = (v) => (v?.availableForSale === true && /^\d+$/.test(v.variantNumericId ?? '') ? `https://${bridge.shopDomain}/cart/${v.variantNumericId}:1` : null);
 export function checkoutUrl(sku) {
   if (bridge.canPurchase !== true) return null;
-  for (const p of Object.values(bridge.products)) {
-    const v = p.variants?.[sku];
-    if (v) return v.availableForSale === true && /^\d+$/.test(v.variantNumericId) ? `https://${bridge.shopDomain}/cart/${v.variantNumericId}:1` : null;
-  }
+  for (const p of Object.values(bridge.products)) if (p.variants?.[sku]) return cartLink(p.variants[sku]);
   return null;
+}
+
+// Add-ons sold on their own (fiber dash, eyes, underglow, interior). Only entries with a real Shopify variant are returned.
+export function buyableAddons() {
+  if (bridge.addonsCanPurchase !== true) return [];
+  return Object.values(bridge.addons || {})
+    .map((a) => ({ ...a, options: Object.entries(a.variants).map(([sku, v]) => ({ sku, ...v, url: cartLink(v) })).filter((o) => o.url) }))
+    .filter((a) => a.options.length);
 }
 export const pageUrl = (page) => `${BASE}${page}/index.html`;
 export const variantFor = (tech, size, ug) =>

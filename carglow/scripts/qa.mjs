@@ -9,6 +9,8 @@ const catalog = JSON.parse(readFileSync(new URL('../src/data/catalog.json', impo
 const bridge = JSON.parse(readFileSync(new URL('../src/data/shopify-bridge.json', import.meta.url)));
 mkdirSync(SHOTS, { recursive: true });
 
+const addonLive = bridge.addonsCanPurchase === true && Object.values(bridge.addons || {}).some((a) => Object.values(a.variants).some((v) => v.availableForSale === true && /^\d+$/.test(v.variantNumericId ?? '')));
+const sellingOn = bridge.canPurchase === true || addonLive;
 const failures = [];
 const check = (ok, msg) => { if (!ok) failures.push(msg); };
 
@@ -190,9 +192,9 @@ for (const vp of [{ name: 'mobile', ...devices['iPhone 13'] }, { name: 'desktop'
     const { sw, cw } = await page.evaluate(() => ({ sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth }));
     check(sw <= cw, `${vp.name} ${p}: horizontal overflow ${sw} > ${cw}`);
     const buy = await page.$$eval('button, a', (els) => els.map((e) => e.textContent.trim()).filter((t) => /add to cart|buy now|checkout/i.test(t)));
-    check(buy.length === 0 || bridge.canPurchase === true, `${vp.name} ${p}: purchase controls present: ${buy}`);
+    check(buy.length === 0 || sellingOn, `${vp.name} ${p}: purchase controls present: ${buy}`);
     const cartLinks = await page.$$eval('a[href*="/cart/"]', (els) => els.length);
-    check(cartLinks === 0 || bridge.canPurchase === true, `${vp.name} ${p}: Shopify cart link present while canPurchase is false`);
+    check(cartLinks === 0 || sellingOn, `${vp.name} ${p}: Shopify cart link present while canPurchase is false`);
     check(errors.length === 0, `${vp.name} ${p}: errors ${errors.join(' | ')}`);
     await page.close();
   }

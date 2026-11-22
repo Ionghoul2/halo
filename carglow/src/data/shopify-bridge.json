@@ -136,5 +136,109 @@
         }
       }
     }
+  },
+  "addonsCanPurchase": true,
+  "addonsNote": "Owner approved the 4 add-ons for sale on 2026-11-22. Fill each variantNumericId from Shopify (product Active + Online Store) and set availableForSale true; the Pricing page shows the add-ons only once one has a real ID.",
+  "addons": {
+    "fiber": {
+      "title": "Car Glow Fiber Dash Kit",
+      "blurb": "Thin app-controlled light lines around your gauges, screen and console.",
+      "productGid": null,
+      "variants": {
+        "CG-FIB-DL": {
+          "label": "Dash Lines",
+          "priceUSD": 49,
+          "variantNumericId": null,
+          "availableForSale": false
+        },
+        "CG-FIB-FW": {
+          "label": "Dash Lines + Footwell",
+          "priceUSD": 79,
+          "variantNumericId": null,
+          "availableForSale": false
+        }
+      }
+    },
+    "eyes": {
+      "title": "Car Glow Animated Eyes",
+      "blurb": "Two app-controlled LED eye panels for the windshield. Parked display only.",
+      "productGid": null,
+      "variants": {
+        "CG-EYE-LO": {
+          "label": "Lights Only",
+          "priceUSD": 59,
+          "variantNumericId": null,
+          "availableForSale": false
+        },
+        "CG-EYE-CK": {
+          "label": "Complete Kit (adds 12V USB adapter)",
+          "priceUSD": 64,
+          "variantNumericId": null,
+          "availableForSale": false
+        }
+      }
+    },
+    "underglow": {
+      "title": "Car Glow App Underglow",
+      "blurb": "App color-changing underglow with music sync. Sized by vehicle length.",
+      "productGid": null,
+      "variants": {
+        "CG-UG-S-LO": {
+          "label": "Small \u00b7 Lights Only",
+          "priceUSD": 59,
+          "variantNumericId": null,
+          "availableForSale": false
+        },
+        "CG-UG-S-CK": {
+          "label": "Small \u00b7 Complete Kit",
+          "priceUSD": 74,
+          "variantNumericId": null,
+          "availableForSale": false
+        },
+        "CG-UG-M-LO": {
+          "label": "Medium \u00b7 Lights Only",
+          "priceUSD": 59,
+          "variantNumericId": null,
+          "availableForSale": false
+        },
+        "CG-UG-M-CK": {
+          "label": "Medium \u00b7 Complete Kit",
+          "priceUSD": 74,
+          "variantNumericId": null,
+          "availableForSale": false
+        },
+        "CG-UG-L-LO": {
+          "label": "Large \u00b7 Lights Only",
+          "priceUSD": 72,
+          "variantNumericId": null,
+          "availableForSale": false
+        },
+        "CG-UG-L-CK": {
+          "label": "Large \u00b7 Complete Kit",
+          "priceUSD": 87,
+          "variantNumericId": null,
+          "availableForSale": false
+        }
+      }
+    },
+    "interior": {
+      "title": "Car Glow Interior Kit",
+      "blurb": "18-in-1 app lighting for door trim, footwells, door pockets and handles.",
+      "productGid": null,
+      "variants": {
+        "CG-INT-LO": {
+          "label": "Lights Only",
+          "priceUSD": 59,
+          "variantNumericId": null,
+          "availableForSale": false
+        },
+        "CG-INT-CK": {
+          "label": "Complete Kit (adds fuse taps, splices, trim tools)",
+          "priceUSD": 79,
+          "variantNumericId": null,
+          "availableForSale": false
+        }
+      }
+    }
   }
 }
