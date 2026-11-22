@@ -1,138 +1,138 @@
 {
   "schemaVersion": 1,
-  "shopDomain": "cdee2r-yy.myshopify.com",
+  "shopDomain": "whipef-3h.myshopify.com",
   "purpose": "Link Car Glow catalog SKUs to Shopify draft product/variant IDs",
-  "allDrafts": true,
+  "allDrafts": false,
   "pricesAreUnverifiedTargets": true,
-  "canPurchase": false,
-  "notes": "Shopify products DRAFT, zero inventory. Do not generate live Buy links, unpublish early-access labels, or publish themes until real supplier feasibility verified.",
+  "canPurchase": true,
+  "notes": "Linked to My Store 3 (whipef-3h). Kits and add-ons ACTIVE and buyable per owner decision 2026-11-22; supplier and prices still unverified.",
   "products": {
     "static": {
       "productGid": "gid://shopify/Product/15441340989744",
       "handle": "car-glow-static-classic-exterior-light-kit",
-      "status": "DRAFT",
+      "status": "ACTIVE",
       "variants": {
         "STATIC-S-BASE": {
-          "variantGid": "gid://shopify/ProductVariant/68507851030832",
-          "variantNumericId": "68507851030832",
+          "variantGid": "gid://shopify/ProductVariant/51269113970945",
+          "variantNumericId": "51269113970945",
           "plannedPriceUSD": 45,
-          "availableForSale": false
+          "availableForSale": true
         },
         "STATIC-S-UG": {
-          "variantGid": "gid://shopify/ProductVariant/68507851063600",
-          "variantNumericId": "68507851063600",
+          "variantGid": "gid://shopify/ProductVariant/51269114003713",
+          "variantNumericId": "51269114003713",
           "plannedPriceUSD": 90,
-          "availableForSale": false
+          "availableForSale": true
         },
         "STATIC-M-BASE": {
-          "variantGid": "gid://shopify/ProductVariant/68507851096368",
-          "variantNumericId": "68507851096368",
+          "variantGid": "gid://shopify/ProductVariant/51269114036481",
+          "variantNumericId": "51269114036481",
           "plannedPriceUSD": 62,
-          "availableForSale": false
+          "availableForSale": true
         },
         "STATIC-M-UG": {
-          "variantGid": "gid://shopify/ProductVariant/68507851129136",
-          "variantNumericId": "68507851129136",
+          "variantGid": "gid://shopify/ProductVariant/51269114069249",
+          "variantNumericId": "51269114069249",
           "plannedPriceUSD": 107,
-          "availableForSale": false
+          "availableForSale": true
         },
         "STATIC-L-BASE": {
-          "variantGid": "gid://shopify/ProductVariant/68507851161904",
-          "variantNumericId": "68507851161904",
+          "variantGid": "gid://shopify/ProductVariant/51269114102017",
+          "variantNumericId": "51269114102017",
           "plannedPriceUSD": 82,
-          "availableForSale": false
+          "availableForSale": true
         },
         "STATIC-L-UG": {
-          "variantGid": "gid://shopify/ProductVariant/68507851194672",
-          "variantNumericId": "68507851194672",
+          "variantGid": "gid://shopify/ProductVariant/51269114134785",
+          "variantNumericId": "51269114134785",
           "plannedPriceUSD": 140,
-          "availableForSale": false
+          "availableForSale": true
         }
       }
     },
     "rgb": {
       "productGid": "gid://shopify/Product/15441341022512",
       "handle": "car-glow-color-changing-rgb-exterior-light-kit",
-      "status": "DRAFT",
+      "status": "ACTIVE",
       "variants": {
         "RGB-S-BASE": {
-          "variantGid": "gid://shopify/ProductVariant/68507851227440",
-          "variantNumericId": "68507851227440",
+          "variantGid": "gid://shopify/ProductVariant/51269113544961",
+          "variantNumericId": "51269113544961",
           "plannedPriceUSD": 56,
-          "availableForSale": false
+          "availableForSale": true
         },
         "RGB-S-UG": {
-          "variantGid": "gid://shopify/ProductVariant/68507851260208",
-          "variantNumericId": "68507851260208",
+          "variantGid": "gid://shopify/ProductVariant/51269113577729",
+          "variantNumericId": "51269113577729",
           "plannedPriceUSD": 101,
-          "availableForSale": false
+          "availableForSale": true
         },
         "RGB-M-BASE": {
-          "variantGid": "gid://shopify/ProductVariant/68507851292976",
-          "variantNumericId": "68507851292976",
+          "variantGid": "gid://shopify/ProductVariant/51269113610497",
+          "variantNumericId": "51269113610497",
           "plannedPriceUSD": 75,
-          "availableForSale": false
+          "availableForSale": true
         },
         "RGB-M-UG": {
-          "variantGid": "gid://shopify/ProductVariant/68507851325744",
-          "variantNumericId": "68507851325744",
+          "variantGid": "gid://shopify/ProductVariant/51269113643265",
+          "variantNumericId": "51269113643265",
           "plannedPriceUSD": 120,
-          "availableForSale": false
+          "availableForSale": true
         },
         "RGB-L-BASE": {
-          "variantGid": "gid://shopify/ProductVariant/68507851358512",
-          "variantNumericId": "68507851358512",
+          "variantGid": "gid://shopify/ProductVariant/51269113676033",
+          "variantNumericId": "51269113676033",
           "plannedPriceUSD": 109,
-          "availableForSale": false
+          "availableForSale": true
         },
         "RGB-L-UG": {
-          "variantGid": "gid://shopify/ProductVariant/68507851391280",
-          "variantNumericId": "68507851391280",
+          "variantGid": "gid://shopify/ProductVariant/51269113708801",
+          "variantNumericId": "51269113708801",
           "plannedPriceUSD": 167,
-          "availableForSale": false
+          "availableForSale": true
         }
       }
     },
     "mapping": {
       "productGid": "gid://shopify/Product/15441341055280",
       "handle": "car-glow-graphic-mapping-exterior-pixel-kit-concept",
-      "status": "DRAFT",
+      "status": "ACTIVE",
       "variants": {
         "MAP-S-BASE": {
-          "variantGid": "gid://shopify/ProductVariant/68507851424048",
-          "variantNumericId": "68507851424048",
+          "variantGid": "gid://shopify/ProductVariant/51269113774337",
+          "variantNumericId": "51269113774337",
           "plannedPriceUSD": 449,
-          "availableForSale": false
+          "availableForSale": true
         },
         "MAP-S-UG": {
-          "variantGid": "gid://shopify/ProductVariant/68507851456816",
-          "variantNumericId": "68507851456816",
+          "variantGid": "gid://shopify/ProductVariant/51269113807105",
+          "variantNumericId": "51269113807105",
           "plannedPriceUSD": 494,
-          "availableForSale": false
+          "availableForSale": true
         },
         "MAP-M-BASE": {
-          "variantGid": "gid://shopify/ProductVariant/68507851489584",
-          "variantNumericId": "68507851489584",
+          "variantGid": "gid://shopify/ProductVariant/51269113839873",
+          "variantNumericId": "51269113839873",
           "plannedPriceUSD": 599,
-          "availableForSale": false
+          "availableForSale": true
         },
         "MAP-M-UG": {
-          "variantGid": "gid://shopify/ProductVariant/68507851522352",
-          "variantNumericId": "68507851522352",
+          "variantGid": "gid://shopify/ProductVariant/51269113872641",
+          "variantNumericId": "51269113872641",
           "plannedPriceUSD": 644,
-          "availableForSale": false
+          "availableForSale": true
         },
         "MAP-L-BASE": {
-          "variantGid": "gid://shopify/ProductVariant/68507851555120",
-          "variantNumericId": "68507851555120",
+          "variantGid": "gid://shopify/ProductVariant/51269113905409",
+          "variantNumericId": "51269113905409",
           "plannedPriceUSD": 799,
-          "availableForSale": false
+          "availableForSale": true
         },
         "MAP-L-UG": {
-          "variantGid": "gid://shopify/ProductVariant/68507851587888",
-          "variantNumericId": "68507851587888",
+          "variantGid": "gid://shopify/ProductVariant/51269113938177",
+          "variantNumericId": "51269113938177",
           "plannedPriceUSD": 857,
-          "availableForSale": false
+          "availableForSale": true
         }
       }
     }
@@ -148,16 +148,19 @@
         "CG-FIB-DL": {
           "label": "Dash Lines",
           "priceUSD": 49,
-          "variantNumericId": "68507968405808",
-          "availableForSale": true
+          "variantNumericId": "51269113413889",
+          "availableForSale": true,
+          "variantGid": "gid://shopify/ProductVariant/51269113413889"
         },
         "CG-FIB-FW": {
           "label": "Dash Lines + Footwell",
           "priceUSD": 79,
-          "variantNumericId": "68507968438576",
-          "availableForSale": true
+          "variantNumericId": "51269113446657",
+          "availableForSale": true,
+          "variantGid": "gid://shopify/ProductVariant/51269113446657"
         }
-      }
+      },
+      "status": "ACTIVE"
     },
     "eyes": {
       "title": "Car Glow Animated Eyes",
@@ -167,16 +170,19 @@
         "CG-EYE-LO": {
           "label": "Lights Only",
           "priceUSD": 59,
-          "variantNumericId": "68507968471344",
-          "availableForSale": true
+          "variantNumericId": "51269113151745",
+          "availableForSale": true,
+          "variantGid": "gid://shopify/ProductVariant/51269113151745"
         },
         "CG-EYE-CK": {
           "label": "Complete Kit (adds 12V USB adapter)",
           "priceUSD": 64,
-          "variantNumericId": "68507968504112",
-          "availableForSale": true
+          "variantNumericId": "51269113184513",
+          "availableForSale": true,
+          "variantGid": "gid://shopify/ProductVariant/51269113184513"
         }
-      }
+      },
+      "status": "ACTIVE"
     },
     "underglow": {
       "title": "Car Glow App Underglow",
@@ -184,42 +190,49 @@
       "productGid": "gid://shopify/Product/15441362026800",
       "variants": {
         "CG-UG-S-LO": {
-          "label": "Small \u00b7 Lights Only",
+          "label": "Small · Lights Only",
           "priceUSD": 59,
-          "variantNumericId": "68507968536880",
-          "availableForSale": true
+          "variantNumericId": "51269113217281",
+          "availableForSale": true,
+          "variantGid": "gid://shopify/ProductVariant/51269113217281"
         },
         "CG-UG-S-CK": {
-          "label": "Small \u00b7 Complete Kit",
+          "label": "Small · Complete Kit",
           "priceUSD": 74,
-          "variantNumericId": "68507968569648",
-          "availableForSale": true
+          "variantNumericId": "51269113250049",
+          "availableForSale": true,
+          "variantGid": "gid://shopify/ProductVariant/51269113250049"
         },
         "CG-UG-M-LO": {
-          "label": "Medium \u00b7 Lights Only",
+          "label": "Medium · Lights Only",
           "priceUSD": 59,
-          "variantNumericId": "68507968602416",
-          "availableForSale": true
+          "variantNumericId": "51269113282817",
+          "availableForSale": true,
+          "variantGid": "gid://shopify/ProductVariant/51269113282817"
         },
         "CG-UG-M-CK": {
-          "label": "Medium \u00b7 Complete Kit",
+          "label": "Medium · Complete Kit",
           "priceUSD": 74,
-          "variantNumericId": "68507968635184",
-          "availableForSale": true
+          "variantNumericId": "51269113315585",
+          "availableForSale": true,
+          "variantGid": "gid://shopify/ProductVariant/51269113315585"
         },
         "CG-UG-L-LO": {
-          "label": "Large \u00b7 Lights Only",
+          "label": "Large · Lights Only",
           "priceUSD": 72,
-          "variantNumericId": "68507968667952",
-          "availableForSale": true
+          "variantNumericId": "51269113348353",
+          "availableForSale": true,
+          "variantGid": "gid://shopify/ProductVariant/51269113348353"
         },
         "CG-UG-L-CK": {
-          "label": "Large \u00b7 Complete Kit",
+          "label": "Large · Complete Kit",
           "priceUSD": 87,
-          "variantNumericId": "68507968700720",
-          "availableForSale": true
+          "variantNumericId": "51269113381121",
+          "availableForSale": true,
+          "variantGid": "gid://shopify/ProductVariant/51269113381121"
         }
-      }
+      },
+      "status": "ACTIVE"
     },
     "interior": {
       "title": "Car Glow Interior Kit",
@@ -229,16 +242,19 @@
         "CG-INT-LO": {
           "label": "Lights Only",
           "priceUSD": 59,
-          "variantNumericId": "68507968733488",
-          "availableForSale": true
+          "variantNumericId": "51269113479425",
+          "availableForSale": true,
+          "variantGid": "gid://shopify/ProductVariant/51269113479425"
         },
         "CG-INT-CK": {
           "label": "Complete Kit (adds fuse taps, splices, trim tools)",
           "priceUSD": 79,
-          "variantNumericId": "68507968766256",
-          "availableForSale": true
+          "variantNumericId": "51269113512193",
+          "availableForSale": true,
+          "variantGid": "gid://shopify/ProductVariant/51269113512193"
         }
-      }
+      },
+      "status": "ACTIVE"
     }
   }
 }

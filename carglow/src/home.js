@@ -81,7 +81,7 @@ const SHOWS = [
     text: 'Every light is controlled on its own, so the car can show pictures and animations, like Santa or falling snow.',
     price: `Planned from <strong>${from('mapping')}</strong>`,
     ref: 'Reference footage from another installer. Not Car Glow hardware.',
-    extra: 'Coming soon. Not for sale until custom graphics are proven on the hardware we ship.',
+    extra: 'Our most advanced kit: individually addressable pixels for moving, animated effects.',
     cta: 'Join the waitlist',
   },
   {

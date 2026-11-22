@@ -21,9 +21,9 @@ const FAQ = `
       <details><summary>Can I drive with the lights on?</summary><p>Car Glow kits are made for parked displays, photos and private-property events. Many places restrict colored or flashing exterior lights on moving vehicles. Check your local laws before driving lit.</p></details>
       <details><summary>Will it damage my paint?</summary><p>We're choosing mounting materials panel by panel and testing removal. We won't promise zero damage on every finish. Clean surfaces, the included film and slow removal matter most.</p></details>
       <details><summary>How do you pick my size?</summary><p>Mostly by vehicle length: Small up to 15 ft, Medium up to 17 ft, Large up to 20 ft. Over 20 ft, vans and unusual shapes get a manual fitment check.</p></details>
-      <details><summary>Can I upload my own graphics?</summary><p>That's the goal for Graphic Mapping. It stays a concept until we've proven the full workflow on the hardware we ship.</p></details>
+      <details><summary>Can I upload my own graphics?</summary><p>That's the goal for Graphic Mapping. Animation options depend on the included controller and app. Contact us before ordering a custom design.</p></details>
       <details><summary>Does underglow sync with the body lights?</summary><p>Not by default. Underglow runs on its own controller unless we test and confirm sync.</p></details>
-      <details><summary>When can I buy?</summary><p>Join early access. We open orders kit by kit once each one's parts, power system and shipping are confirmed. No payment is taken today.</p></details>
+      <details><summary>When can I buy?</summary><p>Now. Pick your kit and size, then check out securely with Shopify.</p></details>
     </div>
   </div></section>`;
 
@@ -76,7 +76,7 @@ if (page === 'pricing') {
   ${head('Pricing', 'Every kit, <span class="glow-text">one table.</span>', 'Planned prices. The top price is the kit; the one under it adds RGBIC underglow. Tap a price to start that build.')}
   <section class="section page-first" data-tint="rgb"><div class="wrap">
     <div class="table-scroll" data-reveal><table class="price-table" data-price-table></table></div>
-    <p class="fine table-note">Prices are planned and may change once suppliers confirm each kit. No payment is taken today.</p>
+    <p class="fine table-note">Prices in US dollars. Standard shipping is $12, free on orders of $70 or more.</p>
   </div></section>
   ${addonSection()}
   ${FAQ}`;
