@@ -59,3 +59,5 @@ Read this first when picking the project back up. Newest entries at the top.
 - **v3:** full-screen scenes for phones, scroll-stepped product films.
 - **v2:** four-look video hero, WebGL background, animated options, color picker.
 - **v1:** first cinematic build, 18-variant catalog, media manifest, QA script.
+
+- 2026-11-22: KTRLIGHT check for Shopify drafts 15441314742576 (RGB Strings) and 15441315037488 (P25 Mesh) in `docs/sourcing/ktrlight-dsers-check.md`. DSers blocked (Advanced plan needed), Shopify not connected; nothing mapped or connected to checkout; website untouched.
