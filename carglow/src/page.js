@@ -43,7 +43,7 @@ function addonSection() {
         <h3 class="h3">${a.title}</h3>
         <p>${a.blurb}</p>
         <ul class="addon-options">${a.options.map((o) => `
-          <li><span>${o.label}</span><a class="btn btn-glow" href="${o.url}" data-addon="${o.sku}">Checkout · ${money(o.priceUSD)}</a></li>`).join('')}
+          <li><span>${o.label}</span><a class="btn btn-glow" href="${o.url}" target="_blank" rel="noopener" data-addon="${o.sku}">Checkout · ${money(o.priceUSD)}</a></li>`).join('')}
         </ul>
       </li>`).join('')}
     </ul>

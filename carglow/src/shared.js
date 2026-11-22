@@ -589,7 +589,7 @@ export function mountBuilder(root, { lockTech = null } = {}) {
         <summary>What's planned in the kit</summary>
         <ul data-sum-contents></ul>
       </details>
-      <a class="btn btn-glow summary-buy" data-sum-buy hidden></a>
+      <a class="btn btn-glow summary-buy" data-sum-buy target="_blank" rel="noopener" hidden></a>
       <form class="waitlist" data-waitlist novalidate>
         <label for="wl-email" class="sr-only">Email</label>
         <input id="wl-email" name="email" type="email" autocomplete="email" placeholder="you@example.com…" required spellcheck="false">

@@ -5,7 +5,8 @@ Read this first when picking the project back up. Newest entries at the top.
 ## Where things stand (2026-11-22, v6)
 
 - **Live previews** (Claude artifacts, each a separate link so versions can be compared):
-  - v6 (current: v5 foundation + v3 product showcase): https://claude.ai/artifact/V1pZTvYXxeXxNHfEm3DHNi
+  - v7 (current, live add-on checkout): https://claude.ai/artifact/SgaiZcBtra52JbrqtgRstG
+  - v6 (v5 foundation + v3 product showcase): https://claude.ai/artifact/V1pZTvYXxeXxNHfEm3DHNi
   - v5 minimal: https://claude.ai/artifact/S2iYzMCqssUapZ9X9i2K6M (source at commit cbf5adf)
   - v3/v4 (Christmas, aurora, scroll car, full-screen scenes): https://claude.ai/artifact/MxZMWiZCS8YAQA3KP8RNN2 (set to "anyone with the link")
   - v2: https://claude.ai/artifact/3eoeeMoJnUbyy1kEW7rAtd
@@ -67,3 +68,5 @@ Read this first when picking the project back up. Newest entries at the top.
 - 2026-11-22: Owner approved selling the 4 add-ons (fiber dash, eyes, underglow, interior). `shopify-bridge.json` now has an `addons` block (10 SKUs, prices from shopify-addons-draft.csv) with empty variant IDs. Pricing page shows an "Add-ons you can order today" section with Shopify checkout buttons only for add-on variants that have a numeric `variantNumericId` and `availableForSale: true`. Waiting on ChatGPT/Shopify for the IDs.
 
 - 2026-11-22: Add-ons LIVE in Shopify (cdee2r-yy): Car Glow Fiber Dash Kit 15441361961264, Animated Eyes 15441361994032, App Underglow 15441362026800, Interior Kit 15441362059568. All ACTIVE, on Online Store, inventory not tracked/continue selling, cost per item set. 12 variant IDs filled in `shopify-bridge.json`; Pricing page shows 12 working checkout buttons. Storefront password still ON (owner must turn off in Online Store > Preferences). Site not deployed yet.
+
+- 2026-11-22: v7 published (https://claude.ai/artifact/SgaiZcBtra52JbrqtgRstG, private until owner shares it): v6 design + 12 live add-on checkout buttons on Pricing (open Shopify checkout in a new tab). Permanent hosting: drag `carglow-site.zip` (the `dist/` build) onto app.netlify.com/drop.
