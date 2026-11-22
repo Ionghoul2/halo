@@ -542,6 +542,13 @@
         "cuts": [
           "The_best_time_of_the_year_.......christmas_christmastree_christmastime_christmaslights_.mp4 12.7-19.65 s (rolling shots: pair with the parked-display notice)"
         ]
+      },
+      {
+        "file": "media/coverage/dense-red-wide.mp4",
+        "use": "v6 hero desktop: Color-Changing RGB (single color; site simulates other colors with a labelled hue shift)",
+        "cuts": [
+          "coverage/dense-red.mp4 full clip, 1280x720 with blurred backdrop"
+        ]
       }
     ]
   },

@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Car Glow</title>
   <meta name="claude:viewport-fit-sides" content="cover">
-  <meta name="description" content="Car Glow exterior LED lighting kits: Static Classic, Color-Changing RGB and Graphic Mapping, sized to your vehicle, with optional RGBIC underglow.">
+  <meta name="description" content="Car Glow exterior LED lighting kits: Static Classic, Color-Changing RGB and Graphic Mapping, sized to your vehicle, with optional underglow.">
   <meta name="theme-color" content="#07060b">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Instrument+Sans:wght@400..600&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Instrument+Sans:wght@400..600&family=JetBrains+Mono:wght@400;500&display=swap">
   <link rel="preload" as="image" href="media/posters/look-static.jpg">
 </head>
 <body class="home">
@@ -24,46 +24,28 @@
         <h1 class="display">Make your car <span class="glow-text">impossible to ignore</span> <span class="xmas-text">this Christmas.</span></h1>
         <div class="cta-row">
           <a class="btn btn-glow" href="build/index.html">Find my lights</a>
-          <a class="btn btn-ghost" href="#collection">See prices</a>
+          <a class="btn btn-ghost" href="#options">See the options</a>
         </div>
       </div>
-      <div class="look-tabs" role="tablist" aria-label="Lighting looks" data-look-tabs></div>
+      <div class="hero-foot">
+        <div class="look-tabs" role="tablist" aria-label="Lighting looks" data-look-tabs></div>
+        <p class="look-note" data-look-note aria-live="polite"></p>
+      </div>
     </div>
   </section>
 
-  <section class="deck" id="collection" aria-labelledby="collection-title">
-    <div class="deck-bg" data-deck-bg aria-hidden="true"></div>
-    <div class="deck-inner">
-      <div class="deck-top">
-        <div class="wrap deck-head">
-          <div>
-            <p class="eyebrow">The collection</p>
-            <h2 class="h2" id="collection-title">Choose your glow.</h2>
-          </div>
-          <p class="deck-count" aria-hidden="true"><span data-deck-n>01</span><small>/03</small></p>
-        </div>
-      </div>
-      <div class="deck-stage" data-deck role="group" aria-roledescription="carousel" aria-label="Car Glow kits"></div>
-      <div class="deck-bottom">
-        <div class="wrap deck-foot">
-          <div class="deck-caption" aria-live="polite">
-            <p class="deck-meta" data-deck-meta></p>
-            <h3 data-deck-title></h3>
-            <p data-deck-text></p>
-          </div>
-          <div class="deck-actions">
-            <button type="button" class="btn btn-glow" data-deck-choose>Choose this kit</button>
-            <a class="text-link" href="#" data-deck-link>Details</a>
-            <div class="deck-nav">
-              <button type="button" class="round" data-deck-prev aria-label="Previous kit">&larr;</button>
-              <button type="button" class="round" data-deck-next aria-label="Next kit">&rarr;</button>
-            </div>
-          </div>
-        </div>
-        <p class="wrap deck-addon"><span data-deck-addon></span> <a class="text-link" href="pricing/index.html">Compare all prices</a></p>
-      </div>
+  <section class="options section" id="options" aria-labelledby="options-title">
+    <div class="wrap">
+      <header class="options-head">
+        <p class="eyebrow">The options</p>
+        <h2 class="h2" id="options-title">Four ways to light it.</h2>
+        <p class="lede">Start with a body kit, then add underglow if you want it. Every kit is sized to your vehicle.</p>
+      </header>
+      <ul class="option-grid" data-options></ul>
     </div>
   </section>
+
+  <section class="showcase" id="showcase" aria-label="The kits up close" data-showcase></section>
 
   <section class="how" id="how" data-tint="ice" aria-labelledby="how-title">
     <div class="how-media" aria-hidden="true">
@@ -73,13 +55,13 @@
     <div class="wrap how-inner">
       <h2 class="display" id="how-title">Three steps <span class="glow-text">to glowing.</span></h2>
       <ol class="how-steps">
-        <li><span class="how-n">01</span><h3>Pick your look</h3><p>Classic lights, color-changing, or mapped graphics.</p></li>
-        <li><span class="how-n">02</span><h3>Tell us your car</h3><p>We size the kit to your vehicle and show your price.</p></li>
-        <li><span class="how-n">03</span><h3>Reserve your kit</h3><p>Join early access. No payment today.</p></li>
+        <li><span class="how-n">Step 1</span><h3>Choose your look</h3><p>Static, color-changing or mapped graphics.</p></li>
+        <li><span class="how-n">Step 2</span><h3>Size it to your car</h3><p>Pick your vehicle size and add underglow if you want it.</p></li>
+        <li><span class="how-n">Step 3</span><h3>See your total</h3><p>Reserve your kit with early access. No payment today.</p></li>
       </ol>
       <div class="cta-row">
         <a class="btn btn-glow" href="build/index.html">Start your build</a>
-        <a class="text-link" href="install/index.html">How installation works</a>
+        <a class="text-link" href="pricing/index.html">See all prices</a>
       </div>
     </div>
   </section>
@@ -93,6 +75,7 @@
         <a class="btn btn-ghost" href="build/index.html#summary">Join early access</a>
       </div>
     </div>
+    <p class="ref-note">Reference footage</p>
   </section>
 
 </main>

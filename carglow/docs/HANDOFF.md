@@ -2,10 +2,11 @@
 
 Read this first when picking the project back up. Newest entries at the top.
 
-## Where things stand (2026-11-14, v5)
+## Where things stand (2026-11-22, v6)
 
 - **Live previews** (Claude artifacts, each a separate link so versions can be compared):
-  - v5 minimal (current): https://claude.ai/artifact/S2iYzMCqssUapZ9X9i2K6M
+  - v6 (current: v5 foundation + v3 product showcase): https://claude.ai/artifact/V1pZTvYXxeXxNHfEm3DHNi
+  - v5 minimal: https://claude.ai/artifact/S2iYzMCqssUapZ9X9i2K6M (source at commit cbf5adf)
   - v3/v4 (Christmas, aurora, scroll car, full-screen scenes): https://claude.ai/artifact/MxZMWiZCS8YAQA3KP8RNN2 (set to "anyone with the link")
   - v2: https://claude.ai/artifact/3eoeeMoJnUbyy1kEW7rAtd
   - v1: https://claude.ai/artifact/WU68majaoTfcJtigNCryJP
@@ -15,11 +16,13 @@ Read this first when picking the project back up. Newest entries at the top.
 
 ## What the owner wants (latest first)
 
+0. **v6 direction (2026-11-22, from the owner's 4-way review):** v5 is the foundation, v3's product presentation is borrowed. Homepage = one-video hero (v5) → four-option overview with starting prices (v2 idea) → one big demo beside copy, price and "Build this kit" per product (v3 layout) → 3 steps → closing film. Bold clean sans headlines (Archivo), no thin italic serif, little neon glow. Footage must match each product's real capability: RGB shows one color at a time (red reference clip, other colors labelled "simulated"); gradients/chasing/two-tone clips are Graphic Mapping only. Shopping path: see effect → options → choose kit → vehicle size + underglow → total (build page now starts with the kit and shows kit + underglow = total).
+
 1. **Minimal, spacious, classy, high conversion.** Homepage has 4 sections only: hero, collection with prices and a "Choose this kit" button, how it works in 3 steps, closing film. Everything else lives behind buttons: Build, Pricing, Install, and the product pages.
 2. **One video at a time** on every screen size (phones and laptops). No wall of four videos.
 3. **Videos always play** when the site opens. Only the pause button stops them, and a pause lasts just that visit.
 4. **Collection carousel:** spaced cards with room between them, like the real-estate reference. Not cards filling the page.
-5. **Words:** classy. Serif headlines (Instrument Serif) with italic accents, ivory buttons, little glow.
+5. **Words:** classy. ~~Serif headlines (Instrument Serif) with italic accents~~ replaced in v6 by bold clean sans (Archivo); ivory buttons, little glow.
 6. Keep: the Christmas headline "Make your car impossible to ignore this Christmas.", the green aurora background, the light garland under the menu, and the little car driving a string of lights on scroll (now quieter).
 7. Underglow is an add-on line plus its own product page with the color preview, not a homepage section.
 8. Design references: Veltrix (minimal luxury car site, 11-10 22-28-51 recording), the real-estate 3D card carousel (21-42-16), textura "Motion instead of chrome" (green aurora, 21-31-29). Full list in `public/media/media-manifest.json`.
@@ -48,6 +51,8 @@ Read this first when picking the project back up. Newest entries at the top.
 - Simplify the Build page further (fewer steps visible at once) for conversion.
 
 ## Change log
+
+- **v6 (2026-11-22):** new link, v1–v5 untouched. Archivo display type; hero keeps one film at a time with a footage note per look; RGB look/demos switched from addressable-pixel clips (supercar-palette, film-rgb, look-rgb) to the single-color red clip with a labelled simulated color change (new `coverage/dense-red-wide.mp4`); new options overview (4 cards with starting prices); new showcase (4:5 video frame beside copy, price, Build this kit / Add to a kit / Join the waitlist; only the on-screen film plays; RGB color swatches); build page reordered (kit first) with a kit + underglow = total breakdown; RGB product page gallery = single-color clips only; fades no longer hide buttons from keyboard users. QA: `npm run qa` all passing (adds showcase one-film, pause, reduced-motion, breakdown checks).
 
 - **v5 (2026-11-14):** 4-section homepage, single hero film on all screens (new wide cuts with blurred surroundings), priced collection deck with Choose button, How it works over a new black-backdrop McLaren clip, Build/Pricing/Install pages, phone menu, serif type, always-on video, quieter background string.
 - **v4 (2026-11-13):** Christmas headline and garland, green aurora, scroll car on a light string, 3D coverage deck, iPhone margin fix.
