@@ -109,7 +109,7 @@ if (key === 'underglow') {
         <p class="tagline glow-text">${p.tagline}</p>
         <p class="lede">${p.summary}</p>
         <p class="p-price">Planned <strong>${money(lo)} – ${money(hi)}</strong> · ~${num(l1)}–${num(l2)} ${key === 'mapping' ? 'pixels' : 'LEDs'}</p>
-        ${p.status === 'concept' ? '<p class="notice">Concept. Not for sale until custom graphics and mapping are proven on the exact hardware we ship.</p>' : ''}
+        ${p.status === 'concept' ? '<p class="notice">Animation options depend on the included controller and app. Contact us before ordering a custom design.</p>' : ''}
         <div class="cta-row"><a class="btn btn-glow" href="#configure">Configure</a><a class="btn btn-ghost" href="${BASE}index.html#collection">Compare all three</a></div>
       </div>
       <div class="p-hero-media">${video(p.media)}<p class="ref-note">Reference footage. Not Car Glow hardware.</p></div>
