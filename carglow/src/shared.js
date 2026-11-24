@@ -21,8 +21,7 @@ export const SLUG = { static: 'static-classic', rgb: 'color-changing-rgb', mappi
 export const productUrl = (key) => `${BASE}products/${SLUG[key]}/index.html`;
 
 // Shopify checkout link for one kit SKU, or null. Stays null until the store owner
-// sets canPurchase and that variant's availableForSale to true in shopify-bridge.json
-// (product active, published to the Online Store, priced and fulfillable).
+// sets canPurchase and that variant's availableForSale to true in shopify-bridge.json.
 const cartLink = (v) => (v?.availableForSale === true && /^\d+$/.test(v.variantNumericId ?? '') ? `https://${bridge.shopDomain}/cart/${v.variantNumericId}:1` : null);
 export function checkoutUrl(sku) {
   if (bridge.canPurchase !== true) return null;
@@ -74,7 +73,6 @@ export const MEDIA = {
   'holiday-graphics': { dir: 'mapping', alt: 'Audi R8 showing a gingerbread man, candy canes and snowflakes in LEDs' },
   'supercar-palette': { dir: 'rgb', alt: 'McLaren and Porsche in turquoise, purple and green LED lines' },
   'dense-red': { dir: 'coverage', alt: 'Porsche and McLaren covered in very dense red LEDs' },
-  'dense-red-wide': { dir: 'coverage', alt: 'Porsche and McLaren covered in very dense red LEDs' },
   'aventador-underglow': { dir: 'underglow', alt: 'Lamborghinis with gradient body lights and rainbow underglow' },
   'classic-string-lambos': { dir: 'static', alt: 'Lamborghinis wrapped in classic multicolor string lights' },
   'clip-mount-bmw': { dir: 'installation', alt: 'Hands mounting a light strand with a suction clip, then a lit BMW' },
@@ -188,9 +186,9 @@ function buildGarland() {
 /* ---------- page chrome ---------- */
 export function renderChrome(active = '', { buybar = false } = {}) {
   const cur = (k) => (active === k ? 'aria-current="page"' : '');
-  const pages = [['kits', 'Kits', `${BASE}index.html#options`], ['build', 'Build', pageUrl('build')],
+  const pages = [['collection', 'Collection', `${BASE}index.html#collection`], ['build', 'Build', pageUrl('build')],
     ['pricing', 'Pricing', pageUrl('pricing')], ['install', 'Install', pageUrl('install')]];
-  const products = [['static', 'Static Classic'], ['rgb', 'Color-Changing RGB'], ['mapping', 'Graphic Mapping'], ['underglow', 'Underglow']];
+  const products = [['static', 'Static Classic'], ['rgb', 'Color-Changing RGB'], ['mapping', 'Graphic Mapping'], ['underglow', 'RGBIC Underglow']];
   document.body.insertAdjacentHTML('afterbegin', `
   <a class="skip" href="#main">Skip to content</a>
   <header class="nav">
@@ -487,7 +485,6 @@ export function initReveals() {
     onToggle: (self) => { if (self.isActive) setTint(el.dataset.tint); },
   }));
   if (reduceMotion) return;
-  // Opacity only (not visibility), so buttons stay focusable and clickable before the fade plays.
   gsap.utils.toArray('[data-reveal]').forEach((el) => {
     gsap.from(el, { y: 40, opacity: 0, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 92%', once: true } });
   });
@@ -523,17 +520,11 @@ export function mountBuilder(root, { lockTech = null } = {}) {
       ${video(catalog.products[k].media, 'opt-video')}
       <span class="opt-title">${catalog.products[k].name}</span><span class="opt-sub">from ${money(priceRange(k)[0])}</span></button>`;
 
-  const n = (step) => (lockTech ? step - 1 : step);
   root.innerHTML = `
   <div class="builder">
     <div class="builder-steps">
-      <fieldset class="step" ${lockTech ? 'hidden' : ''}>
-        <legend><span class="step-n">1</span> Choose your lighting</legend>
-        <div class="opt-row">${TECHS.map(techBtn).join('')}</div>
-      </fieldset>
-
       <fieldset class="step">
-        <legend><span class="step-n">${n(2)}</span> What do you drive?</legend>
+        <legend><span class="step-n">1</span> What do you drive?</legend>
         <div class="vehicle-row">
           <label class="field"><span>Year</span>
             <select id="veh-year"><option value="">Year</option>${years.map((y) => `<option>${y}</option>`).join('')}</select></label>
@@ -555,16 +546,21 @@ export function mountBuilder(root, { lockTech = null } = {}) {
         <div class="rec" data-rec aria-live="polite"></div>
       </fieldset>
 
+      <fieldset class="step" ${lockTech ? 'hidden' : ''}>
+        <legend><span class="step-n">2</span> Choose your lighting</legend>
+        <div class="opt-row">${TECHS.map(techBtn).join('')}</div>
+      </fieldset>
+
       <fieldset class="step">
-        <legend><span class="step-n">${n(3)}</span> Vehicle size</legend>
+        <legend><span class="step-n">${lockTech ? 2 : 3}</span> Vehicle size</legend>
         <div class="opt-row">${SIZES.map(sizeBtn).join('')}</div>
       </fieldset>
 
       <fieldset class="step">
-        <legend><span class="step-n">${n(4)}</span> Underglow</legend>
+        <legend><span class="step-n">${lockTech ? 3 : 4}</span> Underglow</legend>
         <div class="opt-row opt-row-2">
           <button type="button" class="opt" data-ug="0" aria-pressed="false"><span class="opt-title">No underglow</span><span class="opt-sub">Body lights only</span></button>
-          <button type="button" class="opt" data-ug="1" aria-pressed="false"><span class="opt-title">Add underglow</span><span class="opt-sub" data-ug-sub></span></button>
+          <button type="button" class="opt" data-ug="1" aria-pressed="false"><span class="opt-title">Add RGBIC underglow</span><span class="opt-sub" data-ug-sub></span></button>
         </div>
       </fieldset>
     </div>
@@ -573,17 +569,13 @@ export function mountBuilder(root, { lockTech = null } = {}) {
       <p class="eyebrow">Your build</p>
       <p class="summary-vehicle" data-sum-vehicle></p>
       <h3 class="summary-title" data-sum-title></h3>
-      <dl class="breakdown">
-        <div><dt data-sum-kit-label></dt><dd data-sum-kit></dd></div>
-        <div data-sum-ug-row><dt data-sum-ug-label></dt><dd data-sum-ug></dd></div>
-      </dl>
-      <p class="summary-price"><span data-sum-price></span><small>planned total</small></p>
       <dl class="spec">
         <div><dt>Planned LEDs</dt><dd data-sum-leds></dd></div>
         <div><dt>Grid</dt><dd data-sum-grid></dd></div>
         <div><dt>SKU</dt><dd data-sum-sku></dd></div>
         <div><dt>Status</dt><dd data-sum-status></dd></div>
       </dl>
+      <p class="summary-price"><span data-sum-price></span><small>planned price</small></p>
       <div class="fit-warn" data-sum-fit hidden></div>
       <details class="contents">
         <summary>What's planned in the kit</summary>
@@ -681,12 +673,7 @@ export function mountBuilder(root, { lockTech = null } = {}) {
     }
 
     $('[data-sum-vehicle]').textContent = vehicle || 'No vehicle entered';
-    $('[data-sum-title]').textContent = `${catalog.products[s.tech].name} · ${catalog.sizes[s.size].name}${s.ug ? ' + underglow' : ''}`;
-    const base = variantFor(s.tech, s.size, false).ownerTargetPrice;
-    $('[data-sum-kit-label]').textContent = `${catalog.products[s.tech].name}, ${catalog.sizes[s.size].name}`;
-    $('[data-sum-kit]').textContent = money(base);
-    $('[data-sum-ug-label]').textContent = s.ug ? catalog.underglow[s.size].name.replace(' RGBIC', '') + ' underglow' : 'Underglow';
-    $('[data-sum-ug]').textContent = s.ug ? `+${money(v.ownerTargetPrice - base)}` : 'Not added';
+    $('[data-sum-title]').textContent = `${catalog.products[s.tech].name} · ${catalog.sizes[s.size].name}${s.ug ? ' + RGBIC underglow' : ''}`;
     $('[data-sum-leds]').textContent = `~${num(v.plannedLEDCount)}`;
     $('[data-sum-grid]').textContent = `${v.plannedPitchIn} in`;
     $('[data-sum-sku]').textContent = v.sku;

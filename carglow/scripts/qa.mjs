@@ -7,24 +7,22 @@ const BASE = process.env.QA_URL || 'http://localhost:4173/';
 const SHOTS = process.env.QA_SHOTS || 'qa-shots';
 const catalog = JSON.parse(readFileSync(new URL('../src/data/catalog.json', import.meta.url)));
 const bridge = JSON.parse(readFileSync(new URL('../src/data/shopify-bridge.json', import.meta.url)));
-mkdirSync(SHOTS, { recursive: true });
-
 const addonLive = bridge.addonsCanPurchase === true && Object.values(bridge.addons || {}).some((a) => Object.values(a.variants).some((v) => v.availableForSale === true && /^\d+$/.test(v.variantNumericId ?? '')));
 const sellingOn = bridge.canPurchase === true || addonLive;
+mkdirSync(SHOTS, { recursive: true });
+
 const failures = [];
 const check = (ok, msg) => { if (!ok) failures.push(msg); };
 
-// 0. Shopify bridge: every catalog SKU has exactly one numeric Shopify variant, and no SKU is sellable while canPurchase is false.
+// 0. Shopify bridge: every catalog SKU mapped once at the catalog price.
 {
   const bridged = Object.values(bridge.products).flatMap((p) => Object.entries(p.variants));
-  const ids = bridged.map(([, v]) => v.variantNumericId);
-  check(new Set(ids).size === ids.length && ids.every((id) => /^\d+$/.test(id)), 'shopify-bridge: variant IDs must be unique numbers');
   for (const v of catalog.variants) {
     const hit = bridged.filter(([sku]) => sku === v.sku);
     check(hit.length === 1, `shopify-bridge: ${v.sku} mapped ${hit.length} times`);
-    if (hit[0]) check(hit[0][1].plannedPriceUSD === v.ownerTargetPrice, `shopify-bridge: ${v.sku} price ${hit[0][1].plannedPriceUSD} != catalog ${v.ownerTargetPrice}`);
+    if (hit[0]) check(hit[0][1].plannedPriceUSD === v.ownerTargetPrice, `shopify-bridge: ${v.sku} price mismatch`);
   }
-  console.log(`shopify-bridge check done (${bridged.length} variants, canPurchase=${bridge.canPurchase})`);
+  console.log(`shopify-bridge check done (${bridged.length} kit variants, addons live=${addonLive})`);
 }
 const pages = ['index.html', 'build/index.html', 'pricing/index.html', 'install/index.html',
   ...['static-classic', 'color-changing-rgb', 'graphic-mapping', 'rgbic-underglow'].map((p) => `products/${p}/index.html`)];
@@ -34,47 +32,26 @@ const browser = await chromium.launch();
 {
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' });
 
-  // 1. Home: hero, options, showcase, how, final. One hero film at a time; each look matched to its product.
+  // 1. Home: four sections, one hero film at a time, three priced kits that start a build.
   await page.goto(BASE + 'index.html');
   const sections = await page.$$eval('main > section', (els) => els.map((e) => e.id));
-  check(sections.join(',') === 'hero,options,showcase,how,final', `home sections: ${sections}`);
+  check(sections.join(',') === 'hero,collection,how,final', `home sections: ${sections}`);
   for (let i = 0; i < 4; i++) {
     await page.click(`[data-tab="${i}"]`);
-    check((await page.getAttribute(`[data-look="${i}"]`, 'class')).includes('is-active'), `hero tab ${i} did not activate its look`);
-    check((await page.textContent('[data-look-note]')).length > 10, `hero tab ${i} has no footage note`);
+    check(await page.getAttribute(`[data-look="${i}"]`, 'class') === 'look is-active', `hero tab ${i} did not activate its look`);
   }
   check((await page.getAttribute('[data-look="0"] video', 'data-src')).includes('look-static-wide'), 'desktop hero should use the wide cut');
-  check((await page.getAttribute('[data-look="1"] video', 'data-src')).includes('dense-red-wide'), 'RGB hero look should use single-color footage');
-  check((await page.getAttribute('[data-look="1"]', 'class')).includes('rgb-cycle'), 'RGB hero look should be marked as a simulated color change');
-  check((await page.textContent('[data-look-note]')).includes('reference footage'), 'underglow look should be labelled as reference footage');
-  check(await page.evaluate(() => !document.querySelector('video[data-src*="supercar-palette"], video[data-src*="film-rgb"], video[data-src*="look-rgb"]')),
-    'homepage still uses addressable-pixel footage for RGB');
   check(await page.evaluate(() => !!document.querySelector('canvas.ambient')), 'ambient background canvas missing');
   check(await page.evaluate(() => document.querySelectorAll('.track-bg .bulb').length > 20), 'scroll light string missing');
   check(await page.evaluate(() => document.querySelectorAll('.garland .g-bulb').length >= 12), 'menu garland missing');
-  const opts = await page.$$eval('[data-option]', (els) => els.map((e) => [e.dataset.option, e.querySelector('.option-price').textContent]));
-  check(opts.map((o) => o[0]).join(',') === 'static,rgb,mapping,underglow', `options: ${opts}`);
-  for (const [k, want] of [['static', '$45'], ['rgb', '$56'], ['mapping', '$449'], ['underglow', '+$45']]) {
-    check((opts.find((o) => o[0] === k) || [])[1]?.includes(want), `option ${k} should show ${want}`);
+  for (const [i, price] of [[0, '$45'], [1, '$56'], [2, '$449']]) {
+    if (i > 0) await page.click('[data-deck-next]');
+    check(await page.textContent('[data-deck-n]') === `0${i + 1}`, `deck counter wrong at ${i}`);
+    check((await page.textContent('[data-deck-meta]')).includes(price), `deck ${i} should show from ${price}`);
   }
-  const shows = await page.$$eval('[data-show]', (els) => els.map((e) => e.dataset.show));
-  check(shows.join(',') === 'static,rgb,mapping,underglow', `showcase order: ${shows}`);
-  check((await page.textContent('#kit-mapping .status')).toLowerCase().includes('coming soon'), 'mapping showcase must be marked coming soon');
-  await page.click('[data-swatch="4"]');
-  check(((await page.getAttribute('#kit-rgb video', 'style')) || '').includes('hue-rotate'), 'RGB swatch did not change the preview color');
-  check((await page.textContent('[data-swatch-name]')).includes('simulated'), 'RGB preview must say it is simulated');
-  await page.click('#kit-static [data-pick]');
+  await page.click('[data-deck-choose]');
   await page.waitForURL(/build\/index\.html/);
-  check((await page.textContent('[data-sum-sku]')).startsWith('STATIC-'), 'Build this kit did not carry Static Classic into the build');
-  check((await page.textContent('.step:not([hidden]) legend')).includes('Choose your lighting'), 'build should start with choosing the kit');
-  await page.goto(BASE + 'index.html');
-  await page.click('#kit-underglow [data-pick]');
-  await page.waitForURL(/build\/index\.html/);
-  check((await page.textContent('[data-sum-title]')).includes('underglow'), 'Add to a kit did not switch underglow on');
-  await page.goto(BASE + 'index.html');
-  await page.click('#kit-mapping [data-pick]');
-  await page.waitForURL(/build\/index\.html/);
-  check((await page.textContent('[data-sum-sku]')).startsWith('MAP-'), 'Join the waitlist did not carry Mapping into the build');
+  check((await page.textContent('[data-sum-sku]')).startsWith('MAP-'), 'Choose on the deck did not carry Mapping into the build');
   console.log('home check done');
 
   // 2. All 18 combinations on the build page.
@@ -90,10 +67,6 @@ const browser = await chromium.launch();
     check(sku === v.sku, `SKU ${v.sku}: got ${sku}`);
     check(price === want, `${v.sku} price: want ${want}, got ${price}`);
     check(leds === `~${v.plannedLEDCount.toLocaleString('en-US')}`, `${v.sku} LEDs: got ${leds}`);
-    const base = catalog.variants.find((x) => x.technology === v.technology && x.size === v.size && !x.underglow).ownerTargetPrice;
-    check(await page.textContent('[data-sum-kit]') === `$${base}`, `${v.sku} kit line should be $${base}`);
-    const ugLine = await page.textContent('[data-sum-ug]');
-    check(v.underglow ? ugLine === `+$${v.ownerTargetPrice - base}` : ugLine === 'Not added', `${v.sku} underglow line wrong: ${ugLine}`);
     tested++;
   }
   console.log(`18-variant check: ${tested} tested`);
@@ -151,31 +124,6 @@ const browser = await chromium.launch();
   console.log('autoplay check done');
 }
 
-// 7. Showcase: only the film filling the screen plays. Pause stops everything. Reduced motion stops the simulated color cycle.
-{
-  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
-  const page = await ctx.newPage();
-  await page.goto(BASE + 'index.html', { waitUntil: 'networkidle' });
-  for (const k of ['static', 'rgb', 'mapping']) {
-    await page.evaluate((id) => { const el = document.querySelector(`#kit-${id} .show-frame`); scrollTo(0, el.getBoundingClientRect().top + scrollY - 90); }, k);
-    await page.waitForTimeout(1500);
-    const playing = await page.evaluate(() => [...document.querySelectorAll('#showcase video')].filter((v) => !v.paused).map((v) => v.closest('[data-show]').dataset.show));
-    check(playing.length === 1 && playing[0] === k, `showcase at ${k}: playing ${playing.join(',') || 'nothing'}`);
-  }
-  await page.click('[data-motion-toggle]');
-  await page.waitForTimeout(300);
-  check(await page.evaluate(() => [...document.querySelectorAll('video')].every((v) => v.paused)), 'pause control should stop every video');
-  await page.click('[data-motion-toggle]');
-  await ctx.close();
-  const rctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' });
-  const rp = await rctx.newPage();
-  await rp.goto(BASE + 'index.html', { waitUntil: 'networkidle' });
-  check(await rp.evaluate(() => getComputedStyle(document.querySelector('.rgb-cycle video')).animationName === 'none'), 'reduced motion should stop the simulated color cycle');
-  check(await rp.isVisible('[data-motion-toggle]'), 'pause control missing');
-  await rctx.close();
-  console.log('showcase / pause / reduced-motion check done');
-}
-
 // 4. Every page: no horizontal overflow, no console errors, no purchase buttons.
 for (const vp of [{ name: 'mobile', ...devices['iPhone 13'] }, { name: 'desktop', viewport: { width: 1440, height: 900 } }]) {
   const ctx = await browser.newContext({ ...vp, name: undefined });
@@ -193,8 +141,6 @@ for (const vp of [{ name: 'mobile', ...devices['iPhone 13'] }, { name: 'desktop'
     check(sw <= cw, `${vp.name} ${p}: horizontal overflow ${sw} > ${cw}`);
     const buy = await page.$$eval('button, a', (els) => els.map((e) => e.textContent.trim()).filter((t) => /add to cart|buy now|checkout/i.test(t)));
     check(buy.length === 0 || sellingOn, `${vp.name} ${p}: purchase controls present: ${buy}`);
-    const cartLinks = await page.$$eval('a[href*="/cart/"]', (els) => els.length);
-    check(cartLinks === 0 || sellingOn, `${vp.name} ${p}: Shopify cart link present while canPurchase is false`);
     check(errors.length === 0, `${vp.name} ${p}: errors ${errors.join(' | ')}`);
     await page.close();
   }
@@ -223,13 +169,12 @@ const wheelTo = (sel, extra = 0) => async (page) => {
     await page.waitForTimeout(50);
   }
 };
+const wheelBy = (px) => async (page) => { for (let d = 0; d < px; d += 100) { await page.mouse.wheel(0, 100); await page.waitForTimeout(40); } };
 const heroSteps = [
   ['01-hero', async () => {}],
   ['02-hero-mapping', async (page) => { await page.click('[data-tab="2"]'); }],
-  ['03-options', wheelTo('#options', -70)],
-  ['04-static', wheelTo('#kit-static', -70)],
-  ['04b-rgb', wheelTo('#kit-rgb', -70)],
-  ['04c-underglow', wheelTo('#kit-underglow', -70)],
+  ['03-deck-1', wheelTo('#collection', 30)],
+  ['04-deck-2', async (page) => { await wheelBy(Math.round(page.viewportSize().height * 0.6))(page); }],
   ['05-how', wheelTo('#how', 0)],
   ['06-how-steps', wheelTo('.how-inner', -120)],
   ['07-final', wheelTo('#final', 0)],

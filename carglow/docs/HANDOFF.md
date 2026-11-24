@@ -5,7 +5,8 @@ Read this first when picking the project back up. Newest entries at the top.
 ## Where things stand (2026-11-22, v6)
 
 - **Live previews** (Claude artifacts, each a separate link so versions can be compared):
-  - v7 (current, live add-on checkout): https://claude.ai/artifact/SgaiZcBtra52JbrqtgRstG
+  - v8 (CURRENT: exact v5 design + live add-on checkout): https://claude.ai/artifact/XikYvSsRZWS6xk4LRuFJky
+  - v7 (v6 design + live add-on checkout): https://claude.ai/artifact/SgaiZcBtra52JbrqtgRstG
   - v6 (v5 foundation + v3 product showcase): https://claude.ai/artifact/V1pZTvYXxeXxNHfEm3DHNi
   - v5 minimal: https://claude.ai/artifact/S2iYzMCqssUapZ9X9i2K6M (source at commit cbf5adf)
   - v3/v4 (Christmas, aurora, scroll car, full-screen scenes): https://claude.ai/artifact/MxZMWiZCS8YAQA3KP8RNN2 (set to "anyone with the link")
@@ -70,3 +71,5 @@ Read this first when picking the project back up. Newest entries at the top.
 - 2026-11-22: Add-ons LIVE in Shopify (cdee2r-yy): Car Glow Fiber Dash Kit 15441361961264, Animated Eyes 15441361994032, App Underglow 15441362026800, Interior Kit 15441362059568. All ACTIVE, on Online Store, inventory not tracked/continue selling, cost per item set. 12 variant IDs filled in `shopify-bridge.json`; Pricing page shows 12 working checkout buttons. Storefront password still ON (owner must turn off in Online Store > Preferences). Site not deployed yet.
 
 - 2026-11-22: v7 published (https://claude.ai/artifact/SgaiZcBtra52JbrqtgRstG, private until owner shares it): v6 design + 12 live add-on checkout buttons on Pricing (open Shopify checkout in a new tab). Permanent hosting: drag `carglow-site.zip` (the `dist/` build) onto app.netlify.com/drop.
+
+- 2026-11-24: Owner rejected the v6/v7 look after going live and asked for the entire v5 build. v8 = v5 files restored from cbf5adf (home, styles, builder order, product pages, catalog media, QA) plus the Shopify bridge, Pricing add-on checkout section (12 live buttons), gated kit Checkout button, and the focus/reveal accessibility fix. QA passes. Note: the live Shopify storefront cdee2r-yy still shows the AuraCarLights V2 theme; the Car Glow site is separate until hosted (Vercel/Netlify) or converted to a theme.

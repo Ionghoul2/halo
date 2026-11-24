@@ -9,7 +9,7 @@ renderChrome(key, { buybar: key !== 'underglow' });
 
 const GALLERY = {
   static: [['classic-string-lambos', 'Multicolor string lights, full body'], ['clip-mount-bmw', 'Dense multicolor on a sedan'], ['lights-on-reveal', 'Switching on']],
-  rgb: [['dense-red', 'One color across the whole car: red'], ['white-mclaren', 'One color across the whole car: white']],
+  rgb: [['supercar-palette', 'Turquoise, purple and green'], ['dense-red', 'One color, dense coverage'], ['aventador-underglow', 'Gradients with underglow']],
   mapping: [['holiday-graphics', 'Holiday graphics across the body'], ['lambo-convoy', 'Faces and stripes on hoods']],
 };
 
@@ -110,7 +110,7 @@ if (key === 'underglow') {
         <p class="lede">${p.summary}</p>
         <p class="p-price">Planned <strong>${money(lo)} – ${money(hi)}</strong> · ~${num(l1)}–${num(l2)} ${key === 'mapping' ? 'pixels' : 'LEDs'}</p>
         ${p.status === 'concept' ? '<p class="notice">Concept. Not for sale until custom graphics and mapping are proven on the exact hardware we ship.</p>' : ''}
-        <div class="cta-row"><a class="btn btn-glow" href="#configure">Configure</a><a class="btn btn-ghost" href="${BASE}index.html#options">Compare all three</a></div>
+        <div class="cta-row"><a class="btn btn-glow" href="#configure">Configure</a><a class="btn btn-ghost" href="${BASE}index.html#collection">Compare all three</a></div>
       </div>
       <div class="p-hero-media">${video(p.media)}<p class="ref-note">Reference footage. Not Car Glow hardware.</p></div>
     </div>
@@ -129,7 +129,6 @@ if (key === 'underglow') {
     <header class="section-head" data-reveal><p class="eyebrow">The look</p><h2 class="h2">Seen on the street.</h2>
       <p class="lede">Reference clips that show the style. They are not Car Glow installs.</p></header>
     <div class="gallery">${GALLERY[key].map(([id, cap]) => `<figure>${video(id)}<figcaption>${cap}</figcaption></figure>`).join('')}</div>
-    ${key === 'rgb' ? '<p class="hint" style="margin-top:16px">Gradients, chasing and two-tone patterns seen in some light-up car videos need individually controlled lights. That is Graphic Mapping, not this kit.</p>' : ''}
   </div></section>
 
   <section class="section build" id="configure" aria-labelledby="cfg-title"><div class="wrap">
