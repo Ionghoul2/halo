@@ -49,7 +49,7 @@ if (key === 'underglow') {
       <div class="p-hero-copy">
         <p class="eyebrow">Car Glow · Underglow</p>
         <h1 class="display">RGBIC <span class="glow-text">underglow.</span></h1>
-        <span class="status s-early-access">Early access</span>
+        <span class="status s-early-access">Available now</span>
         <p class="lede">Flowing multi-color light under the car. Add it to any body kit, or buy it on its own once verified.</p>
         <p class="p-price">Add-on <strong>+$45</strong> Small/Medium · <strong>+$58</strong> Large · Standalone price not set</p>
         <div class="cta-row"><button type="button" class="btn btn-glow" data-ug-toggle></button><a class="btn btn-ghost" href="${BASE}build/index.html">Build a full kit</a></div>

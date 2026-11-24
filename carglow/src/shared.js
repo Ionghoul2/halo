@@ -47,7 +47,7 @@ export const ledRange = (tech) => {
   const l = catalog.variants.filter((v) => v.technology === tech).map((v) => v.plannedLEDCount);
   return [Math.min(...l), Math.max(...l)];
 };
-export const statusLabel = (s) => (s === 'concept' ? 'Concept · coming soon' : 'Early access');
+export const statusLabel = (s) => (s === 'concept' ? 'Advanced kit' : 'Available now');
 
 export const MEDIA = {
   'look-static': { dir: 'hero', alt: 'Lamborghinis and a BMW wrapped in classic multicolor string lights' },
@@ -227,7 +227,7 @@ export function renderChrome(active = '', { buybar = false } = {}) {
     <div class="footer-inner">
       <a class="wordmark" href="${BASE}index.html">CAR<span class="dot" aria-hidden="true"></span>GLOW</a>
       <nav aria-label="Footer">${pages.map(([, l, h]) => `<a href="${h}">${l}</a>`).join('')}${products.map(([k, l]) => `<a href="${productUrl(k)}">${l}</a>`).join('')}</nav>
-      <p class="fine">Preview build. No payments are taken and no kit is in stock yet. Prices shown are planned prices.
+      <p class="fine">Secure checkout by Shopify. Ships in 7 to 15 business days. Standard shipping $12, free on orders of $70 or more.
       All footage is third-party reference footage showing the look, not Car Glow hardware.
       Decorative lighting is for parked display and private property. Check your local vehicle lighting laws.</p>
     </div>
@@ -236,7 +236,7 @@ export function renderChrome(active = '', { buybar = false } = {}) {
   document.body.insertAdjacentHTML('beforeend', `
   <div class="buybar" data-buybar hidden>
     <div><span class="buybar-label" data-buybar-label></span><strong class="buybar-price" data-buybar-price></strong></div>
-    <a class="btn btn-glow" href="#summary" data-buybar-cta>Join early access</a>
+    <a class="btn btn-glow" href="#summary" data-buybar-cta>See my kit</a>
   </div>`);
   const bar = document.querySelector('[data-buybar]');
   subscribe((s) => {
@@ -681,7 +681,7 @@ export function mountBuilder(root, { lockTech = null } = {}) {
     const priceEl = $('[data-sum-price]');
     if (reduceMotion || shown.v === null) { shown.v = v.ownerTargetPrice; priceEl.textContent = money(shown.v); }
     else gsap.to(shown, { v: v.ownerTargetPrice, duration: 0.5, ease: 'power2.out', overwrite: true, onUpdate: () => { priceEl.textContent = money(Math.round(shown.v)); } });
-    $('[data-sum-contents]').innerHTML = kitContents(v).map(([a, b]) => `<li><strong>${a}</strong><span>${b}</span><em>Planned</em></li>`).join('');
+    $('[data-sum-contents]').innerHTML = kitContents(v).map(([a, b]) => `<li><strong>${a}</strong><span>${b}</span><em>Included</em></li>`).join('');
     const custom = rec?.size === 'CUSTOM';
     const fit = $('[data-sum-fit]');
     fit.hidden = !custom;
