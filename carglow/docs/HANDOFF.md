@@ -86,4 +86,4 @@ Read this first when picking the project back up. Newest entries at the top.
 - REPORT.md: video-by-video forensics with confidence labels, shared-hardware answer, tier rebuild, power/safety, recommendation.
 - vehicle-kit-matrix.csv/json (81 rows) from build_kits.py; sourcing-master.csv (26 components); install-guide.md; diagrams/*.svg.
 - Finding: evidence installs use 2,000–4,000 LEDs full-body, below pricing-model.json assumptions. Live prices clear all targets; no prices changed.
-- Not watched (tool minutes/credits exhausted): dovfVF8v4X0, 5IQn0d_lm4g, JkGFQWySq4Y, gP-99CbORiw, ul5q9zqskzk.
+- 2026-11-28 update: MINI + Civic watched in full (Watch Any Video); both Camry videos + Twinkly review frame-checked via TinyFish ($1.41). All 21 videos now covered.

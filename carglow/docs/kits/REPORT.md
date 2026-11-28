@@ -29,12 +29,17 @@ Files in this folder:
 | r6VSyqkWfCY | Toyota truck | Transcript only | 1,400-LED 552 ft clear wire (B0D7SGZ4WD); inverter with switch | Confirmed from creator documentation |
 | MscXVzQvsog | Camaro | Transcript (auto-translated) + description | Ollny 1,000 (B09YHPZ28V); BESTEK 300 W (B004MDXS0U); ScotchBlue; drove ~50 mph; battery warning | Confirmed from creator documentation |
 | gKx3fq67SAc | Ford F-150 (BuiltRight) | Description + 2024 blog | ~4,000 Twinkly Strings woven through cargo webbing; Ford Pro Power Onboard | Confirmed from creator documentation |
-| dovfVF8v4X0 | MINI Electric (Festive Lights) | Blog only — **not watched** | 2,000 Twinkly Pro (8×250), 2 controllers, power kit in boot, matte black vinyl under everything | Confirmed from creator documentation |
-| 5IQn0d_lm4g / JkGFQWySq4Y | Camry (Echo Speed) | Description only — **not watched** | Ollny (B0C9MC2K7C, B09YHPZ28V) + BESTEK 300 W | Confirmed from creator documentation |
-| gP-99CbORiw | Civic Type R | Description only — **not watched** | 1,500-LED dark green wire (B0D5292HKN); PiSFAU 200 W (B0CFB6T2QN) | Confirmed from creator documentation |
-| ul5q9zqskzk | Twinkly Dots review | **Not watched** | — | Unverified |
+| dovfVF8v4X0 | MINI Electric (Festive Lights) | Full watch (Watch Any Video, 2:11) + blog | "Twinkly PRO" logo on screen (0:03); dark green wire, round bulb caps (0:14); a power/control unit labelled "gridto go 400-50" placed in the boot (0:14–0:21), with leads running through the boot opening (0:46); strings laid in parallel rows; crew of 4 (time-lapse 0:27–0:42); the app shows text and 3D effects mapped to the car outline (0:53–1:35). Blog: 2,000 LEDs, 2 controllers, matte vinyl under everything | Confirmed from footage (exact power unit: Unverified) |
+| 5IQn0d_lm4g | Camry (Echo Speed), 9:57 | TinyFish frame check at 5 points; no captions on the video | Small bulbs on white wire; blue painter's tape throughout; grid/mesh layout over roof, hood, doors and trunk. Description: Ollny lights $32, inverter $22. Inverter not seen in the checked frames | Probable identification (frames) + Confirmed from creator documentation (parts) |
+| JkGFQWySq4Y | Camry (Echo Speed), 8:23 | TinyFish frame check; no captions | Multicolor minis, blue painter's tape, criss-cross on the hood and wrap around the body; windows and wheel wells left unlit. Description: lights $30, inverter $22. The agent's frame notes were vague ("green or brown wire") | Unverified (frames) + Confirmed from creator documentation (parts) |
+| gP-99CbORiw | Civic Type R, 4:28 | Full watch (Watch Any Video) | Box: "LED Christmas Lights Multicolor, Weather Resistant, Timer + Memory Function" (0:11–0:27); black wire on screen (1:40), though the listing says dark green; Pisfau 200 W inverter, model MT-PC200, in the 12 V socket, with built-in outlets and no power strip (0:35, 1:05–1:56); green automotive masking tape, "as much tape as possible" (2:56); parallel rows on the hood and roof, zig-zag on the doors and fenders (2:30–3:25); slack through the door jambs; avoided windows and grille; had to tie down extra cord (3:27) | Confirmed from footage |
+| ul5q9zqskzk | Twinkly Dots review (ModernDayTech), 6:06 | TinyFish frame check at 5 points + chapter list | Round dots about 1.2 cm across on clear wire; small controller box with USB power; diffuser caps; sold in 60, 200 and 400 sizes; the app's mapping canvas is shown (4:26 "Door Mapping"); music sync (5:20); adhesive dots and hooks included | Probable identification |
 
-**Why some videos weren't watched.** Watch Any Video's 10 free minutes ran out. The vidIQ credits went to the three full watches plus transcripts. I didn't buy more, because you haven't approved spending. Rows marked "transcript only" or "description only" are what the creators said or wrote, not what I saw on screen.
+**How each video was covered (updated).**
+- **Watched in full:** the MINI and the Civic, with the last free Watch Any Video minutes. 9 of the 10 free minutes are now used.
+- **Frame checks:** both Camry videos and the Twinkly review, by TinyFish's cloud browser checking 5 points in each. Cost: $1.41 from your existing TinyFish balance ($2.38 left).
+- **Dead ends:** Sandcastles needs a paid plan. The container's network blocks direct YouTube downloads.
+- **How to read the labels:** frame checks are less reliable than full watches, so they're labelled "Probable" or "Unverified". Rows marked "transcript only" or "description only" are what the creators said or wrote, not what was seen on screen.
 
 ## 2. What the evidence says about hardware
 
@@ -53,6 +58,7 @@ Files in this folder:
    - removable vinyl film under the tape;
    - zip ties on truck racks.
 4. **Power was always an inverter** in the 12 V socket or on a tool battery, plus a power strip. Exceptions:
+   - The MINI ran from a separate power unit in the boot ("gridto go 400-50"), not the car's socket.
    - The H3 used native 12 V strings.
    - The F-150 used Ford's onboard outlet.
    - The Duramax battery died with the engine off.
@@ -206,4 +212,3 @@ Cheapest verified path:
 5. **Open items needing you:**
    - Approve Classic pricing.
    - Get KTRLIGHT to confirm the specs above.
-   - Approve or decline about $15 for more video-analysis credits to watch the 5 skipped videos.
