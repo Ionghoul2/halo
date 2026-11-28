@@ -1,0 +1,22 @@
+{
+  "_note": "Owner's pricing rule (2026-11-28). retail = ceil((delivered kit cost + target earnings + fee_fixed) / (1 - fee_rate)). Underglow add-on is added on top from catalog.underglow. Earnings are before ads, returns, overhead and taxes. Kit costs are ESTIMATES except pixels ($0.08 each, KTRLIGHT direct quote).",
+  "fee": { "rate": 0.029, "fixed": 0.30 },
+  "targets": { "rgb": 350, "mapping": 525 },
+  "pixelPrice": 0.08,
+  "kits": {
+    "rgb": {
+      "S": { "pixels": 4000, "freight": 55, "controller": 30, "power": 55, "mounting": 35, "packaging": 10 },
+      "M": { "pixels": 5000, "freight": 68, "controller": 30, "power": 65, "mounting": 42, "packaging": 10 },
+      "L": { "pixels": 6000, "freight": 80, "controller": 35, "power": 75, "mounting": 50, "packaging": 10 }
+    },
+    "mapping": {
+      "S": { "pixels": 8000, "freight": 110, "controller": 120, "power": 90, "mounting": 60, "packaging": 10 },
+      "M": { "pixels": 9000, "freight": 125, "controller": 140, "power": 100, "mounting": 70, "packaging": 10 },
+      "L": { "pixels": 11000, "freight": 150, "controller": 170, "power": 120, "mounting": 80, "packaging": 10 }
+    }
+  },
+  "fixedPrices": {
+    "_note": "Static Classic is not on the earnings formula yet (35% target, waiting on the string-light quote). These are the live store prices.",
+    "static": { "S": 299, "M": 399, "L": 499 }
+  }
+}

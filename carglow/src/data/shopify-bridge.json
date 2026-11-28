@@ -58,13 +58,13 @@
         "RGB-S-BASE": {
           "variantGid": "gid://shopify/ProductVariant/51269113544961",
           "variantNumericId": "51269113544961",
-          "plannedPriceUSD": 879,
+          "plannedPriceUSD": 881,
           "availableForSale": true
         },
         "RGB-S-UG": {
           "variantGid": "gid://shopify/ProductVariant/51269113577729",
           "variantNumericId": "51269113577729",
-          "plannedPriceUSD": 924,
+          "plannedPriceUSD": 926,
           "availableForSale": true
         },
         "RGB-M-BASE": {
@@ -82,13 +82,13 @@
         "RGB-L-BASE": {
           "variantGid": "gid://shopify/ProductVariant/51269113676033",
           "variantNumericId": "51269113676033",
-          "plannedPriceUSD": 1115,
+          "plannedPriceUSD": 1113,
           "availableForSale": true
         },
         "RGB-L-UG": {
           "variantGid": "gid://shopify/ProductVariant/51269113708801",
           "variantNumericId": "51269113708801",
-          "plannedPriceUSD": 1173,
+          "plannedPriceUSD": 1171,
           "availableForSale": true
         }
       }
@@ -101,37 +101,37 @@
         "MAP-S-BASE": {
           "variantGid": "gid://shopify/ProductVariant/51269113774337",
           "variantNumericId": "51269113774337",
-          "plannedPriceUSD": 1599,
+          "plannedPriceUSD": 1602,
           "availableForSale": true
         },
         "MAP-S-UG": {
           "variantGid": "gid://shopify/ProductVariant/51269113807105",
           "variantNumericId": "51269113807105",
-          "plannedPriceUSD": 1644,
+          "plannedPriceUSD": 1647,
           "availableForSale": true
         },
         "MAP-M-BASE": {
           "variantGid": "gid://shopify/ProductVariant/51269113839873",
           "variantNumericId": "51269113839873",
-          "plannedPriceUSD": 1749,
+          "plannedPriceUSD": 1741,
           "availableForSale": true
         },
         "MAP-M-UG": {
           "variantGid": "gid://shopify/ProductVariant/51269113872641",
           "variantNumericId": "51269113872641",
-          "plannedPriceUSD": 1794,
+          "plannedPriceUSD": 1786,
           "availableForSale": true
         },
         "MAP-L-BASE": {
           "variantGid": "gid://shopify/ProductVariant/51269113905409",
           "variantNumericId": "51269113905409",
-          "plannedPriceUSD": 1995,
+          "plannedPriceUSD": 1994,
           "availableForSale": true
         },
         "MAP-L-UG": {
           "variantGid": "gid://shopify/ProductVariant/51269113938177",
           "variantNumericId": "51269113938177",
-          "plannedPriceUSD": 2053,
+          "plannedPriceUSD": 2052,
           "availableForSale": true
         }
       }

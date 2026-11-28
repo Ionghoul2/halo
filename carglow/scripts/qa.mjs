@@ -23,6 +23,19 @@ const check = (ok, msg) => { if (!ok) failures.push(msg); };
     if (hit[0]) check(hit[0][1].plannedPriceUSD === v.ownerTargetPrice, `shopify-bridge: ${v.sku} price mismatch`);
   }
   console.log(`shopify-bridge check done (${bridged.length} kit variants, addons live=${addonLive})`);
+  // Owner's rule: retail = ceil((kit cost + target + fixed fee) / (1 - fee rate)), plus the underglow add-on.
+  const pm = JSON.parse(readFileSync(new URL('../src/data/pricing-model.json', import.meta.url)));
+  for (const v of catalog.variants) {
+    let base;
+    if (pm.targets[v.technology] != null) {
+      const k = pm.kits[v.technology][v.size];
+      const cost = k.pixels * pm.pixelPrice + Object.entries(k).filter(([n]) => n !== 'pixels').reduce((s, [, x]) => s + x, 0);
+      base = Math.ceil((cost + pm.targets[v.technology] + pm.fee.fixed) / (1 - pm.fee.rate));
+    } else base = pm.fixedPrices[v.technology][v.size];
+    const want = base + (v.underglow ? catalog.underglow[v.size].upcharge : 0);
+    check(v.ownerTargetPrice === want, `pricing rule: ${v.sku} is $${v.ownerTargetPrice}, formula says $${want}`);
+  }
+  console.log('pricing-rule check done');
 }
 const pages = ['index.html', 'build/index.html', 'pricing/index.html', 'install/index.html',
   ...['static-classic', 'color-changing-rgb', 'graphic-mapping', 'rgbic-underglow'].map((p) => `products/${p}/index.html`)];
