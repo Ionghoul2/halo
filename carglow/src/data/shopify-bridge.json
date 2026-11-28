@@ -10,43 +10,43 @@
     "static": {
       "productGid": "gid://shopify/Product/15441340989744",
       "handle": "car-glow-static-classic-exterior-light-kit",
-      "status": "ACTIVE",
+      "status": "DRAFT",
       "variants": {
         "STATIC-S-BASE": {
           "variantGid": "gid://shopify/ProductVariant/51269113970945",
           "variantNumericId": "51269113970945",
           "plannedPriceUSD": 299,
-          "availableForSale": true
+          "availableForSale": false
         },
         "STATIC-S-UG": {
           "variantGid": "gid://shopify/ProductVariant/51269114003713",
           "variantNumericId": "51269114003713",
           "plannedPriceUSD": 344,
-          "availableForSale": true
+          "availableForSale": false
         },
         "STATIC-M-BASE": {
           "variantGid": "gid://shopify/ProductVariant/51269114036481",
           "variantNumericId": "51269114036481",
           "plannedPriceUSD": 399,
-          "availableForSale": true
+          "availableForSale": false
         },
         "STATIC-M-UG": {
           "variantGid": "gid://shopify/ProductVariant/51269114069249",
           "variantNumericId": "51269114069249",
           "plannedPriceUSD": 444,
-          "availableForSale": true
+          "availableForSale": false
         },
         "STATIC-L-BASE": {
           "variantGid": "gid://shopify/ProductVariant/51269114102017",
           "variantNumericId": "51269114102017",
           "plannedPriceUSD": 499,
-          "availableForSale": true
+          "availableForSale": false
         },
         "STATIC-L-UG": {
           "variantGid": "gid://shopify/ProductVariant/51269114134785",
           "variantNumericId": "51269114134785",
           "plannedPriceUSD": 557,
-          "availableForSale": true
+          "availableForSale": false
         }
       }
     },
