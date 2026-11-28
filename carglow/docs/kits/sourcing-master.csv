@@ -1,0 +1,27 @@
+component,role,used_in_tier,exact_product,source_or_id,unit,pack_price_usd,price_status,evidence,confidence,notes
+Fairy string 1000 LED multicolor,light,Classic,Ollny 1000-LED 328 ft multicolor 8-mode 29V,Amazon B09YHPZ28V,1 pack,30.00,creator-reported $30-32,Sentra + Camaro + Camry descriptions,Confirmed from creator documentation,Not individually addressable; mode controller only
+Fairy string 1000 LED clear wire,light,Classic,Hezbjiti 1000-LED 394 ft 8-mode,Amazon B098JJ2FZR,1 pack,27.19,creator-reported $27-40,BMW M340i transcript,Confirmed from creator documentation,Clear wire hides on light paint
+Fairy string 1200 LED IP67,light,Classic,Ollny 393 ft 1200 LED IP67,Amazon B0C9MC2K7C,1 pack,32.00,creator-reported,Echo Speed Camry,Confirmed from creator documentation,IP67 listing claim only
+Fairy string 1500 LED dark green,light,Classic,1500 LED 502 ft dark green wire 8 modes,Amazon B0D5292HKN,1 pack,,not checked,Civic Type R description,Confirmed from creator documentation,Green wire shows on light paint
+12V DC bulb string,light,Classic (off-road),Christmas Light Source 12V DC multicolor 20 bulbs/10 ft,christmaslightsource.com,1 strand,,quote pending,H3 transcript,Confirmed from creator documentation,No inverter; up to 30 strands per source; sealed bulbs
+WS2811 seed pixel string 5 cm,light,RGB + Graphic Pro,KTRLIGHT WS2811 seed pixels,direct quote,1000 px,80.00,quoted $0.08/px,supplier quote,Compatible alternative,Confirm 12V vs 5V and IP rating before order
+Twinkly Dots 400 RGB Gen II,light,Graphic Elite,TWD400STP 20 m 24V 1A,Twinkly retail / Amazon B09SHLLRDW (black) B09SHLBSM5 (clear),1 set,159.99,US list; $134.99 promo seen,Huracan + Sentra + Porsche,Confirmed from footage,Camera mapping; GIF import; Join group for mapping
+Twinkly Strings Pro 250,light,Graphic Elite (UK reference),TW-PLC-S-CA-1X250STP-G 25 m 20 W IP65,twinkly.com,1 string,~231 (GBP 181.99),UK list,Festive Lights MINI,Confirmed from creator documentation,Pro line needs Pro controller
+Twinkly Pro 4-port controller,controller,Graphic Elite (UK reference),Twinkly Pro controller 1000 LED/groups 5000,twinkly.com,1,~203 (GBP 159.99),UK list,Festive Lights MINI,Confirmed from creator documentation,
+WS2811 app controller,controller,RGB,Bluetooth/Wi-Fi WS2811 pixel controller,AliExpress (DSers search pending),1,15.00,estimate,,Compatible alternative,Effects only; no custom graphics
+GLEDOPTO ESP32 WLED controller,controller,Graphic Pro,GLEDOPTO GL-C-015WL-D (ESP32 WLED),AliExpress/Amazon,1 per ~1000 px,25.00,estimate,WLED docs (GIF + ledmap.json),Compatible alternative,Manual mapping; needs our layout file per car
+Socket inverter 300W,power,Classic + small RGB,BESTEK 300W MRI3013BU,Amazon B004MDXS0U,1,30.00,creator-reported,Sentra/Camaro/Camry,Confirmed from creator documentation,12V socket limit ~120-180 W continuous
+Battery-clamp inverter 500W,power,Large RGB/Graphic,500W inverter with 40A fuse and clamps,Amazon (pick model),1,60.00,estimate,Huracan (Tripp-Lite 500W),Probable identification,Engine running only; fused at battery
+Portable power station 500Wh,power,High-density pickups,500 Wh LiFePO4 station,Amazon,1,250.00,estimate,GT-R (Ridgid tool battery + inverter),Compatible alternative,Keeps load off the car
+Switched power strip,power,All,outdoor-rated power strip,Amazon,1,10.00,estimate,F-150/Sentra/BMW,Confirmed from footage,Keep inside cabin/trunk
+Painter's tape 1.41 in x 60 yd,mounting,All,ScotchBlue 2090 6-pack,Amazon B006ARJVZM,1 roll,8.00,estimate,Sentra/Camaro/BMW/Jake Schnatter,Confirmed from footage,Do not leave on in sun for weeks
+Removable vinyl film,mounting,All,Car wrap vinyl strips (removable),Amazon B078X3TFT1,per m2,6.00,estimate,Sentra (metrorestyling) + Duramax,Confirmed from creator documentation,Layer under tape on paint
+Clear tape over PPF,mounting,Graphic Elite,Scotch transparent tape,retail,1 roll,4.00,estimate,Huracan,Confirmed from footage,Only over existing PPF
+Residue-free sticky tabs,mounting,All,waterproof light-installation tabs,AliExpress,100,6.00,estimate,Festive Lights MINI + Legends kit,Confirmed from creator documentation,
+Black gaffer tape,mounting,Dark paint,gaffer tape 2 in,Amazon,1 roll,12.00,estimate,GT-R (painter's tape failed),Confirmed from creator documentation,Test on clearcoat first
+Zip ties + cargo webbing,mounting,Pickups,Harbor Freight elastic cargo net + zip ties,Harbor Freight,1,15.00,estimate,BuiltRight F-150,Confirmed from creator documentation,Truck bed/rails only
+Trim tool,tool,All,plastic trim removal kit,Amazon,1 set,8.00,estimate,GT-R,Confirmed from creator documentation,Tuck wire into seals
+Extension leads 12-24 in,electrical,All,outdoor extension leads,Amazon,assorted,8.00,estimate,Huracan,Confirmed from footage,
+12V to 5V converter / injection leads,electrical,RGB + Graphic Pro (5V pixels),12V->5V 20A buck + injection pigtails,AliExpress,1 set,20.00,estimate,,Compatible alternative,Not needed if 12V pixels
+Fuse tap / inline fuse,electrical,All,add-a-circuit + inline fuse,Amazon,1,6.00,estimate,Sentra (15A socket fuse),Probable identification,Never on EV high-voltage system
+Bluetooth scrolling LED sign,add-on,Optional,ITEFDTUTNE 15x4 in scrolling sign,Amazon B0D2HZ2QL9,1,,not checked,Huracan,Confirmed from creator documentation,Inside windshield; parked only

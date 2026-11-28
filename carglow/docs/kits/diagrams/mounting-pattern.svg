@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 340" font-family="Arial, sans-serif" font-size="14">
+<rect width="900" height="340" fill="#fff"/>
+<text x="20" y="30" font-size="18" font-weight="bold">Mounting: zig-zag lay, tape every 30 cm, slack at every opening</text>
+<path d="M40 260 Q120 120 250 110 L560 100 Q690 105 760 180 L860 200 L860 260 Z" fill="#dde4ee" stroke="#333"/>
+<line x1="400" y1="105" x2="400" y2="260" stroke="#333" stroke-dasharray="6 4"/><text x="408" y="250" font-size="12">door gap</text>
+<polyline fill="none" stroke="#2a8" stroke-width="2" points="70,250 110,180 150,250 190,160 230,250 270,140 310,250 350,130 390,250"/>
+<path d="M390 250 q10 25 20 0" fill="none" stroke="#c00" stroke-width="2"/><text x="370" y="295" font-size="12" fill="#c00">slack loop</text>
+<polyline fill="none" stroke="#2a8" stroke-width="2" points="410,250 450,125 490,250 530,120 570,250 610,140 650,250 690,160 730,250 770,200 810,250"/>
+<g fill="#36c"><rect x="104" y="174" width="12" height="12"/><rect x="184" y="154" width="12" height="12"/><rect x="264" y="134" width="12" height="12"/><rect x="344" y="124" width="12" height="12"/><rect x="444" y="119" width="12" height="12"/><rect x="524" y="114" width="12" height="12"/><rect x="604" y="134" width="12" height="12"/><rect x="684" y="154" width="12" height="12"/></g>
+<text x="20" y="320">Blue = tape square over wire (painter's tape on vinyl film, or clear tape on PPF). Double tape on leading edges (hood nose, mirrors, roof front).</text>
+</svg>

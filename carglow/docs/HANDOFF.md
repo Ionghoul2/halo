@@ -81,3 +81,9 @@ Read this first when picking the project back up. Newest entries at the top.
 - 2026-11-28: Pricing rule is now code. `src/data/pricing-model.json` holds kit cost estimates and targets (RGB $350, Mapping $525, fee 2.9% + $0.30); `python3 scripts/price_kits.py --write` computes retail = ceil((cost + target + 0.30)/0.971) + underglow add-on and writes catalog.json and shopify-bridge.json. QA fails if site prices drift from the formula. Live whipef-3h set to the exact results: RGB $881/$995/$1,113 (UG $926/$1,040/$1,171), Mapping $1,602/$1,741/$1,994 (UG $1,647/$1,786/$2,052). Update kit cost lines in pricing-model.json when real supplier quotes arrive, rerun, then push prices to Shopify.
 
 - 2026-11-28: Static Classic hidden (DRAFT) in whipef-3h until the string-light RFQ returns (35% target can't beat Honoson ~$300/4,800 LEDs yet). Site: static variants availableForSale false, so Static shows early access instead of Checkout. cdee2r-yy still has Static ACTIVE at $45 (needs switch-shop).
+
+## 2026-11-28 — Product reverse engineering (docs/kits/)
+- REPORT.md: video-by-video forensics with confidence labels, shared-hardware answer, tier rebuild, power/safety, recommendation.
+- vehicle-kit-matrix.csv/json (81 rows) from build_kits.py; sourcing-master.csv (26 components); install-guide.md; diagrams/*.svg.
+- Finding: evidence installs use 2,000–4,000 LEDs full-body, below pricing-model.json assumptions. Live prices clear all targets; no prices changed.
+- Not watched (tool minutes/credits exhausted): dovfVF8v4X0, 5IQn0d_lm4g, JkGFQWySq4Y, gP-99CbORiw, ul5q9zqskzk.

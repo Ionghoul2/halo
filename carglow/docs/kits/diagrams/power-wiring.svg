@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 360" font-family="Arial, sans-serif" font-size="14">
+<rect width="900" height="360" fill="#fff"/>
+<text x="20" y="30" font-size="18" font-weight="bold">Car Glow power path (12 V accessory side only)</text>
+<g stroke="#222" fill="#f4f4f4"><rect x="20" y="70" width="150" height="70" rx="8"/><rect x="220" y="70" width="150" height="70" rx="8"/><rect x="420" y="70" width="150" height="70" rx="8"/><rect x="620" y="70" width="120" height="70" rx="8"/><rect x="770" y="50" width="110" height="40" rx="6"/><rect x="770" y="120" width="110" height="40" rx="6"/></g>
+<text x="35" y="100">12 V socket (15 A)</text><text x="35" y="122" font-size="12">or battery clamps + 40 A fuse</text>
+<text x="235" y="100">Inverter 300/500 W</text><text x="235" y="122" font-size="12">switch, fan, engine running</text>
+<text x="435" y="100">Switched strip</text><text x="435" y="122" font-size="12">inside cabin/trunk, dry</text>
+<text x="635" y="100">Adapters /</text><text x="635" y="122">controllers</text>
+<text x="785" y="75">String A</text><text x="785" y="145">String B…</text>
+<g stroke="#c00" stroke-width="3" fill="none"><path d="M170 105H220M370 105H420M570 105H620M740 95L770 70M740 115L770 140"/></g>
+<rect x="20" y="190" width="860" height="150" fill="#fff6e0" stroke="#d90"/>
+<text x="35" y="215" font-weight="bold">Limits</text>
+<text x="35" y="240">Socket: keep under ~120 W continuous (10 A). Above that, clamp-on inverter with its own fuse, engine running.</text>
+<text x="35" y="262">Pixel kits: cap brightness in WLED/app (35% assumed) — 3,000 px x 0.1 W = 300 W at full white.</text>
+<text x="35" y="284">Over ~25 A at 12 V: use a portable power station, not the car battery.</text>
+<text x="35" y="306">EVs: 12 V accessory socket only. Never tap the high-voltage traction battery.</text>
+<text x="35" y="328">Route wire under door hinges / seals with slack; never pinch in a door or hood.</text>
+</svg>
