@@ -87,3 +87,8 @@ Read this first when picking the project back up. Newest entries at the top.
 - vehicle-kit-matrix.csv/json (81 rows) from build_kits.py; sourcing-master.csv (26 components); install-guide.md; diagrams/*.svg.
 - Finding: evidence installs use 2,000–4,000 LEDs full-body, below pricing-model.json assumptions. Live prices clear all targets; no prices changed.
 - 2026-11-28 update: MINI + Civic watched in full (Watch Any Video); both Camry videos + Twinkly review frame-checked via TinyFish ($1.41). All 21 videos now covered.
+
+## 2026-11-28 — Owner priority 1: protect stores
+- Site: RGB + Mapping kit checkout turned off in shopify-bridge.json (Static was already off). Add-ons stay buyable. QA passes.
+- Shopify: "sold out" change for unfulfillable variants is approved by the owner but NOT applied yet — the connector is logged out after switch-shop; needs owner sign-in.
+- DSers MCP still returns PLAN_RESTRICTION (account behind the connector is below Advanced).

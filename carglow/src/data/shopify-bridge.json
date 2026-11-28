@@ -5,7 +5,7 @@
   "allDrafts": false,
   "pricesAreUnverifiedTargets": true,
   "canPurchase": true,
-  "notes": "Linked to My Store 3 (whipef-3h). Kits and add-ons ACTIVE and buyable per owner decision 2026-11-22; supplier and prices still unverified.",
+  "notes": "Linked to My Store 3 (whipef-3h). 2026-11-28: kit checkout turned off on the site (Static, RGB, Mapping) until each kit has a verified supplier, tested power setup and confirmed cost. Add-ons stay buyable (manual fulfillment).",
   "products": {
     "static": {
       "productGid": "gid://shopify/Product/15441340989744",
@@ -59,37 +59,37 @@
           "variantGid": "gid://shopify/ProductVariant/51269113544961",
           "variantNumericId": "51269113544961",
           "plannedPriceUSD": 881,
-          "availableForSale": true
+          "availableForSale": false
         },
         "RGB-S-UG": {
           "variantGid": "gid://shopify/ProductVariant/51269113577729",
           "variantNumericId": "51269113577729",
           "plannedPriceUSD": 926,
-          "availableForSale": true
+          "availableForSale": false
         },
         "RGB-M-BASE": {
           "variantGid": "gid://shopify/ProductVariant/51269113610497",
           "variantNumericId": "51269113610497",
           "plannedPriceUSD": 995,
-          "availableForSale": true
+          "availableForSale": false
         },
         "RGB-M-UG": {
           "variantGid": "gid://shopify/ProductVariant/51269113643265",
           "variantNumericId": "51269113643265",
           "plannedPriceUSD": 1040,
-          "availableForSale": true
+          "availableForSale": false
         },
         "RGB-L-BASE": {
           "variantGid": "gid://shopify/ProductVariant/51269113676033",
           "variantNumericId": "51269113676033",
           "plannedPriceUSD": 1113,
-          "availableForSale": true
+          "availableForSale": false
         },
         "RGB-L-UG": {
           "variantGid": "gid://shopify/ProductVariant/51269113708801",
           "variantNumericId": "51269113708801",
           "plannedPriceUSD": 1171,
-          "availableForSale": true
+          "availableForSale": false
         }
       }
     },
@@ -102,37 +102,37 @@
           "variantGid": "gid://shopify/ProductVariant/51269113774337",
           "variantNumericId": "51269113774337",
           "plannedPriceUSD": 1602,
-          "availableForSale": true
+          "availableForSale": false
         },
         "MAP-S-UG": {
           "variantGid": "gid://shopify/ProductVariant/51269113807105",
           "variantNumericId": "51269113807105",
           "plannedPriceUSD": 1647,
-          "availableForSale": true
+          "availableForSale": false
         },
         "MAP-M-BASE": {
           "variantGid": "gid://shopify/ProductVariant/51269113839873",
           "variantNumericId": "51269113839873",
           "plannedPriceUSD": 1741,
-          "availableForSale": true
+          "availableForSale": false
         },
         "MAP-M-UG": {
           "variantGid": "gid://shopify/ProductVariant/51269113872641",
           "variantNumericId": "51269113872641",
           "plannedPriceUSD": 1786,
-          "availableForSale": true
+          "availableForSale": false
         },
         "MAP-L-BASE": {
           "variantGid": "gid://shopify/ProductVariant/51269113905409",
           "variantNumericId": "51269113905409",
           "plannedPriceUSD": 1994,
-          "availableForSale": true
+          "availableForSale": false
         },
         "MAP-L-UG": {
           "variantGid": "gid://shopify/ProductVariant/51269113938177",
           "variantNumericId": "51269113938177",
           "plannedPriceUSD": 2052,
-          "availableForSale": true
+          "availableForSale": false
         }
       }
     }
@@ -190,42 +190,42 @@
       "productGid": "gid://shopify/Product/15441362026800",
       "variants": {
         "CG-UG-S-LO": {
-          "label": "Small \u00b7 Lights Only",
+          "label": "Small · Lights Only",
           "priceUSD": 41.99,
           "variantNumericId": "51269113217281",
           "availableForSale": true,
           "variantGid": "gid://shopify/ProductVariant/51269113217281"
         },
         "CG-UG-S-CK": {
-          "label": "Small \u00b7 Complete Kit",
+          "label": "Small · Complete Kit",
           "priceUSD": 74,
           "variantNumericId": "51269113250049",
           "availableForSale": true,
           "variantGid": "gid://shopify/ProductVariant/51269113250049"
         },
         "CG-UG-M-LO": {
-          "label": "Medium \u00b7 Lights Only",
+          "label": "Medium · Lights Only",
           "priceUSD": 41.99,
           "variantNumericId": "51269113282817",
           "availableForSale": true,
           "variantGid": "gid://shopify/ProductVariant/51269113282817"
         },
         "CG-UG-M-CK": {
-          "label": "Medium \u00b7 Complete Kit",
+          "label": "Medium · Complete Kit",
           "priceUSD": 74,
           "variantNumericId": "51269113315585",
           "availableForSale": true,
           "variantGid": "gid://shopify/ProductVariant/51269113315585"
         },
         "CG-UG-L-LO": {
-          "label": "Large \u00b7 Lights Only",
+          "label": "Large · Lights Only",
           "priceUSD": 47.99,
           "variantNumericId": "51269113348353",
           "availableForSale": true,
           "variantGid": "gid://shopify/ProductVariant/51269113348353"
         },
         "CG-UG-L-CK": {
-          "label": "Large \u00b7 Complete Kit",
+          "label": "Large · Complete Kit",
           "priceUSD": 79.99,
           "variantNumericId": "51269113381121",
           "availableForSale": true,
