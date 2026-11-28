@@ -44,7 +44,8 @@ const browser = await chromium.launch();
   check(await page.evaluate(() => !!document.querySelector('canvas.ambient')), 'ambient background canvas missing');
   check(await page.evaluate(() => document.querySelectorAll('.track-bg .bulb').length > 20), 'scroll light string missing');
   check(await page.evaluate(() => document.querySelectorAll('.garland .g-bulb').length >= 12), 'menu garland missing');
-  for (const [i, price] of [[0, '$45'], [1, '$56'], [2, '$449']]) {
+  const fromPrice = (tech) => `$${Math.min(...catalog.variants.filter((v) => v.technology === tech).map((v) => v.ownerTargetPrice)).toLocaleString('en-US')}`;
+  for (const [i, price] of [[0, fromPrice('static')], [1, fromPrice('rgb')], [2, fromPrice('mapping')]]) {
     if (i > 0) await page.click('[data-deck-next]');
     check(await page.textContent('[data-deck-n]') === `0${i + 1}`, `deck counter wrong at ${i}`);
     check((await page.textContent('[data-deck-meta]')).includes(price), `deck ${i} should show from ${price}`);
@@ -63,7 +64,7 @@ const browser = await chromium.launch();
     const sku = await page.textContent('[data-sum-sku]');
     const price = await page.textContent('[data-sum-price]');
     const leds = await page.textContent('[data-sum-leds]');
-    const want = `$${v.ownerTargetPrice}`;
+    const want = `$${v.ownerTargetPrice.toLocaleString('en-US')}`;
     check(sku === v.sku, `SKU ${v.sku}: got ${sku}`);
     check(price === want, `${v.sku} price: want ${want}, got ${price}`);
     check(leds === `~${v.plannedLEDCount.toLocaleString('en-US')}`, `${v.sku} LEDs: got ${leds}`);
@@ -92,7 +93,8 @@ const browser = await chromium.launch();
   // 5. Persistence across pages, and the underglow color preview.
   await page.goto(BASE + 'products/color-changing-rgb/index.html');
   check(await page.textContent('[data-sum-sku]') === 'RGB-L-UG', 'build did not persist to RGB product page');
-  check(await page.textContent('[data-sum-price]') === '$167', 'persisted price wrong on RGB page');
+  const rgbLug = catalog.variants.find((v) => v.sku === 'RGB-L-UG').ownerTargetPrice;
+  check(await page.textContent('[data-sum-price]') === `$${rgbLug.toLocaleString('en-US')}`, 'persisted price wrong on RGB page');
   await page.goto(BASE + 'products/graphic-mapping/index.html');
   check(await page.textContent('[data-sum-sku]') === 'MAP-L-UG', 'mapping page did not lock technology');
   check((await page.textContent('[data-sum-cta]')).includes('concept'), 'mapping CTA should be concept waitlist');
